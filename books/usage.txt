@@ -1,5 +1,5 @@
 NAME
-	books.py - "brief summary"
+	books.py - a way to sort catalogues of books.
 
 SYNOPSIS
 	python3 books.py print [--title, --author, --years] [search_string]
