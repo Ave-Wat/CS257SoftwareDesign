@@ -1,5 +1,5 @@
 NAME
-	python3 books.py print -- title, author, years
+	books.py - "brief summary"
 
 SYNOPSIS
 	python3 books.py print [--title, --author, --years] [search_string]
@@ -17,4 +17,6 @@ DESCRIPTION
 
 	search_string	Prints all books with search_string in any field alphabetically by author's last name.
 
-	Any flags may be combined, ie python3 books.py print --title bug --author jane.
+
+	Any flags may be combined, ie python3 books.py print --title bug --author jane. It will sort by the first option,
+then sort the resulting list by the second option.
