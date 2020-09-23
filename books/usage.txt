@@ -18,5 +18,14 @@ DESCRIPTION
 	search_string	Prints all books with search_string in any field alphabetically by author's last name.
 
 
-	Any flags may be combined, ie python3 books.py print --title bug --author jane. It will sort by the first option,
-then sort the resulting list by the second option.
+	Any flags may be combined, ie python3 books.py print --title bug --author jane. It will sort by the first option, then sort the resulting list by the second option.
+
+
+NAME
+	help - display information about commands.
+
+SYNOPSIS
+	python3 books.py --help
+
+DESCRIPTION
+	Prints the usage.txt file.
