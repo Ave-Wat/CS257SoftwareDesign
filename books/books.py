@@ -25,7 +25,7 @@ def searchAuthors(searchString):
 def searchTitle(searchString):
     searchedBooks = []
     for book in library:
-        if searchString in book.getTitle().lower():
+        if searchString.lower() in book.getTitle().lower():
             searchedBooks.append(book)
     return sorted(searchedBooks, key = lambda Book: Book.title.lower())
 
