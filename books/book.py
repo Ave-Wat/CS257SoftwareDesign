@@ -1,5 +1,5 @@
 class Book:
-    def __init__(title, pubYear, author):
+    def __init__(self, title, pubYear, author):
         self.title = title
         self.pubYear = pubYear
         authorList = author.split("(")
