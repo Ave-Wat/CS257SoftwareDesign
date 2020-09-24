@@ -17,3 +17,9 @@ class Book:
     
     def getAuthorYears(self):
         return self.authorYears
+    
+    def printBook(self):
+        print(self.title, end=',')
+        print(self.pubYear, end=',')
+        print(self.authorName, end=' ')
+        print("(" + self.authorYears + ")")
