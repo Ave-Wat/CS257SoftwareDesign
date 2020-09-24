@@ -87,7 +87,7 @@ def determineCommands():
                 sys.stderr.write("You need to type a valid option.\nTry running python3 books.py help.\n")
         else:
             sys.stderr.write("You have typed too many command and option entries.\nTry running python3 books.py help.\n")
-    elif sys.arv[1] == "help":
+    elif sys.argv[1] == "help":
         helpCmnd()
     else:
         sys.stderr.write("Please type a valid command. For more help, run the help commmand.\nTry running python3 books.py help.\n")
