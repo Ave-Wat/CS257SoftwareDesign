@@ -2,6 +2,14 @@ from book import Book
 import csv
 import sys
 
+library = []
+
+def readFile():
+    with open("books.csv", 'r') as csvfile:
+        csvreader = csv.reader(csvfile)
+        for row in csvreader:
+            library.append(Book(row[0], row[1], row[2]))
+
 def compare(itemOne, itemTwo, sortBy):
     if sortBy == "author":
         itemOne = itemOne.getAuthorName().split(" ")[1].lower()
@@ -39,7 +47,6 @@ def sortBooks(searchedBooks, sortBy):
         sortedBooks = searchedBooks
         
     return sortedBooks
-    
 
 def searchAuthors(searchString):
     withAuthor = []
@@ -48,16 +55,8 @@ def searchAuthors(searchString):
         if searchString in author:
             withAuthor.append(book)
     return sortBooks(withAuthor, "author")
-#def determineCommands(commands):
 
-library = []
-
-with open("books.csv", 'r') as csvfile:
-    csvreader = csv.reader(csvfile)
-    for row in csvreader:
-        library.append(Book(row[0], row[1], row[2]))
-print(library)
-    
+#TODO add sort to searchTitle,searchYears,searchAll
 def searchTitle(searchString):
     searchedBooks = []
     for book in library:
@@ -77,13 +76,13 @@ def searchAll(searchString):
     for book in library:
         if searchString in book.getFullLine():
             searchedBooks.append(book)
-    return searchedBooks
+    return searchedBooks    
     
 def printBooks(bookList):
     for book in bookList:
         book.printBook()
         
-
+#TODO finish
 def determineCommands():
     #program name is sys.argv[0]
     if sys.argv[1] == "print":
@@ -95,9 +94,9 @@ def determineCommands():
     else:
         #print error message
     
+#TODO add help method
 
-sorted = searchAuthors("an")
-for book in sorted:
-    book.printBook()
-#determineCommands(sys.argv)
+def main:
+    readFile()
+    determineCommands()
 
