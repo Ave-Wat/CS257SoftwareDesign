@@ -3,9 +3,18 @@ class Book:
     def __init__(self, title, pubYear, author):
         self.title = title
         self.pubYear = pubYear
-        authorList = author.split("(")
-        self.authorName = authorList[0].rstrip()
-        self.authorYears = authorList[1].rstrip()
+        if "and" in author:
+            authorList = author.split("and")
+            authorList[0] = authorList[0].split("(")
+            authorList[1] = authorList[1].split("(")
+            self.authorName = authorList[0][0].rstrip() + "" + authorList[1][0].rstrip()
+            self.authorYears = authorList[0][1].rstrip() + "" + authorList[1][1].rstrip()
+            self.authorNameToSortBy = authorList[0][0].rstrip()
+        else:
+            authorList = author.split("(")
+            self.authorName = authorList[0].rstrip()
+            self.authorYears = authorList[1].rstrip()
+            self.authorNameToSortBy = authorList[0].rstrip()
         
         #these are extra variables for printing formatting
         self.authorFull = author
@@ -22,6 +31,9 @@ class Book:
     
     def getAuthorYears(self):
         return self.authorYears
+    
+    def getAuthorNameToSoryBy(self):
+        return self.authorNameToSortBy
     
     def getFullLine(self):
         return self.fullLine

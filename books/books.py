@@ -2,27 +2,27 @@ from book import Book
 import csv
 import sys
 
-library = []
-
 # Reads in books.csv and creates a list, library, of Book objects
 def readFile():
+    library = []
     with open("books.csv", 'r') as csvfile:
         csvreader = csv.reader(csvfile)
         for row in csvreader:
             library.append(Book(row[0], row[1], row[2]))
+    return library
 
 # Returns a list of books with searchString in the author's name, sorted alphabetically by author's last name
 # Formatting for sorted() calls informed by https://docs.python.org/3/howto/sorting.html
-def searchAuthors(searchString):
+def searchAuthors(library, searchString):
     searchedBooks = []
     for book in library:
         author = book.getAuthorName().lower()
         if searchString in author:
             searchedBooks.append(book)
-    return sorted(searchedBooks, key = lambda Book: Book.authorName.split(" ")[1].lower())
+    return sorted(searchedBooks, key = lambda Book: Book.authorNameToSortBy.split(" ")[-1].lower())
 
 #Returns a list of books with searchString in the title, sorted alphabetically by title
-def searchTitle(searchString):
+def searchTitle(library, searchString):
     searchedBooks = []
     for book in library:
         if searchString in book.getTitle().lower():
@@ -30,7 +30,7 @@ def searchTitle(searchString):
     return sorted(searchedBooks, key = lambda Book: Book.title.lower())
 
 #Returns a list of books with whose publication year is in the range determined by searchString, sorted chronologically by publication year
-def searchYears(searchString):
+def searchYears(library, searchString):
     listYears = searchString.split("-")
     searchedBooks = []
     
@@ -44,12 +44,12 @@ def searchYears(searchString):
     return sorted(searchedBooks, key = lambda Book: int(Book.pubYear))
 
 # Returns a list of books with searchString in any field, sorted alphabetically by author's last name
-def searchAll(searchString):
+def searchAll(library, searchString):
     searchedBooks = []
     for book in library:
         if searchString.lower() in book.getFullLine().lower():
             searchedBooks.append(book)
-    return sorted(searchedBooks, key = lambda Book: Book.authorName.split(" ")[1].lower())
+    return sorted(searchedBooks, key = lambda Book: Book.authorNameToSortBy.split(" ")[-1].lower())
 
 # Prints the usage.txt file
 def helpCmnd():
@@ -63,15 +63,14 @@ def helpCmnd():
 def printBooks(bookList, mode):
     lastAuthor = ""
     for book in bookList:
-        if mode == "author" and lastAuthor != book.getAuthorName():
+        if mode == "author" and lastAuthor != book.getAuthorName() and lastAuthor != "":
             print()
         book.printBook()
         lastAuthor = book.getAuthorName()
         
 # Determines what functions to run based on command line arguments
-def determineCommands():
-    #program name is sys.argv[0]
-    
+def determineCommands(library):
+
     length = len(sys.argv)
     
     if length < 2:
@@ -80,11 +79,12 @@ def determineCommands():
     elif sys.argv[1] == "print":
         
         if length == 2:
+            library = sorted(library, key = lambda Book: Book.authorNameToSortBy.split(" ")[-1].lower())
             printBooks(library, "normal")
         
         elif length == 3:
-            printBooks(searchAll(sys.argv[2]), "normal")
-            #could run into problems with books.py cmnd option since this also triggers it
+            printBooks(searchAll(library, sys.argv[2]), "normal")
+            
         elif length > 3:
             numCommands = (length-2)//2
             sorted_books = []
@@ -93,24 +93,24 @@ def determineCommands():
             for i in range(numCommands):
                 option = sys.argv[i*2+2]
                 if option == "--title":
-                    sorted_books = searchTitle(sys.argv[i*2+3])
+                    sorted_books = searchTitle(library, sys.argv[i*2+3])
                     library = sorted_books
                     mode = "normal"
                     worked = True
                 elif option == "--years":
-                    sorted_books = searchYears(sys.argv[i*2+3])
+                    sorted_books = searchYears(library, sys.argv[i*2+3])
                     library = sorted_books
                     mode = "normal"
                     worked = True
                 elif option == "--author":
-                    sorted_books = searchAuthors(sys.argv[i*2+3])
+                    sorted_books = searchAuthors(library, sys.argv[i*2+3])
                     library = sorted_books
                     mode = "author"
                     worked = True
                 else:
                     sys.stderr.write("You need to type a valid option.\nTry running python3 books.py help.\n")
-                if worked:
-                    printBooks(sorted_books, mode)
+            if worked:
+                printBooks(sorted_books, mode)
         else:
             sys.stderr.write("You have typed too many command and option entries.\nTry running python3 books.py help.\n")
     elif sys.argv[1] == "help":
@@ -119,7 +119,7 @@ def determineCommands():
         sys.stderr.write("Please type a valid command. For more help, run the help commmand.\nTry running python3 books.py help.\n")
 
 def main():
-    readFile()
-    determineCommands()
+    library = readFile()
+    determineCommands(library)
 
 main()
