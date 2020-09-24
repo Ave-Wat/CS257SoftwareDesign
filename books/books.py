@@ -64,10 +64,16 @@ def searchTitle(searchString):
             searchedBooks.append(book)
     return searchedBooks
 
-def searchYears(searchKey):
+def searchYears(searchString):
+    listYears = searchString.split("-")
     searchedBooks = []
+    
+    startYear = listYears[0]
+    endYear = listYears[1]
+    
     for book in library:
-        if book.getPubYear() == searchKey:
+        for i in range(startYear,endYear + 1)
+            if book.getPubYear() == i:
             searchedBooks.append(book)
     return searchedBooks
 
@@ -85,14 +91,30 @@ def printBooks(bookList):
 #TODO finish
 def determineCommands():
     #program name is sys.argv[0]
-    if sys.argv[1] == "print":
-        option = sys.arv[2]
-        if option == "--title":
-            searchBooks()
+    
+    length = len(sys.argv)
+    
+    if length < 2:
+        #print error and suggest help
+    else if sys.argv[1] == "print":
+        option = sys.argv[2]
+        
+        if length < 3:
+            searchAll(option)
+        else:
+            if length == 3:
+                if option == "--title":
+                    searchTitle(sys.argv[3])
+                else if option == "--years":
+                    searchYears(sys.argv[3])
+                else if option == "--author":
+                    searchAuthors(sys.argv[3])
+            else:
+                #print error: too many cmnd line entries
     else if sys.arv[1] == "help":
         #print usage.txt file
     else:
-        #print error message
+        #print error message and suggest help
     
 #TODO add help method
 
