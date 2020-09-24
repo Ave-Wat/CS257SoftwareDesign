@@ -12,6 +12,7 @@ def readFile():
             library.append(Book(row[0], row[1], row[2]))
 
 # Returns a list of books with searchString in the author's name, sorted alphabetically by author's last name
+# Formatting for sorted() calls informed by https://docs.python.org/3/howto/sorting.html
 def searchAuthors(searchString):
     searchedBooks = []
     for book in library:
@@ -46,7 +47,7 @@ def searchYears(searchString):
 def searchAll(searchString):
     searchedBooks = []
     for book in library:
-        if searchString in book.getFullLine():
+        if searchString.lower() in book.getFullLine().lower():
             searchedBooks.append(book)
     return sorted(searchedBooks, key = lambda Book: Book.authorName.split(" ")[1].lower())
 
@@ -84,16 +85,32 @@ def determineCommands():
         elif length == 3:
             printBooks(searchAll(sys.argv[2]), "normal")
             #could run into problems with books.py cmnd option since this also triggers it
-        elif length == 4:
-            option = sys.argv[2]
-            if option == "--title":
-                printBooks(searchTitle(sys.argv[3]), "normal")
-            elif option == "--years":
-                printBooks(searchYears(sys.argv[3]), "normal")
-            elif option == "--author":
-                printBooks(searchAuthors(sys.argv[3]), "author")
-            else:
-                sys.stderr.write("You need to type a valid option.\nTry running python3 books.py help.\n")
+        elif length > 3:
+            numCommands = (length-2)//2
+            sorted_books = []
+            mode = ""
+            worked = False
+            for i in range(numCommands):
+                option = sys.argv[i*2+2]
+                if option == "--title":
+                    sorted_books = searchTitle(sys.argv[i*2+3])
+                    library = sorted_books
+                    mode = "normal"
+                    worked = True
+                elif option == "--years":
+                    sorted_books = searchYears(sys.argv[i*2+3])
+                    library = sorted_books
+                    mode = "normal"
+                    worked = True
+                elif option == "--author":
+                    sorted_books = searchAuthors(sys.argv[i*2+3])
+                    library = sorted_books
+                    mode = "author"
+                    worked = True
+                else:
+                    sys.stderr.write("You need to type a valid option.\nTry running python3 books.py help.\n")
+                if worked:
+                    printBooks(sorted_books, mode)
         else:
             sys.stderr.write("You have typed too many command and option entries.\nTry running python3 books.py help.\n")
     elif sys.argv[1] == "help":
