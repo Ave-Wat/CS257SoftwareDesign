@@ -49,20 +49,20 @@ def sortBooks(searchedBooks, sortBy):
     return sortedBooks
 
 def searchAuthors(searchString):
-    withAuthor = []
+    searchedBooks = []
     for book in library:
         author = book.getAuthorName().lower()
         if searchString in author:
-            withAuthor.append(book)
-    return sortBooks(withAuthor, "author")
+            searchedBooks.append(book)
+    return sorted(searchedBooks, key = lambda Book: Book.authorName.split(" ")[1].lower())
 
 #TODO add sort to searchTitle,searchYears,searchAll
 def searchTitle(searchString):
     searchedBooks = []
     for book in library:
-        if searchString in book.getTitle():
+        if searchString in book.getTitle().lower():
             searchedBooks.append(book)
-    return searchedBooks
+    return sorted(searchedBooks, key = lambda Book: Book.title.lower())
 
 def searchYears(searchString):
     listYears = searchString.split("-")
@@ -75,14 +75,14 @@ def searchYears(searchString):
         for i in range(startYear,endYear + 1)
             if book.getPubYear() == i:
             searchedBooks.append(book)
-    return searchedBooks
+    return sorted(searchedBooks, key = lambda Book: int(Book.pubYear))
 
 def searchAll(searchString):
     searchedBooks = []
     for book in library:
         if searchString in book.getFullLine():
             searchedBooks.append(book)
-    return searchedBooks    
+    return sorted(searchedBooks, key = lambda Book: Book.authorName.split(" ")[1].lower())
     
 def printBooks(bookList):
     for book in bookList:
@@ -115,10 +115,26 @@ def determineCommands():
         #print usage.txt file
     else:
         #print error message and suggest help
+
+    if sys.argv[1] == "print":
+        option = sys.arv[2]
+        if option == "--title":
+            searchBooks()
+    elif sys.arv[1] == "help":
+        pass
+        #print usage.txt file
+    else:
+        pass
+        #print error message
     
 #TODO add help method
 
-def main:
-    readFile()
-    determineCommands()
+#def main():
+    #readFile()
+    #determineCommands()
+
+readFile()
+sorted_books = searchTitle("an")
+for book in sorted_books:
+    book.printBook()
 
