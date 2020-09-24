@@ -6,14 +6,14 @@ class Book:
         self.authorName = authorList[0].rstrip()
         self.authorYears = authorList[1].rstrip()
         
-    def getTitle():
+    def getTitle(self):
         return self.title
     
-    def getPubYear():
+    def getPubYear(self):
         return self.pubYear
     
-    def getAuthorName():
+    def getAuthorName(self):
         return self.authorName
     
-    def getAuthorYears():
+    def getAuthorYears(self):
         return self.authorYears
