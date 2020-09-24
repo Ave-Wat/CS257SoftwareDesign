@@ -96,36 +96,32 @@ def determineCommands():
     
     if length < 2:
         #print error and suggest help
-    else if sys.argv[1] == "print":
-        option = sys.argv[2]
+        sys.stderr.write("Please type a command. For more help, run the help commmand.\nTry running python3 books.py help.\n")
         
-        if length < 3:
-            searchAll(option)
-        else:
-            if length == 3:
+    else if sys.argv[1] == "print":
+        
+        if length == 2:
+            printBooks()
+        
+        else if length == 3:
+            searchAll(sys.argv[2])
+        else if length == 4:
+            option = sys.argv[2]
                 if option == "--title":
                     searchTitle(sys.argv[3])
                 else if option == "--years":
                     searchYears(sys.argv[3])
                 else if option == "--author":
                     searchAuthors(sys.argv[3])
+                else:
+                    #pls type valid option
             else:
-                #print error: too many cmnd line entries
+                sys.stderr.write("You have typed too many command and option entries")
     else if sys.arv[1] == "help":
         #print usage.txt file
     else:
-        #print error message and suggest help
+        sys.stderr.write("Please type a valid command. For more help, run the help commmand.\nTry running python3 books.py help.\n")
 
-    if sys.argv[1] == "print":
-        option = sys.arv[2]
-        if option == "--title":
-            searchBooks()
-    elif sys.arv[1] == "help":
-        pass
-        #print usage.txt file
-    else:
-        pass
-        #print error message
     
 #TODO add help method
 
