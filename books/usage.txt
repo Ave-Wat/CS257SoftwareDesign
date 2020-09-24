@@ -25,7 +25,7 @@ NAME
 	help - display information about commands.
 
 SYNOPSIS
-	python3 books.py --help
+	python3 books.py help
 
 DESCRIPTION
 	Prints the usage.txt file.
