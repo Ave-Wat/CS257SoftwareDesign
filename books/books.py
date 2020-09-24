@@ -46,7 +46,7 @@ def searchAll(searchString):
             searchedBooks.append(book)
     return sorted(searchedBooks, key = lambda Book: Book.authorName.split(" ")[1].lower())
 
-def help():
+def helpCmnd():
     with open('usage.txt') as usage:
         usage = usage.readlines()
         for line in usage:
@@ -83,16 +83,16 @@ def determineCommands():
                 elif option == "--author":
                     searchAuthors(sys.argv[3])
                 else:
-                    #pls type valid option
-            else:
-                sys.stderr.write("You have typed too many command and option entries")
+                    sys.stderr.write("You need to type a valid option.\nTry running python3 books.py help.\n")
+        else:
+            sys.stderr.write("You have typed too many command and option entries.\nTry running python3 books.py help.\n")
     else if sys.arv[1] == "help":
-        #print usage.txt file
+        helpCmnd()
     else:
         sys.stderr.write("Please type a valid command. For more help, run the help commmand.\nTry running python3 books.py help.\n")
 
 def main():
     readFile()
-    #determineCommands()
+    determineCommands()
 
 main()
