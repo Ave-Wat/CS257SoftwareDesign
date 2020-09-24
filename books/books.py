@@ -77,22 +77,21 @@ def determineCommands():
         sys.stderr.write("Please type a command. For more help, run the help commmand.\nTry running python3 books.py help.\n")
         
     elif sys.argv[1] == "print":
-        option = sys.argv[2]
         
         if length == 2:
-            printBooks(library)
+            printBooks(library, "normal")
         
         elif length == 3:
-            printBooks(searchAll(sys.argv[2]))
+            printBooks(searchAll(sys.argv[2]), "normal")
             #could run into problems with books.py cmnd option since this also triggers it
         elif length == 4:
             option = sys.argv[2]
             if option == "--title":
-                printBooks(searchTitle(sys.argv[3]))
+                printBooks(searchTitle(sys.argv[3]), "normal")
             elif option == "--years":
-                printBooks(searchYears(sys.argv[3]))
+                printBooks(searchYears(sys.argv[3]), "normal")
             elif option == "--author":
-                printBooks(searchAuthors(sys.argv[3]))
+                printBooks(searchAuthors(sys.argv[3]), "author")
             else:
                 sys.stderr.write("You need to type a valid option.\nTry running python3 books.py help.\n")
         else:
