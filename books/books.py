@@ -4,12 +4,14 @@ import sys
 
 library = []
 
+# Reads in books.csv and creates a list, library, of Book objects
 def readFile():
     with open("books.csv", 'r') as csvfile:
         csvreader = csv.reader(csvfile)
         for row in csvreader:
             library.append(Book(row[0], row[1], row[2]))
 
+# Returns a list of books with searchString in the author's name, sorted alphabetically by author's last name
 def searchAuthors(searchString):
     searchedBooks = []
     for book in library:
@@ -18,7 +20,7 @@ def searchAuthors(searchString):
             searchedBooks.append(book)
     return sorted(searchedBooks, key = lambda Book: Book.authorName.split(" ")[1].lower())
 
-#TODO add sort to searchTitle,searchYears,searchAll
+#Returns a list of books with searchString in the title, sorted alphabetically by title
 def searchTitle(searchString):
     searchedBooks = []
     for book in library:
@@ -26,6 +28,7 @@ def searchTitle(searchString):
             searchedBooks.append(book)
     return sorted(searchedBooks, key = lambda Book: Book.title.lower())
 
+#Returns a list of books with whose publication year is in the range determined by searchString, sorted chronologically by publication year
 def searchYears(searchString):
     listYears = searchString.split("-")
     searchedBooks = []
@@ -39,6 +42,7 @@ def searchYears(searchString):
                 searchedBooks.append(book)
     return sorted(searchedBooks, key = lambda Book: int(Book.pubYear))
 
+# Returns a list of books with searchString in any field, sorted alphabetically by author's last name
 def searchAll(searchString):
     searchedBooks = []
     for book in library:
@@ -46,18 +50,24 @@ def searchAll(searchString):
             searchedBooks.append(book)
     return sorted(searchedBooks, key = lambda Book: Book.authorName.split(" ")[1].lower())
 
-def help():
+# Prints the usage.txt file
+def helpCommand():
     with open('usage.txt') as usage:
         usage = usage.readlines()
         for line in usage:
             print(line, end="")
     print()
     
-def printBooks(bookList):
+# Prints a list of books, mode can be 'normal' or 'author' and when the mode is 'author' the function prints a blank line when the author of a book changes
+def printBooks(bookList, mode):
+    lastAuthor = ""
     for book in bookList:
+        if mode == "author" and lastAuthor != book.getAuthorName():
+            print()
         book.printBook()
+        lastAuthor = book.getAuthorName()
         
-#TODO finish
+# Determines what functions to run based on command line arguments
 def determineCommands():
     #program name is sys.argv[0]
     
