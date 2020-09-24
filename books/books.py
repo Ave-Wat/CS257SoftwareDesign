@@ -66,27 +66,28 @@ def determineCommands():
     if length < 2:
         sys.stderr.write("Please type a command. For more help, run the help commmand.\nTry running python3 books.py help.\n")
         
-    else if sys.argv[1] == "print":
+    elif sys.argv[1] == "print":
         option = sys.argv[2]
         
         if length == 2:
-            printBooks()
+            printBooks(library)
         
-        else if length == 3:
-            searchAll(sys.argv[2])
-        else if length == 4:
+        elif length == 3:
+            printBooks(searchAll(sys.argv[2]))
+            #could run into problems with books.py cmnd option since this also triggers it
+        elif length == 4:
             option = sys.argv[2]
-                if option == "--title":
-                    searchTitle(sys.argv[3])
-                elif option == "--years":
-                    searchYears(sys.argv[3])
-                elif option == "--author":
-                    searchAuthors(sys.argv[3])
-                else:
-                    sys.stderr.write("You need to type a valid option.\nTry running python3 books.py help.\n")
+            if option == "--title":
+                printBooks(searchTitle(sys.argv[3]))
+            elif option == "--years":
+                printBooks(searchYears(sys.argv[3]))
+            elif option == "--author":
+                printBooks(searchAuthors(sys.argv[3]))
+            else:
+                sys.stderr.write("You need to type a valid option.\nTry running python3 books.py help.\n")
         else:
             sys.stderr.write("You have typed too many command and option entries.\nTry running python3 books.py help.\n")
-    else if sys.arv[1] == "help":
+    elif sys.arv[1] == "help":
         helpCmnd()
     else:
         sys.stderr.write("Please type a valid command. For more help, run the help commmand.\nTry running python3 books.py help.\n")
