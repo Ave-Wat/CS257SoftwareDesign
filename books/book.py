@@ -5,6 +5,7 @@ class Book:
         authorList = author.split("(")
         self.authorName = authorList[0].rstrip()
         self.authorYears = authorList[1].rstrip()
+        self.authorFull = author
         self.fullLine = title + pubYear + author
         
     def getTitle(self):
@@ -23,7 +24,4 @@ class Book:
         return self.fullLine
     
     def printBook(self):
-        print(self.title, end=',')
-        print(self.pubYear, end=',')
-        print(self.authorName, end=' ')
-        print("(" + self.authorYears + ")")
+        print(self.title + ", " + self.pubYear + ", " + self.authorFull)
