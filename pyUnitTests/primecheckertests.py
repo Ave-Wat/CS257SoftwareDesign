@@ -42,5 +42,20 @@ class PrimeCheckerTester(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.prime_checker.is_prime(-1)
 
+    def test_letter(self):
+        print("test_letter")
+        with self.assertRaises(TypeError):
+            self.prime_checker.is_prime("i")
+
+    def test_large_num(self):
+        print("test_large_num")
+        with self.assertRaises(ValueError):
+            self.prime_checker.is_prime(101)
+
+    def test_below_negative(self):
+        print("test_below_negative")
+        with self.assertRaises(AssertionError):
+            self.prime_checker.get_primes_below(-1)
+
 if __name__ == '__main__':
     unittest.main()
