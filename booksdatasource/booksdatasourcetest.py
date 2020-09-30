@@ -32,13 +32,27 @@ class BooksDataSourceTest(unittest.TestCase):
 
     def test_return_none(self):
         #test to see what happens if author name is not in dataset
-        authorList = authorList = self.booksdatasource.authors("Johnny")
+        authorList = self.booksdatasource.authors("Johnny")
         testList = []
         self.assertEqual(authorList,testList)
 
     #books tests
     def test_title_sort(self):
-        pass
+        booksList = self.booksdatasource.books()
+        '''
+        15,1Q84,2009
+        15,Hard-Boiled Wonderland and the End of the World,1985
+        9,Love in the Time of Cholera,1985
+        14,The Tenant of Wildfell Hall,1848
+        6,Thief of Time,1996
+        '''
+        testList = [
+        {'title': '1Q84', 'publication_year': 2009, 'author_id': 15}
+        {'title': 'A Wild Sheep Chase', 'publication_year': 1982, 'author_id': 134}
+        {'title': 'A Wild Sheep Chase', 'publication_year': 1982, 'author_id': 134}
+        {'title': 'A Wild Sheep Chase', 'publication_year': 1982, 'author_id': 134}
+        {'title': 'A Wild Sheep Chase', 'publication_year': 1982, 'author_id': 134}
+        ]
 
     def test_year_sort(self):
         pass
