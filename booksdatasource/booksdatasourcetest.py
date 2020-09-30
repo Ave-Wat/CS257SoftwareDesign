@@ -39,23 +39,25 @@ class BooksDataSourceTest(unittest.TestCase):
     #books tests
     def test_title_sort(self):
         booksList = self.booksdatasource.books()
-        '''
-        15,1Q84,2009
-        15,Hard-Boiled Wonderland and the End of the World,1985
-        9,Love in the Time of Cholera,1985
-        14,The Tenant of Wildfell Hall,1848
-        6,Thief of Time,1996
-        '''
         testList = [
         {'title': '1Q84', 'publication_year': 2009, 'author_id': 15}
-        {'title': 'A Wild Sheep Chase', 'publication_year': 1982, 'author_id': 134}
-        {'title': 'A Wild Sheep Chase', 'publication_year': 1982, 'author_id': 134}
-        {'title': 'A Wild Sheep Chase', 'publication_year': 1982, 'author_id': 134}
-        {'title': 'A Wild Sheep Chase', 'publication_year': 1982, 'author_id': 134}
+        {'title': 'Hard-Boiled Wonderland and the End of the World', 'publication_year': 1985, 'author_id': 15}
+        {'title': 'Love in the Time of Cholera', 'publication_year': 1985, 'author_id': 9}
+        {'title': 'The Tenant of Wildfell Hall', 'publication_year': 1848, 'author_id': 14}
+        {'title': 'Thief of Time', 'publication_year': 1996, 'author_id': 6}
         ]
 
+        self.assertEqual(booksList,testList)
+
     def test_year_sort(self):
-        pass
+        booksList = self.booksDataSource.books(sort_by = 'years')
+        testList = [
+        {'title': 'The Tenant of Wildfell Hall', 'publication_year': 1848, 'author_id': 14}
+        {'title': 'Hard-Boiled Wonderland and the End of the World', 'publication_year': 1985, 'author_id': 15}
+        {'title': 'Love in the Time of Cholera', 'publication_year': 1985, 'author_id': 9}
+        {'title': 'Thief of Time', 'publication_year': 1996, 'author_id': 6}
+        {'title': '1Q84', 'publication_year': 2009, 'author_id': 15}
+        ]
 
     def test_author_id(self):
         with self.assertRaises(ValueError):
@@ -72,7 +74,7 @@ class BooksDataSourceTest(unittest.TestCase):
 
     def test_start_and_end_years(self):
         self.assertEqual(self.booksdatasource.books(start_year=1848,end_year=1986),[{'title': 'Hard-Boiled Wonderland and the End of the World', 'publication_year': 1985, 'author_id': 15},{'title': 'Love in the Time of Cholera', 'publication_year': 1985, 'author_id': 9},{'title': 'The Tenant of Wildfell Hall', 'publication_year': 1848, 'author_id': 14}])
-    
+
     def test_all_parameters(self):
         self.assertEqual(self.booksdatasource.books(author_id=15, search_text='of',start_year=1848,end_year=2010,sort_by='year'),[{'title': 'Hard-Boiled Wonderland and the End of the World', 'publication_year': 1985, 'author_id': 15}])
 
