@@ -2,8 +2,8 @@ import BooksDataSource
 import unittest
 
 class BooksDataSourceTest(unittest.TestCase):
-    def setUp():
-        pass
+    def setUp(self):
+        self.booksdatasource = BooksDataSource.BooksDataSource("test-books.csv","testauthors.csv")
 
     def tearDown():
         pass
