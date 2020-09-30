@@ -15,6 +15,10 @@ class BooksDataSourceTest(unittest.TestCase):
     def test_sort_birthyear():
         pass
 
+    def test_return_none():
+        #test to see what happens if author name is not in dataset
+        pass
+
     #books tests
     def test_title_sort():
         pass
