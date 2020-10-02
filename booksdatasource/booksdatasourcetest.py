@@ -58,6 +58,10 @@ class BooksDataSourceTest(unittest.TestCase):
         {'title': 'Thief of Time', 'publication_year': 1996, 'author_id': 6}
         {'title': '1Q84', 'publication_year': 2009, 'author_id': 15}
         ]
+    
+    def test_bad_sort(self):
+        with self.assertRaises(ValueError):
+            self.booksdatasource.books(sort_by='duck')
 
     def test_author_id(self):
         with self.assertRaises(ValueError):
@@ -65,6 +69,9 @@ class BooksDataSourceTest(unittest.TestCase):
 
     def test_search_text(self):
         self.assertEqual(self.booksdatasource.books(search_text='of'),[{'title': 'Hard-Boiled Wonderland and the End of the World', 'publication_year': 1985, 'author_id': 15},{'title': 'Love in the Time of Cholera', 'publication_year': 1985, 'author_id': 9},{'title': 'The Tenant of Wildfell Hall', 'publication_year': 1848, 'author_id': 14},{'title': 'Thief of Time', 'publication_year': 1996, 'author_id': 6}])
+        
+    def test_search_text_none(self):
+        self.assertEqual(self.booksdatasource.books(search_text='egg'),[])
 
     def test_start_year(self):
         self.assertEqual(self.booksdatasource.books(start_year=1990),[{'title': '1Q84', 'publication_year': 2009, 'author_id': 15},{'title': 'Thief of Time', 'publication_year': 1996, 'author_id': 6}])
