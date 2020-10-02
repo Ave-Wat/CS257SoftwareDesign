@@ -1,4 +1,3 @@
-# Sample Makefile for the hello world assignment
-run:
+test: booksdatasourcetest.py
 	@echo "==== Testing hello.py ===="
 	python3 booksdatasourcetest.py

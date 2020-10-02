@@ -1,14 +1,14 @@
-import BooksDataSource
+import booksdatasource
 import unittest
 
 class BooksDataSourceTest(unittest.TestCase):
     def setUp(self):
-        self.booksdatasource = BooksDataSource.BooksDataSource("test-books.csv","testauthors.csv")
+        self.booksdatasource = booksdatasource.BooksDataSource("test-books.csv","testauthors.csv")
 
     def tearDown():
         pass
 
-'''------author() tests------'''
+    '''------author() tests------'''
     def test_author_name(self):
         authorList = self.booksdatasource.authors("Brontë")
         testList = [{'id':13,'last_name':'Brontë','first_name':'Ann', 'birth_year':1820, 'death_year':1849},
@@ -36,14 +36,14 @@ class BooksDataSourceTest(unittest.TestCase):
         testList = []
         self.assertEqual(authorList,testList)
 
-'''------books() tests------'''
+    '''------books() tests------'''
     def test_title_sort(self):
         booksList = self.booksdatasource.books()
         testList = [
-        {'title': '1Q84', 'publication_year': 2009, 'author_id': 15}
-        {'title': 'Hard-Boiled Wonderland and the End of the World', 'publication_year': 1985, 'author_id': 15}
-        {'title': 'Love in the Time of Cholera', 'publication_year': 1985, 'author_id': 9}
-        {'title': 'The Tenant of Wildfell Hall', 'publication_year': 1848, 'author_id': 14}
+        {'title': '1Q84', 'publication_year': 2009, 'author_id': 15},
+        {'title': 'Hard-Boiled Wonderland and the End of the World', 'publication_year': 1985, 'author_id': 15},
+        {'title': 'Love in the Time of Cholera', 'publication_year': 1985, 'author_id': 9},
+        {'title': 'The Tenant of Wildfell Hall', 'publication_year': 1848, 'author_id': 14},
         {'title': 'Thief of Time', 'publication_year': 1996, 'author_id': 6}
         ]
 
@@ -52,13 +52,13 @@ class BooksDataSourceTest(unittest.TestCase):
     def test_year_sort(self):
         booksList = self.booksDataSource.books(sort_by = 'years')
         testList = [
-        {'title': 'The Tenant of Wildfell Hall', 'publication_year': 1848, 'author_id': 14}
-        {'title': 'Hard-Boiled Wonderland and the End of the World', 'publication_year': 1985, 'author_id': 15}
-        {'title': 'Love in the Time of Cholera', 'publication_year': 1985, 'author_id': 9}
-        {'title': 'Thief of Time', 'publication_year': 1996, 'author_id': 6}
+        {'title': 'The Tenant of Wildfell Hall', 'publication_year': 1848, 'author_id': 14},
+        {'title': 'Hard-Boiled Wonderland and the End of the World', 'publication_year': 1985, 'author_id': 15},
+        {'title': 'Love in the Time of Cholera', 'publication_year': 1985, 'author_id': 9},
+        {'title': 'Thief of Time', 'publication_year': 1996, 'author_id': 6},
         {'title': '1Q84', 'publication_year': 2009, 'author_id': 15}
         ]
-    
+
     def test_bad_sort(self):
         with self.assertRaises(ValueError):
             self.booksdatasource.books(sort_by='duck')
@@ -69,7 +69,7 @@ class BooksDataSourceTest(unittest.TestCase):
 
     def test_search_text(self):
         self.assertEqual(self.booksdatasource.books(search_text='of'),[{'title': 'Hard-Boiled Wonderland and the End of the World', 'publication_year': 1985, 'author_id': 15},{'title': 'Love in the Time of Cholera', 'publication_year': 1985, 'author_id': 9},{'title': 'The Tenant of Wildfell Hall', 'publication_year': 1848, 'author_id': 14},{'title': 'Thief of Time', 'publication_year': 1996, 'author_id': 6}])
-        
+
     def test_search_text_none(self):
         self.assertEqual(self.booksdatasource.books(search_text='egg'),[])
 
