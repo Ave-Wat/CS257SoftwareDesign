@@ -8,7 +8,7 @@ class BooksDataSourceTest(unittest.TestCase):
     def tearDown():
         pass
 
-    #author tests
+'''------author() tests------'''
     def test_author_name(self):
         authorList = self.booksdatasource.authors("Brontë")
         testList = [{'id':13,'last_name':'Brontë','first_name':'Ann', 'birth_year':1820, 'death_year':1849},
@@ -36,7 +36,7 @@ class BooksDataSourceTest(unittest.TestCase):
         testList = []
         self.assertEqual(authorList,testList)
 
-    #books tests
+'''------books() tests------'''
     def test_title_sort(self):
         booksList = self.booksdatasource.books()
         testList = [
