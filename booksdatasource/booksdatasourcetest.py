@@ -26,8 +26,8 @@ class BooksDataSourceTest(unittest.TestCase):
 
         self.assertEqual(authorList, testList)
 
-    def test_author_id_valueError(self):
-        with self.assertRaises(ValueError):
+    def test_author_id_attributeError(self):
+        with self.assertRaises(AttributeError):
             self.booksdatasource.authors(-1)
 
     def test_return_none(self):

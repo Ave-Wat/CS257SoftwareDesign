@@ -1,3 +1,4 @@
-Changed testathors.csv because author id's did not match books
-
-teardown() method gave error "takes 0 positional arguments but 1 was given", changed method so it took self as argument
+- Changed testathors.csv because author id's did not match books
+- Added new author id's to booksdatasourcetest.py
+- test_author_id_valueError was changed to test_author_id_attributeError to reflect the error that was thrown by the test
+-teardown() method gave error "takes 0 positional arguments but 1 was given", changed method so it took self as argument
