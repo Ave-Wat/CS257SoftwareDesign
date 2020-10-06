@@ -1,4 +1,11 @@
 - Changed testathors.csv because author id's did not match books
 - Added new author id's to booksdatasourcetest.py
 - test_author_id_valueError was changed to test_author_id_attributeError to reflect the error that was thrown by the test
--teardown() method gave error "takes 0 positional arguments but 1 was given", changed method so it took self as argument
+
+Failure 1:
+
+Failure 2:
+- books() should throw a value error when the input is not a number
+- the resulting failure is the result of a bug in booksdatasource.py
+- 
+Failure 3:

@@ -11,8 +11,9 @@ class BooksDataSourceTest(unittest.TestCase):
     '''------author() tests------'''
     def test_author_name(self):
         authorList = self.booksdatasource.authors("Brontë")
-        testList = [{'id':13,'last_name':'Brontë','first_name':'Ann', 'birth_year':1820, 'death_year':1849},
-        {'id':7,'last_name':'Brontë','first_name':'Charlotte', 'birth_year':1816, 'death_year':1855}]
+        testList = [
+        {'id':14,'last_name':'Brontë','first_name':'Ann', 'birth_year':1820, 'death_year':1849},
+        {'id':6,'last_name':'Brontë','first_name':'Charlotte', 'birth_year':1816, 'death_year':1855}]
         self.assertEqual(authorList,testList)
 
     def test_sort_birthyear(self):
