@@ -50,7 +50,7 @@ class BooksDataSourceTest(unittest.TestCase):
         self.assertEqual(booksList,testList)
 
     def test_year_sort(self):
-        booksList = self.booksDataSource.books(sort_by = 'years')
+        booksList = self.booksdatasource.books(sort_by = 'years')
         testList = [
         {'title': 'The Tenant of Wildfell Hall', 'publication_year': 1848, 'author_id': 14},
         {'title': 'Hard-Boiled Wonderland and the End of the World', 'publication_year': 1985, 'author_id': 15},
