@@ -5,7 +5,7 @@ class BooksDataSourceTest(unittest.TestCase):
     def setUp(self):
         self.booksdatasource = booksdatasource.BooksDataSource("test-books.csv","testauthors.csv")
 
-    def tearDown():
+    def tearDown(self):
         pass
 
     '''------author() tests------'''
