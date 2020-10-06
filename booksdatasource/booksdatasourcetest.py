@@ -18,10 +18,10 @@ class BooksDataSourceTest(unittest.TestCase):
     def test_sort_birthyear(self):
         authorList = self.booksdatasource.authors()
         testList = [
-        {'id':7,'last_name':'Brontë','first_name':'Charlotte', 'birth_year':1816, 'death_year':1855},
-        {'id':13,'last_name':'Brontë','first_name':'Ann', 'birth_year':1820, 'death_year':1849},
+        {'id':6,'last_name':'Brontë','first_name':'Charlotte', 'birth_year':1816, 'death_year':1855},
+        {'id':14,'last_name':'Brontë','first_name':'Ann', 'birth_year':1820, 'death_year':1849},
         {'id':9,'last_name':'Gabriel García','first_name':'Márquez', 'birth_year':1927, 'death_year':2014},
-        {'id':17,'last_name':'Alderman','first_name':'Naomi', 'birth_year':1974, 'death_year':None}
+        {'id':15,'last_name':'Alderman','first_name':'Naomi', 'birth_year':1974, 'death_year':None}
         ]
 
         self.assertEqual(authorList, testList)
