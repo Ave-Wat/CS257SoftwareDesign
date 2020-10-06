@@ -3,9 +3,9 @@
 - test_author_id_valueError was changed to test_author_id_attributeError to reflect the error that was thrown by the test
 
 Failure 1:
-
+- in booksdatasource.py, the death_year is not being converted to an integer. Because it remains a string, it causes inconsistencies with the test data
 Failure 2:
 - books() should throw a value error when the input is not a number
 - the resulting failure is the result of a bug in booksdatasource.py
-- 
 Failure 3:
+- same as failure 1

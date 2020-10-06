@@ -4,7 +4,7 @@ import unittest
 class BooksDataSourceTest(unittest.TestCase):
     def setUp(self):
         self.booksdatasource = booksdatasource.BooksDataSource("test-books.csv","testauthors.csv")
-
+        self.maxDiff = None;
     def tearDown(self):
         pass
 
