@@ -16,28 +16,28 @@ class Book:
             self.authorName = authorList[0].rstrip()
             self.authorYears = authorList[1].rstrip()
             self.authorNameToSortBy = authorList[0].rstrip()
-        
+
         #these are extra variables for printing formatting
         self.authorFull = author
         self.fullLine = title + pubYear + author
-        
+
     def getTitle(self):
         return self.title
-    
+
     def getPubYear(self):
         return self.pubYear
-    
+
     def getAuthorName(self):
         return self.authorName
-    
+
     def getAuthorYears(self):
         return self.authorYears
-    
-    def getAuthorNameToSoryBy(self):
+
+    def getAuthorNameToSortBy(self):
         return self.authorNameToSortBy
-    
+
     def getFullLine(self):
         return self.fullLine
-    
+
     def printBook(self):
         print(self.title + ", " + self.pubYear + ", " + self.authorFull)

@@ -34,10 +34,10 @@ def searchTitle(library, searchString):
 def searchYears(library, searchString):
     listYears = searchString.split("-")
     searchedBooks = []
-    
+
     startYear = int(listYears[0])
     endYear = int(listYears[1])
-    
+
     for book in library:
         for i in range(startYear,endYear + 1):
             if int(book.getPubYear()) == i:
@@ -53,13 +53,13 @@ def searchAll(library, searchString):
     return sorted(searchedBooks, key = lambda Book: Book.authorNameToSortBy.split(" ")[-1].lower())
 
 # Prints the usage.txt file
-def helpCmnd():
+def helpCommand():
     with open('usage.txt') as usage:
         usage = usage.readlines()
         for line in usage:
             print(line, end="")
     print()
-    
+
 # Prints a list of books, mode can be 'normal' or 'author' and when the mode is 'author' the function prints a blank line when the author of a book changes
 def printBooks(bookList, mode):
     lastAuthor = ""
@@ -68,24 +68,24 @@ def printBooks(bookList, mode):
             print()
         book.printBook()
         lastAuthor = book.getAuthorName()
-        
+
 # Determines what functions to run based on command line arguments
-def determineCommands(library):
+def runCommands(library):
 
     length = len(sys.argv)
-    
+
     if length < 2:
         sys.stderr.write("Please type a command. For more help, run the help commmand.\nTry running python3 books.py help.\n")
-        
+
     elif sys.argv[1] == "print":
-        
+
         if length == 2:
             library = sorted(library, key = lambda Book: Book.authorNameToSortBy.split(" ")[-1].lower())
             printBooks(library, "normal")
-        
+
         elif length == 3:
             printBooks(searchAll(library, sys.argv[2]), "normal")
-            
+
         elif length > 3:
             numCommands = (length-2)//2
             sorted_books = []
@@ -115,12 +115,12 @@ def determineCommands(library):
         else:
             sys.stderr.write("You have typed too many command and option entries.\nTry running python3 books.py help.\n")
     elif sys.argv[1] == "help":
-        helpCmnd()
+        helpCommand()
     else:
         sys.stderr.write("Please type a valid command. For more help, run the help commmand.\nTry running python3 books.py help.\n")
 
 def main():
     library = readFile()
-    determineCommands(library)
+    runCommands(library)
 
 main()
