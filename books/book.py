@@ -1,6 +1,8 @@
 # Avery Watts and Rebecca Hicke
 class Book:
-    #this class represents books from the .csv file. Each Book has a title, a year of publication, an author name, and years denoting the author's life.
+    '''
+    this class represents books from the .csv file. Each Book has a title, a year of publication, an author name, and years denoting the author's life.
+    '''
     def __init__(self, title, pubYear, author):
         self.title = title
         self.pubYear = pubYear
