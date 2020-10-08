@@ -136,6 +136,12 @@ def runCommands(library):
     else:
         sys.stderr.write("Please type a valid command. For more help, run the help commmand.\nTry running python3 books.py help.\n")
 
+def getParsedArgs():
+    pass
+
+def runCommands():
+    pass
+    
 def main():
     library = readFile()
     runCommands(library)
