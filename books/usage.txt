@@ -2,7 +2,7 @@ NAME
 	books.py - a way to sort catalogues of books.
 
 SYNOPSIS
-	python3 books.py print [--title, --author, --years] [search_string]
+	python3 books.py print [--title, --author, --years] [searchString]
 
 DESCRIPTION
 	The following options are available:
@@ -15,7 +15,7 @@ DESCRIPTION
 
 	--years		Prints all books with a publication year in search_string (formatted startYear-endYear) sorted by publication year.
 
-	search_string	Prints all books with search_string in any field alphabetically by author's last name.
+	searchString	Prints all books with search_string in any field alphabetically by author's last name.
 
 
 	Any flags may be combined, ie python3 books.py print --title bug --author jane. It will sort by the first option, then sort the resulting list by the second option.
