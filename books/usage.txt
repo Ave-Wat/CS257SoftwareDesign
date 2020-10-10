@@ -2,30 +2,21 @@ NAME
 	books.py - a way to sort catalogues of books.
 
 SYNOPSIS
-	python3 books.py print [--title, --author, --years] [searchString]
+	python3 books.py print [--title, --author, --years, --help] [searchString]
 
 DESCRIPTION
 	The following options are available:
 	
 	NONE		Prints all books in file alphabetically by author's last name.
 	
-	--title		Prints all books with search_string in title alphabetically by title.
+	--title		Prints all books with searchString in title alphabetically by title.
 
-	--author	Prints all books with search_string in the author's name alphabetically by author's last name. The books are printed alphabetically by author's last name and each author's books are separated by a line. Within each author the books are printed alphabetically by title.
+	--author	Prints all books with searchString in the author's name alphabetically by author's last name. The books are printed alphabetically by author's last name and each author's books are separated by a line. Within each author the books are printed alphabetically by title.
 
-	--years		Prints all books with a publication year in search_string (formatted startYear-endYear) sorted by publication year.
+	--years		Prints all books with a publication year in searchString (formatted startYear-endYear) sorted by publication year.
 
-	searchString	Prints all books with search_string in any field alphabetically by author's last name.
+	--all		Prints all books with searchString in any field alphabetically by author's last name.
 
-
-	Any flags may be combined, ie python3 books.py print --title bug --author jane. It will sort by the first option, then sort the resulting list by the second option.
-
-
-NAME
-	help - display information about commands.
-
-SYNOPSIS
-	python3 books.py help
-
-DESCRIPTION
-	Prints the usage.txt file.
+	Any of the above flags may be combined, ie python3 books.py print --title bug --author jane. It will sort by the first option, then sort the resulting list by the second option.
+	
+	--help 		Display information about commands.

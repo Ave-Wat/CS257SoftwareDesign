@@ -1,4 +1,6 @@
 # Avery Watts and Rebecca Hicke
+# Revised by Avery Watts and Rebecca Hicke
+
 from book import Book
 import csv
 import sys
@@ -63,15 +65,12 @@ def searchAll(library, searchString):
             searchedBooks.append(book)
     return sorted(searchedBooks, key = lambda Book: Book.authorNameToSortBy.split(" ")[-1].lower())
 
-def helpCommand():
+def sortLibrary(library):
     '''
-    Prints the usage.txt file
+    Sorts an input library by author's last name
     '''
-    with open('usage.txt') as usage:
-        usage = usage.readlines()
-        for line in usage:
-            print(line, end="")
-    print()
+    library = sorted(library, key = lambda Book: Book.authorNameToSortBy.split(" ")[-1].lower())
+    return library
 
 def printBooks(bookList, mode):
     '''
@@ -84,84 +83,48 @@ def printBooks(bookList, mode):
         book.printBook()
         lastAuthor = book.getAuthorName()
 
-def runCommands(library):
-    '''
-    Determines what functions to run based on command line arguments
-    '''
-    length = len(sys.argv)
-
-    if length < 2:
-        sys.stderr.write("Please type a command. For more help, run the help commmand.\nTry running python3 books.py help.\n")
-
-    elif sys.argv[1] == "print":
-
-        if length == 2:
-            library = sorted(library, key = lambda Book: Book.authorNameToSortBy.split(" ")[-1].lower())
-            printBooks(library, "normal")
-
-        elif length == 3:
-            printBooks(searchAll(library, sys.argv[2]), "normal")
-
-        elif length > 3:
-            numCommands = (length-2)//2
-            sortedBooks = []
-            mode = ""
-            worked = False
-            for i in range(numCommands):
-                option = sys.argv[i*2+2]
-                if option == "--title":
-                    sortedBooks = searchTitle(library, sys.argv[i*2+3])
-                    library = sortedBooks
-                    mode = "normal"
-                    worked = True
-                elif option == "--years":
-                    sortedBooks = searchYears(library, sys.argv[i*2+3])
-                    library = sortedBooks
-                    mode = "normal"
-                    worked = True
-                elif option == "--author":
-                    sortedBooks = searchAuthors(library, sys.argv[i*2+3])
-                    library = sortedBooks
-                    mode = "author"
-                    worked = True
-                else:
-                    sys.stderr.write("You need to type a valid option.\nTry running python3 books.py help.\n")
-            if worked:
-                printBooks(sortedBooks, mode)
-        else:
-            sys.stderr.write("You have typed too many command and option entries.\nTry running python3 books.py help.\n")
-    elif sys.argv[1] == "help":
-        helpCommand()
-    else:
-        sys.stderr.write("Please type a valid command. For more help, run the help commmand.\nTry running python3 books.py help.\n")
-
 def getParsedArgs():
+    '''
+    Parses arguments from the commandline using argparse
+    '''
     parser = argparse.ArgumentParser(description="Type of print")
     parser.add_argument("print", help="print and sort decider")
-    parser.add_argument('searchString', nargs='*', default = "")
+    parser.add_argument("--title", nargs = '?', dest="titleSearch")
+    parser.add_argument("--years", nargs = '?', dest="yearsSearch")
+    parser.add_argument("--author", nargs = '?', dest="authorSearch")
+    parser.add_argument("--all", nargs = '?', dest="allSearch")
     
-    subparsers = parser.add_subparsers()
-    titleParser = subparsers.add_parser("--title")
-    titleParser.add_argument("--title", nargs = '+', dest="titleSearch")
-    yearParser = subparsers.add_parser("--years")
-    yearParser.add_argument("--years", nargs = '+', dest="yearsSearch")
-    authorParser = subparsers.add_parser("--author")
-    authorParser.add_argument("--author", nargs = '+', dest="authorSearch")
-    
-    parser.add_argument('searchString1', nargs='*')
-    parser.add_argument('searchString2', nargs='*')
-    parser.add_argument('searchString3', nargs='*')
-    
-    parsedArguments = parser.parse_known_args()
-    return parsedArguments
-    
+    parsedArgs = parser.parse_known_args()
+    return parsedArgs
 
-def runCommands():
-    pass
-    
+def runCommands(library, parsedArgs, unknownArgs):
+    '''
+    Run the commands to sort and print books as specified
+    '''
+    if parsedArgs.print != "print":
+        sys.stderr.write("Please enter a valid command. For more help, run the help commmand.\nTry running python3 books.py --help.\n")
+    elif unknownArgs:
+        for argument in unknownArgs:
+            sys.stderr.write("You have entered an unknown command.\nTry running python3 books.py --help.\n")
+    else:
+        mode = "normal"
+        if parsedArgs.allSearch == None and parsedArgs.yearsSearch == None and parsedArgs.authorSearch == None and parsedArgs.titleSearch == None:
+            printBooks(sortLibrary(library), mode)
+        else:
+            if parsedArgs.allSearch != None:
+                library = searchAll(library, parsedArgs.allSearch)
+            if parsedArgs.yearsSearch != None:
+                library = searchYears(library, parsedArgs.yearsSearch)
+            if parsedArgs.authorSearch != None:
+                library = searchAuthors(library, parsedArgs.authorSearch)
+                mode = "author"
+            if parsedArgs.titleSearch != None:
+                library = searchTitle(library, parsedArgs.titleSearch)
+            printBooks(library, mode)
+
 def main():
     library = readFile()
-    print(getParsedArgs())
-    #runCommands(library)
-
+    parsedArgs, unknownArgs = getParsedArgs()
+    runCommands(library, parsedArgs, unknownArgs)
+    
 main()
