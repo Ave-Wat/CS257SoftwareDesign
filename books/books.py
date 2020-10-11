@@ -139,7 +139,7 @@ def getParsedArgs():
     parser = argparse.ArgumentParser(description="Type of print")
     parser.add_argument("print", help="print and sort decider")
     parser.add_argument('searchString', nargs='+', default = "")
-    
+
     subparsers = parser.add_subparsers()
     titleParser = subparsers.add_parser("--title")
     titleParser.add_argument("--title", nargs = '+', dest="titleSearch")
@@ -147,18 +147,18 @@ def getParsedArgs():
     yearParser.add_argument("--years", nargs = '+', dest="yearsSearch")
     authorParser = subparsers.add_parser("--author")
     authorParser.add_argument("--author", nargs = '+', dest="authorSearch")
-    
+
     parser.add_argument('searchString1', nargs='?')
     parser.add_argument('searchString2', nargs='?')
     parser.add_argument('searchString3', nargs='?')
-    
+
     parsedArguments = parser.parse_known_args()
     return parsedArguments
-    
+
 
 def runCommands():
     pass
-    
+
 def main():
     library = readFile()
     print(getParsedArgs())
