@@ -278,6 +278,36 @@ def scrape2010Champ():
             athleteOutputList.append(athleteDict)
     writeToCSV('2010MIAC.csv', athleteOutputList)
 
+def scrape2009Champ():
+    url = "https://www.miacathletics.com/sports/mxc/2009-10/championship_results"
+    athleteOutputList = []
+
+    response = requests.get(url, headers = headers)
+    content = BeautifulSoup(response.content, "html.parser")
+
+    results = content.find('pre')
+    linesList = results.getText().split("\n")
+    for i in range(136, len(linesList) - 2):
+        lineList = linesList[i].split("  ")
+        for j in range(0, len(lineList)):
+            lineList[j] = lineList[j].strip()
+        while '' in lineList:
+            lineList.remove('')
+        if lineList[1].isnumeric():
+            lineList.pop(1)
+        lineList[1] = lineList[1][:-4]
+
+        event = 'MIAC Championships'
+        name = lineList[1]
+        team = lineList[3]
+        time = lineList[2]
+        place = lineList[0]
+        year = '2009'
+        location = 'Como Park Golf Course, St. Paul'
+
+        athleteDict = {'event':event, 'name':name, 'team':team, 'time':time, 'place':place, 'year':year, 'location':location}
+        athleteOutputList.append(athleteDict)
+    writeToCSV('2009MIAC.csv', athleteOutputList)
 
 
 def writeToCSV(filename, athleteOutputList):
@@ -296,7 +326,8 @@ def main():
     scrape2015Champ()
     scrape2014Champ()
     scrape2012Champ()
-    scrape2011Champ()'''
-    scrape2010Champ()
+    scrape2011Champ()
+    scrape2010Champ()'''
+    scrape2009Champ()
 
 main()
