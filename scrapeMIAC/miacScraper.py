@@ -29,10 +29,7 @@ def scrape2019Champ():
                 event = 'MIAC Championships'
                 nameList = row[1].split(",")
                 name = nameList[1].strip() + " " + nameList[0].title()
-                endIdx = row[4].find('(')
-                if endIdx == -1:
-                    endIdx = len(row[4])
-                team = row[4][0:endIdx].strip()
+                team = editTeamName(row[4])
                 time = row[6]
                 place = row[0]
                 year = '2019'
@@ -44,6 +41,13 @@ def scrape2019Champ():
         file.close()
 
     writeToCSV('2019MIAC.csv', athleteOutputList)
+
+def editTeamName(teamName):
+    endIdx = teamName.find('(')
+    if endIdx == -1:
+        endIdx = len(teamName)
+    teamName = teamName[0:endIdx].strip()
+    return teamName
 
 def scrape2018Champ(url):
     athleteOutputList = []
@@ -58,7 +62,7 @@ def scrape2018Champ(url):
             if sectionList[0].getText().isnumeric() is True:
                 event = 'MIAC Championships'
                 name = sectionList[1].getText()
-                team = sectionList[2].getText()
+                team = editTeamName(sectionList[2].getText())
                 time = sectionList[13].getText()
                 place = sectionList[0].getText()
                 year = '2018'
@@ -67,7 +71,7 @@ def scrape2018Champ(url):
                 athleteDict = {'event':event, 'name':name, 'team':team, 'time':time, 'place':place, 'year':year, 'location':location}
                 athleteOutputList.append(athleteDict)
 
-    writeToCSV("2014MIAC.csv", athleteOutputList)
+    writeToCSV("2018MIAC.csv", athleteOutputList)
 
     return athleteOutputList
 
@@ -84,7 +88,7 @@ def scrape2017Champ(url):
             if sectionList[0].getText().strip().isnumeric() is True:
                 event = 'MIAC Championships'
                 name = sectionList[3].getText().strip()
-                team = sectionList[4].getText().strip()
+                team = editTeamName(sectionList[4].getText().strip())
                 time = sectionList[5].getText().strip()
                 place = sectionList[0].getText().strip()
                 year = '2017'
@@ -93,7 +97,7 @@ def scrape2017Champ(url):
                 athleteDict = {'event':event, 'name':name, 'team':team, 'time':time, 'place':place, 'year':year, 'location':location}
                 athleteOutputList.append(athleteDict)
 
-    writeToCSV("2014MIAC.csv", athleteOutputList)
+    writeToCSV("2017MIAC.csv", athleteOutputList)
 
     return athleteOutputList
 
@@ -375,10 +379,10 @@ def writeToCSV(filename, athleteOutputList):
 def main():
     fastFinishList = ['https://www.miacathletics.com/playoffs/2018-19/xc18/Men8kResults.htm', 'https://www.miacathletics.com/sports/mxc/2017-18/files/MIACMen.html']
     athleteList = []
-    '''scrape2018Champ("https://www.miacathletics.com/playoffs/2018-19/xc18/Men8kResults.htm")
+    scrape2018Champ("https://www.miacathletics.com/playoffs/2018-19/xc18/Men8kResults.htm")
     scrape2017Champ("https://www.miacathletics.com/sports/mxc/2017-18/files/MIACMen.html")
     scrape2014Champ()
-    scrape2012Champ()
+    '''scrape2012Champ()
     scrape2011Champ()
     scrape2010Champ()
     scrape2009Champ()
