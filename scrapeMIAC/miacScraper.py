@@ -81,7 +81,7 @@ def scrape2014Champ():
     # need to amend data in csv
     url = "https://www.miacathletics.com/playoffs/2014-15/XC_2014/miacmencc2014.html"
     athleteOutputList = []
-    
+
     response = requests.get(url, headers = headers)
     content = BeautifulSoup(response.content, "html.parser")
 
@@ -123,6 +123,9 @@ def scrape2014Champ():
         j = j + 1
 
     writeToCSV("2014MIAC.csv", athleteOutputList)
+
+def scrape2013():
+    pass
 
 def writeToCSV(filename, athleteOutputList):
     keys = athleteOutputList[0].keys()
