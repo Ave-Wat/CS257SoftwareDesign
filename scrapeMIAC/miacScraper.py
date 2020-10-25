@@ -15,6 +15,10 @@ headers.update({
 'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36",
 })
 
+def scrape2019Champ():
+    file = "MIAC-MXC19.pdf"
+    tabula.convert_into(file, "2019MIAC-temp.csv", pages = "all")
+
 def scrape2018Champ(url):
     athleteOutputList = []
 
@@ -69,13 +73,38 @@ def scrape2017Champ(url):
 
 def scrape2016Champ():
     # needs to be reordered to correct format in csv
-    file = "2016_MIAC_MXC_Results.pdf"
-    tabula.convert_into(file, "2016MIAC.csv", pages = "all")
+    '''file = "2016_MIAC_MXC_Results.pdf"
+    tabula.convert_into(file, "2016MIAC-temp.csv", pages = "all")'''
+
+    athleteOutputList = []
+    with open('2016MIAC-temp.csv') as file:
+        csvReader = csv.reader(file, delimiter=',')
+        lineCount = 0
+        for row in csvReader:
+            #skip rows 31 through 54 (inclusive)
+            if lineCount not in range(30,54):
+                event = 'MIAC Championships'
+                name = row[1]
+                endIdx = row[3].find('(')
+                if endIdx == -1:
+                    endIdx = len(row[3])
+                team = row[3][0:endIdx].strip()
+                time = row[5]
+                place = row[0]
+                year = '2016'
+                location = 'Como Park Golf Course, St. Paul'
+                athleteDict = {'event':event, 'name':name, 'team':team, 'time':time, 'place':place, 'year':year, 'location':location}
+                print(athleteDict)
+                athleteOutputList.append(athleteDict)
+            lineCount = lineCount + 1
+        file.close()
+
+    writeToCSV('2016MIAC.csv', athleteOutputList)
 
 def scrape2015Champ():
     #isn't working for SHIT
     file = "2015_MIAC_MXC_Results.pdf"
-    tabula.convert_into(file, "2015MIAC.csv", pages = [2,3,4,5,6,7,8,9,10])
+    tabula.convert_into(file, "2015MIAC-temp.csv", pages = [2,3,4,5,6,7,8,9,10])
 
 def scrape2014Champ():
     # need to amend data in csv
@@ -327,7 +356,10 @@ def main():
     scrape2014Champ()
     scrape2012Champ()
     scrape2011Champ()
-    scrape2010Champ()'''
-    scrape2009Champ()
+    scrape2010Champ()
+    scrape2009Champ()'''
+    #scrape2019Champ()
+    scrape2016Champ()
+    #scrape2015Champ()
 
 main()
