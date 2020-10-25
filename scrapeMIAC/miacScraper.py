@@ -16,8 +16,34 @@ headers.update({
 })
 
 def scrape2019Champ():
-    file = "MIAC-MXC19.pdf"
-    tabula.convert_into(file, "2019MIAC-temp.csv", pages = "all")
+    '''file = "MIAC-MXC19.pdf"
+    tabula.convert_into(file, "2019MIAC-temp.csv", pages = "all")'''
+
+    athleteOutputList = []
+    with open('2019MIAC-temp.csv') as file:
+        csvReader = csv.reader(file, delimiter=',')
+        lineCount = 0
+        for row in csvReader:
+            #skip rows 31 through 52 (inclusive)
+            if lineCount not in range(30,52):
+                event = 'MIAC Championships'
+                nameList = row[1].split(",")
+                name = nameList[1].strip() + " " + nameList[0].title()
+                endIdx = row[4].find('(')
+                if endIdx == -1:
+                    endIdx = len(row[4])
+                team = row[4][0:endIdx].strip()
+                time = row[6]
+                place = row[0]
+                year = '2019'
+                location = 'Carleton College, Northfield'
+                athleteDict = {'event':event, 'name':name, 'team':team, 'time':time, 'place':place, 'year':year, 'location':location}
+                print(athleteDict)
+                athleteOutputList.append(athleteDict)
+            lineCount = lineCount + 1
+        file.close()
+
+    writeToCSV('2019MIAC.csv', athleteOutputList)
 
 def scrape2018Champ(url):
     athleteOutputList = []
@@ -73,8 +99,8 @@ def scrape2017Champ(url):
 
 def scrape2016Champ():
     # needs to be reordered to correct format in csv
-    '''file = "2016_MIAC_MXC_Results.pdf"
-    tabula.convert_into(file, "2016MIAC-temp.csv", pages = "all")'''
+    file = "2016_MIAC_MXC_Results.pdf"
+    tabula.convert_into(file, "2016MIAC-temp.csv", pages = "all")
 
     athleteOutputList = []
     with open('2016MIAC-temp.csv') as file:
@@ -351,15 +377,13 @@ def main():
     athleteList = []
     '''scrape2018Champ("https://www.miacathletics.com/playoffs/2018-19/xc18/Men8kResults.htm")
     scrape2017Champ("https://www.miacathletics.com/sports/mxc/2017-18/files/MIACMen.html")
-    scrape2016Champ()
-    scrape2015Champ()
     scrape2014Champ()
     scrape2012Champ()
     scrape2011Champ()
     scrape2010Champ()
-    scrape2009Champ()'''
-    #scrape2019Champ()
-    scrape2016Champ()
+    scrape2009Champ()
+    scrape2019Champ()
+    scrape2016Champ()'''
     #scrape2015Champ()
-
+    #2015 is now the only year that does not work
 main()
