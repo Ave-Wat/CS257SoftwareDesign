@@ -112,7 +112,7 @@ def scrape2014Champ():
             time = lineList[2]
             place = lineList[0]
             year = '2014'
-            location = 'Como Golf Course, St. Paul'
+            location = 'Como Park Golf Course, St. Paul'
 
             athleteDict = {'event':event, 'name':name, 'team':team, 'time':time, 'place':place, 'year':year, 'location':location}
             athleteOutputList.append(athleteDict)
@@ -124,8 +124,161 @@ def scrape2014Champ():
 
     writeToCSV("2014MIAC.csv", athleteOutputList)
 
-def scrape2013():
-    pass
+def scrape2013Champ():
+    url = "https://www.miacathletics.com/playoffs/2013-14/cross_country/miacmencc.html"
+    athleteOutputList = []
+
+    response = requests.get(url, headers = headers)
+    content = BeautifulSoup(response.content, "html.parser")
+
+    results = content.find('pre')
+
+    tables = results.find('p')
+    tablesTxt = tables.getText()
+    linesList = tablesTxt.split("\n")
+
+    for i in range(2, len(linesList) - 2):
+        if i == 118:
+            athleteDict = {'event':"MIAC Championships", 'name':'Ernest Polania-Gonzalez', 'team':'Carleton', 'time':'28:41.5', 'place':'117', 'year':'2013', 'location':'Como Park Golf Course, St. Paul'}
+        elif i == 119:
+            pass
+        else:
+
+            lineList = linesList[i].split("  ")
+            '''place, place, name-grade, time, school'''
+            while '' in lineList:
+                lineList.remove('')
+
+            for i in range(0, len(lineList)):
+                lineList[i] = lineList[i].strip()
+            if lineList[1].isnumeric():
+                lineList.pop(1)
+
+            nameGradeList = lineList[1].split(",")
+
+            event = 'MIAC Championships'
+            name = nameGradeList[0]
+            team = lineList[3]
+            time = lineList[2]
+            place = lineList[0]
+            year = '2013'
+            location = 'Como Park Golf Course, St. Paul'
+
+            athleteDict = {'event':event, 'name':name, 'team':team, 'time':time, 'place':place, 'year':year, 'location':location}
+            athleteOutputList.append(athleteDict)
+    writeToCSV('2013MIAC.csv', athleteOutputList)
+
+def scrape2012Champ():
+    url = "https://www.miacathletics.com/documents/2012/10/27/miacmencc.html"
+    athleteOutputList = []
+
+    response = requests.get(url, headers = headers)
+    content = BeautifulSoup(response.content, "html.parser")
+
+    results = content.find('pre')
+
+    tables = results.find('p')
+    tablesTxt = tables.getText()
+    linesList = tablesTxt.split("\n")
+
+    for i in range(2, len(linesList) - 2):
+        lineList = linesList[i].split("  ")
+        '''place, place, name-grade, time, school'''
+        while '' in lineList:
+            lineList.remove('')
+
+        for i in range(0, len(lineList)):
+            lineList[i] = lineList[i].strip()
+        if lineList[1].isnumeric():
+            lineList.pop(1)
+
+        nameGradeList = lineList[1].split(",")
+
+        event = 'MIAC Championships'
+        name = nameGradeList[0]
+        team = lineList[3]
+        time = lineList[2]
+        place = lineList[0]
+        year = '2012'
+        location = 'Como Park Golf Course, St. Paul'
+
+        athleteDict = {'event':event, 'name':name, 'team':team, 'time':time, 'place':place, 'year':year, 'location':location}
+        athleteOutputList.append(athleteDict)
+    writeToCSV('2012MIAC.csv', athleteOutputList)
+
+def scrape2011Champ():
+    url = "https://www.miacathletics.com/sports/mxc/2011-12/championship_results"
+    athleteOutputList = []
+
+    response = requests.get(url, headers = headers)
+    content = BeautifulSoup(response.content, "html.parser")
+
+    results = content.find('pre')
+
+    linesList = results.getText().split("\n")
+    for i in range (97, len(linesList) - 1):
+        lineList = linesList[i].split("  ")
+        while '' in lineList:
+            lineList.remove('')
+        for i in range(0, len(lineList)):
+            lineList[i] = lineList[i].strip()
+        if lineList[1].isnumeric():
+            lineList.pop(1)
+        lineList[1] = lineList[1][4:]
+        lineList[2] = lineList[2][3:]
+
+        event = 'MIAC Championships'
+        name = lineList[1]
+        team = lineList[2]
+        time = lineList[3]
+        place = lineList[0]
+        year = '2011'
+        location = 'Como Park Golf Course, St. Paul'
+
+        athleteDict = {'event':event, 'name':name, 'team':team, 'time':time, 'place':place, 'year':year, 'location':location}
+        athleteOutputList.append(athleteDict)
+    writeToCSV('2011MIAC.csv', athleteOutputList)
+
+def scrape2010Champ():
+    url = "https://www.miacathletics.com/sports/mxc/2010-11/championship_results"
+    athleteOutputList = []
+
+    response = requests.get(url, headers = headers)
+    content = BeautifulSoup(response.content, "html.parser")
+
+    results = content.find('pre')
+
+    linesList = results.getText().split("\n")
+
+    for i in range(134, len(linesList) - 1):
+        if i == 309:
+             athleteDict = {'event':'MIAC Championships', 'name':'Brandon RichardWebster,', 'team':'Bethel', 'time':'30:12.7', 'place':'176', 'year':'2010', 'location':'Como Park Golf Course, St. Paul'}
+             athleteOutputList.append(athleteDict)
+        else:
+            lineList = linesList[i].split("  ")
+
+            for j in range(0, len(lineList)):
+                lineList[j] = lineList[j].strip()
+            while '' in lineList:
+                lineList.remove('')
+            if lineList[1].isnumeric():
+                lineList.pop(1)
+            lineList[1] = lineList[1][:-4]
+
+            event = 'MIAC Championships'
+            name = lineList[1]
+            team = lineList[3]
+            print(lineList)
+            time = lineList[2]
+            place = lineList[0]
+            year = '2010'
+            location = 'Como Park Golf Course, St. Paul'
+
+            athleteDict = {'event':event, 'name':name, 'team':team, 'time':time, 'place':place, 'year':year, 'location':location}
+            athleteOutputList.append(athleteDict)
+    writeToCSV('2010MIAC.csv', athleteOutputList)
+
+
 
 def writeToCSV(filename, athleteOutputList):
     keys = athleteOutputList[0].keys()
@@ -137,10 +290,13 @@ def writeToCSV(filename, athleteOutputList):
 def main():
     fastFinishList = ['https://www.miacathletics.com/playoffs/2018-19/xc18/Men8kResults.htm', 'https://www.miacathletics.com/sports/mxc/2017-18/files/MIACMen.html']
     athleteList = []
-    scrape2018Champ("https://www.miacathletics.com/playoffs/2018-19/xc18/Men8kResults.htm")
+    '''scrape2018Champ("https://www.miacathletics.com/playoffs/2018-19/xc18/Men8kResults.htm")
     scrape2017Champ("https://www.miacathletics.com/sports/mxc/2017-18/files/MIACMen.html")
     scrape2016Champ()
     scrape2015Champ()
     scrape2014Champ()
+    scrape2012Champ()
+    scrape2011Champ()'''
+    scrape2010Champ()
 
 main()
