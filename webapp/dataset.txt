@@ -1,0 +1,69 @@
+Avery Watts & Ben Aoki-Sherwood
+
+Our dataset consists of MIAC men’s cross country championship meets results from 2009 to 2019. The data can be found in the MIAC archives at https://www.miacathletics.com/sports/mxc/archives
+
+Tables:
+CREATE TABLE Athletes(
+	id SERIAL,
+	name TEXT,
+	pr TEXT,
+	graduation_year INT
+);
+
+CREATE TABLE Individual_Performance(
+	id SERIAL,
+	ath_id INTEGER,
+	meet_id INTEGER,
+	team_id INTEGER
+	place INTEGER,
+	time TEXT // in seconds?? change to INT
+);
+
+CREATE TABLE Teams(
+	id SERIAL,
+	name TEXT,
+	location TEXT
+);
+
+CREATE TABLE Meets(
+	id SERIAL,
+	name TEXT,
+	year TEXT,
+	location TEXT
+);
+
+CREATE TABLE Team_Performance(
+	id SERIAL,
+	place INTEGER,
+	points INTEGER
+	team_id INTEGER,
+	event_id INTEGER
+);
+
+CREATE TABLE Athlete_Team_Link(
+	ath_id INTEGER
+	team_id INTEGER
+);
+
+
+User Stories:
+
+Athlete Development
+STORY: as a prospective MIAC runner, I can see whether athletes on each MIAC team tend to get faster or slower over time so I know which teams I might improve the most on. 
+
+IMPLEMENTATION: One option is to provide a way to select a year range and possibly a set of bubbles to choose teams (with default being the all teams over all years) for which the API will show the average improvement in MIAC place per year for each team’s athletes. We will show this using a line graph of average change in place from the previous year averaging all athletes from each year. 
+
+Team Depth
+STORY: as a MIAC coach or interested runner, I can compare the spreads and average 8K race times for a given team over the years or for multiple teams in the same year so I can find out which teams are consistently deep and/or fast.
+
+IMPLEMENTATION: Select some teams and a year (range) and generate box-and-whisker plots for each team performance in each year. Maybe have a table of box-and-whisker plots with teams as rows and years as columns? This could get noisy and hard to read, and we need to consider the fact that times can vary significantly depending on conditions. 
+
+Team Performance
+STORY: as a runner/prospective runner, I can look at which teams were what place in what years in MIAC XC so I can understand how the MIAC hierarchy has and hasn’t changed over time.
+
+IMPLEMENTATION: Select a team or set of teams (default all) to compare, then generate a line graph with each team being a different color/pattern of team place on the y-axis and year on the x-axis. Invert the y-axis so that low places are on top.
+
+Seach
+STORY: as a coach or runner, I can search my name/ my athletes names’ or teams to retrieve a record of their historical MIAC performance(s) so that I can set goals for myself or reminisce about good races. 
+
+IMPLEMENTATION: Search bar to type athlete names or allow selection of all athletes on a team in a given year, then display a table of athletes and all their performances--including time and place.

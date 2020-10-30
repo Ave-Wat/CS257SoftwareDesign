@@ -379,10 +379,10 @@ def writeToCSV(filename, athleteOutputList):
 def main():
     fastFinishList = ['https://www.miacathletics.com/playoffs/2018-19/xc18/Men8kResults.htm', 'https://www.miacathletics.com/sports/mxc/2017-18/files/MIACMen.html']
     athleteList = []
-    scrape2018Champ("https://www.miacathletics.com/playoffs/2018-19/xc18/Men8kResults.htm")
+    '''scrape2018Champ("https://www.miacathletics.com/playoffs/2018-19/xc18/Men8kResults.htm")
     scrape2017Champ("https://www.miacathletics.com/sports/mxc/2017-18/files/MIACMen.html")
     scrape2014Champ()
-    '''scrape2012Champ()
+    scrape2012Champ()
     scrape2011Champ()
     scrape2010Champ()
     scrape2009Champ()
