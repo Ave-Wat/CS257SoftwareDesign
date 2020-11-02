@@ -1,0 +1,45 @@
+Avery Watts & Ben Aoki-Sherwood
+
+Api Design
+
+REQUEST: /search?field=[athletes,teams,year]&keyword={search_text}
+
+RESPONSE: a JSON list of dictionaries, each of which represents an athlete, team, or year
+depending on the search filter. 
+For athletes the dictionaries will have the fields
+	name -- (string) athlete first and last name
+	team -- (string) athlete's team
+	performances -- (dict of dicts) the athletes performances for each year they were in
+			the MIAC championships, with the years as keys {place: (int), time: (str)}
+			as values
+
+For teams the dictionaries will have the fields
+	name -- (string) the team name
+	results -- (dict of dictionaries) the team's historical MIAC performances, with years as keys
+			to {place: (int), score: (int), scorers: (list of top 7 athletes)}
+
+For years the dictionaries will have the fields
+	team_results -- (list) the team names in the order of team place
+	athlete_results -- (list of dicts) athlete dictionaries in the order of individual place, with
+				dicts taking the form {name: (str), time: (str)}
+
+REQUEST: /team_performance?teams={team_codes}
+	*team_codes is a list of numbers 0-13 corresponding to a particular MIAC team alphabetically
+RESPONSE: a JSON dict of dictionaries with years as keys and the following key-value pairs in the value dicts:
+	place -- (int) the place of the team represented by this dict
+	team -- (str) the name of the team represented by this dict
+
+REQUEST: /team_depth?teams={team_codes}&years={years}
+	*team_codes is as before and years is a list of the years to be included in the query
+RESPONSE: a JSON dict of dictionaries with years as keys and the value dictionaries as
+	team -- (str) the name of the team corresponding to this dict
+	spread_stats -- (list) the spread statistics of the team as a list of the form
+			(min_time, Q1, median_time, Q3, max_time) to be used to construct a box-and-whisker plot
+
+REQUEST /athlete_development?sort_by=[place, time]&teams={team_codes}
+	*team_codes as before
+RESPONSE: a JSON dictionary of lists with teams as keys corresponding to a list of average change in athlete
+	performance (measured by place or time depending on the sort_by parameter) ordered by year for the team
+
+	
+
