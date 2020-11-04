@@ -4,7 +4,7 @@
     CSS for index.html (MIAC Championships website)
 */
 :root {
-  --main-darkblue: #05386B;
+  --main-darkblue: #00688B;
   --main-whitegreen: #EDF5E1;
   --main-green: #5CDB95;
   --main-darkgreen: #379683;
@@ -81,13 +81,24 @@ nav a {
 }
 
 #search {
-  margin: 200px 0 100px 0;
+  width: auto;
+  display: block;
+  margin: 100px auto 0 auto;
+  padding: 100px 20px;
   text-align: center;
+  /*will have to resize image*/
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5),
+                       rgba(0, 0, 0, 0.5)), url('https://themacweekly.com/wp-content/uploads/2019/11/Sports-unedited-Men_s-XC-MIAC-pic-4-by-Matt-Glover.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  overflow: hidden;
 }
 
 body {
   font-family: 'Roboto', sans-serif;
-  color: var(--main-darkblue);
+  color: var(--main-whitegreen);
   background-color: var(--main-lightgray);
 }
 
@@ -108,12 +119,12 @@ h2 {
 
 /* Style the button that is used to open and close the collapsible content */
 .collapsible {
-  width: 90%;
+  width: 100%;
   display: block;
   margin: auto;
   padding: 10px;
   font-family: 'Roboto', sans-serif;
-  background-color: var(--main-darkgreen);
+  background-color: var(--main-darkblue);
   color: var(--main-whitegreen);
   cursor: pointer;
   text-align: left;
@@ -138,5 +149,14 @@ h2 {
   padding: 0 15px;
   display: none;
   overflow: hidden;
-  background-color: #f1f1f1;
+  background-color: var(--main-whitegreen);
+}
+
+footer {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  background-color: var(--main-darkgreen);
+  color: var(--main-whitegreen)
 }
