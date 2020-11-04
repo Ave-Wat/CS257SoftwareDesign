@@ -1,0 +1,106 @@
+/*
+    style.css
+    3 November 2020
+    CSS for index.html (MIAC Championships website)
+*/
+:root {
+  --main-darkblue: #05386B;
+  --main-whitegreen: #EDF5E1;
+  --main-green: #5CDB95;
+  --main-darkgreen: #379683;
+  --main-lightgray: #F0F0F0;
+}
+
+header {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left:0;
+  width: 100%;
+  min-width: 850px;
+  height: 90px;
+  color: var(--main-whitegreen);
+  background-color: var(--main-darkgreen);
+  font-family: Rubik;
+}
+
+#title-container {
+  float: left;
+  padding-left: 1vw;
+  width: 50vw;
+  min-width: 325px;
+}
+
+.narrow-screen {
+  display: none;
+}
+
+nav {
+  float: right;
+  display: flex;
+  width: 45vw;
+  min-width: 570px;
+}
+
+@media (max-width: 1225px) {
+  .narrow-screen {
+    display: flex;
+  }
+  .wide-screen {
+    display: none;
+  }
+
+  #title-container {
+    width: 45vw;
+  }
+
+  nav {
+    width: 61vw;
+  }
+}
+
+nav ul {
+  display: flex;
+  list-style-type: none;
+  margin-right: 3rem;
+  flex: 1 0 0%;
+  justify-content: space-between;
+  padding-top: 17px;
+}
+
+nav a {
+  display: block;
+  color: var(--main-whitegreen);
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+.hover:hover{
+  text-decoration: underline;
+}
+
+#search {
+  margin: 200px 0 100px 0;
+  text-align: center;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  color: var(--main-darkblue);
+  background-color: var(--main-lightgray);
+}
+
+input {
+  font-family: 'Roboto', sans-serif;
+}
+
+button {
+  font-family: 'Roboto', sans-serif;
+}
+
+h2 {
+
+}
+#champ-search {
+  width: 400px;
+}
