@@ -160,3 +160,12 @@ footer {
   background-color: var(--main-darkgreen);
   color: var(--main-whitegreen)
 }
+
+footer p {
+  padding: .5vh 1vw;
+}
+
+footer a {
+  color: var(--main-whitegreen);
+  text-decoration: none;
+}
