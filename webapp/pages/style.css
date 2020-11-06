@@ -80,13 +80,19 @@ nav a {
   text-decoration: underline;
 }
 
+.anchor {
+  display: block;
+  position: relative;
+  top: -100px;
+  visibility: hidden;
+}
+
 #search {
   width: auto;
   display: block;
   margin: 100px auto 0 auto;
   padding: 100px 20px;
   text-align: center;
-  /*will have to resize image*/
   background-image: linear-gradient(rgba(0, 0, 0, 0.5),
                        rgba(0, 0, 0, 0.5)), url('https://themacweekly.com/wp-content/uploads/2019/11/Sports-unedited-Men_s-XC-MIAC-pic-4-by-Matt-Glover.jpg');
   background-size: cover;
@@ -117,7 +123,7 @@ h2 {
   width: 400px;
 }
 
-/* Style the button that is used to open and close the collapsible content */
+/* the button that is used to open and close the collapsible content */
 .collapsible {
   width: 100%;
   display: block;
@@ -139,24 +145,24 @@ h2 {
   border-width: 1px;
 }
 
-/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
 .active, .collapsible:hover {
   background-color: lightgray;
 }
 
-/* Style the collapsible content. Note: hidden by default */
+/* hidden by default */
 .content {
-  padding: 0 15px;
-  display: none;
+  padding: 15px 15px;
+  /*display: none;*/
   overflow: hidden;
   background-color: var(--main-whitegreen);
+  color: var(--main-darkblue);
 }
 
 footer {
-  position: fixed;
+  position: absolute;
   width: 100%;
   left: 0;
-  bottom: 0;
+  margin-top: 30px;
   background-color: var(--main-darkgreen);
   color: var(--main-whitegreen)
 }

@@ -18,41 +18,150 @@
       <div id="nav-container">
         <nav id="navbar">
           <ul>
-            <li><a class="hover" href="#search">Search</a></li>
-            <li><a class="hover" href="#team-performance">Team Performance</a></li>
-            <li><a class="hover" href="#team-depth">Team Depth</a></li>
-            <li><a class="hover" href="#athlete-dev">Athlete Development</a></li>
+            <li><a class="hover" href="#search-anchor">Search</a></li>
+            <li><a class="hover" href="#team-performance-anchor">Team Performance</a></li>
+            <li><a class="hover" href="#team-depth-anchor">Team Depth</a></li>
+            <li><a class="hover" href="#athlete-dev-anchor">Athlete Development</a></li>
           </ul>
         </nav>
       </div>
     </header>
 
     <main>
+      <div class="anchor" id="search-anchor"></div>
       <div id="search">
         <h3>Search men's MIAC Cross Country Championships between 2009 and 2019 by Athlete, Team, or Year.</h3>
         <input id="champ-search" type="text"/>
         <button "input-search">Search</button>
       </div>
 
+      <div class="anchor" id="team-performance-anchor"></div>
       <button type="button" class="collapsible" id="team-performance">Team Performance</button>
       <div class="content">
-        <p>...graph...</p>
+        <div>
+          <input type="checkbox" id="augsburg1" name="augsburg" value="Augsburg University" checked>
+          <label for="augsburg">Augsburg University</label><br>
+          <input type="checkbox" id="bethel1" name="bethel" value="Bethel University" checked>
+          <label for="bethel">Bethel University</label><br>
+          <input type="checkbox" id="carleton1" name="carleton" value="Carleton College" checked>
+          <label for="carleton">Carleton College</label><br>
+          <input type="checkbox" id="concordia1" name="concordia" value="Concordia College" checked>
+          <label for="concordia">Concordia College</label><br>
+          <input type="checkbox" id="gustavus1" name="gustavus" value="Gustavus Adolphus College"  checked>
+          <label for="gustavus">Gustavus Adolphus College</label><br>
+          <input type="checkbox" id="hamline1" name="hamline" value="Hamline University"  checked>
+          <label for="hamline">Hamline University</label><br>
+          <input type="checkbox" id="macalester1" name="macalester" value="Macalester College" checked>
+          <label for="macalester">Macalester College</label><br>
+          <input type="checkbox" id="benedict1" name="benedict" value="College of St. Benedict" checked>
+          <label for="benedict">College of St. Benedict</label><br>
+          <input type="checkbox" id="john1" name="john" value="St. John's University" checked>
+          <label for="john">St. John's University</label><br>
+          <input type="checkbox" id="mary1" name="mary" value="St. Mary's University" checked>
+          <label for="mary">St. Mary's University</label><br>
+          <input type="checkbox" id="olaf1" name="olaf" value="St. Olaf College"  checked>
+          <label for="olaf">St. Olaf College</label><br>
+          <input type="checkbox" id="thomas1" name="thomas" value="University of St. Thomas"  checked>
+          <label for="thomas">University of St. Thomas</label><br>
+        </div>
       </div>
 
+      <div class="anchor" id="team-depth-anchor"></div>
       <button type="button" class="collapsible" id="team-depth">Team Depth</button>
       <div class="content">
-        <p>...graph...</p>
+        <div>
+          <input type="checkbox" id="2009" name="2009" value="2009">
+          <label for="2009">2009</label>
+          <input type="checkbox" id="2010" name="2010" value="2010">
+          <label for="2010">2010</label>
+          <input type="checkbox" id="2011" name="2011" value="2011">
+          <label for="2011">2011</label>
+          <input type="checkbox" id="2012" name="2012" value="2012">
+          <label for="2012">2012</label>
+          <input type="checkbox" id="2013" name="2013" value="2013">
+          <label for="2013">2013</label>
+          <input type="checkbox" id="2014" name="2014" value="2014">
+          <label for="2014">2014</label>
+          <input type="checkbox" id="2015" name="2015" value="2015">
+          <label for="2015">2015</label>
+          <input type="checkbox" id="2016" name="2016" value="2016">
+          <label for="2016">2016</label>
+          <input type="checkbox" id="2017" name="2017" value="2017">
+          <label for="2017">2017</label>
+          <input type="checkbox" id="2018" name="2018" value="2018">
+          <label for="2009">2018</label>
+          <input type="checkbox" id="2019" name="2019" value="2019" checked>
+          <label for="2019">2019</label>
+        </div>
+        <div>
+          <input type="checkbox" id="augsburg2" name="augsburg" value="Augsburg University" checked>
+          <label for="augsburg">Augsburg University</label><br>
+          <input type="checkbox" id="bethel2" name="bethel" value="Bethel University" checked>
+          <label for="bethel">Bethel University</label><br>
+          <input type="checkbox" id="carleton2" name="carleton" value="Carleton College" checked>
+          <label for="carleton">Carleton College</label><br>
+          <input type="checkbox" id="concordia2" name="concordia" value="Concordia College" checked>
+          <label for="concordia">Concordia College</label><br>
+          <input type="checkbox" id="gustavus2" name="gustavus" value="Gustavus Adolphus College"  checked>
+          <label for="gustavus">Gustavus Adolphus College</label><br>
+          <input type="checkbox" id="hamline2" name="hamline" value="Hamline University"  checked>
+          <label for="hamline">Hamline University</label><br>
+          <input type="checkbox" id="macalester2" name="macalester" value="Macalester College" checked>
+          <label for="macalester">Macalester College</label><br>
+          <input type="checkbox" id="benedict2" name="benedict" value="College of St. Benedict" checked>
+          <label for="benedict">College of St. Benedict</label><br>
+          <input type="checkbox" id="john2" name="john" value="St. John's University" checked>
+          <label for="john">St. John's University</label><br>
+          <input type="checkbox" id="mary2" name="mary" value="St. Mary's University" checked>
+          <label for="mary">St. Mary's University</label><br>
+          <input type="checkbox" id="olaf2" name="olaf" value="St. Olaf College"  checked>
+          <label for="olaf">St. Olaf College</label><br>
+          <input type="checkbox" id="thomas2" name="thomas" value="University of St. Thomas"  checked>
+          <label for="thomas">University of St. Thomas</label><br>
+        </div>
       </div>
 
+      <div class="anchor" id="athlete-dev-anchor"></div>
       <button type="button" class="collapsible" id="athlete-dev">Athlete Development</button>
       <div class="content">
-        <p>...graph...</p>
+        <div>
+          <input type="radio" id="place" name="data-form" value="place" checked>
+          <label for="place">Place</label>
+          <input type="radio" id="time" name="data-form" value="time">
+          <label for="time">Time</label>
+        </div>
+        <div>
+          <input type="checkbox" id="augsburg3" name="augsburg" value="Augsburg University" checked>
+          <label for="augsburg">Augsburg University</label><br>
+          <input type="checkbox" id="bethel3" name="bethel" value="Bethel University" checked>
+          <label for="bethel">Bethel University</label><br>
+          <input type="checkbox" id="carleton3" name="carleton" value="Carleton College" checked>
+          <label for="carleton">Carleton College</label><br>
+          <input type="checkbox" id="concordia3" name="concordia" value="Concordia College" checked>
+          <label for="concordia">Concordia College</label><br>
+          <input type="checkbox" id="gustavus3" name="gustavus" value="Gustavus Adolphus College"  checked>
+          <label for="gustavus">Gustavus Adolphus College</label><br>
+          <input type="checkbox" id="hamline3" name="hamline" value="Hamline University"  checked>
+          <label for="hamline">Hamline University</label><br>
+          <input type="checkbox" id="macalester3" name="macalester" value="Macalester College" checked>
+          <label for="macalester">Macalester College</label><br>
+          <input type="checkbox" id="benedict3" name="benedict" value="College of St. Benedict" checked>
+          <label for="benedict">College of St. Benedict</label><br>
+          <input type="checkbox" id="john3" name="john" value="St. John's University" checked>
+          <label for="john">St. John's University</label><br>
+          <input type="checkbox" id="mary3" name="mary" value="St. Mary's University" checked>
+          <label for="mary">St. Mary's University</label><br>
+          <input type="checkbox" id="olaf3" name="olaf" value="St. Olaf College"  checked>
+          <label for="olaf">St. Olaf College</label><br>
+          <input type="checkbox" id="thomas3" name="thomas" value="University of St. Thomas"  checked>
+          <label for="thomas">University of St. Thomas</label><br>
       </div>
 
     </main>
 
     <footer>
-      <p>Data collected from <a class="hover" href="https://www.miacathletics.com/sports/mxc/archives">MIAC archives</a>.</p>
+      <p>Data collected from the <a class="hover" target="_blank" href="https://www.miacathletics.com/sports/mxc/archives">MIAC archives</a>.</p>
+      <p>Website maintained by <a class="hover" target="_blank" href="https://github.com/aoki-sherwoodb">Ben Aoki-Sherwood</a> and <a class="hover" target="_blank" href="https://github.com/Ave-Wat">Avery Watts</a></p>
     </footer>
   </body>
 </html>
