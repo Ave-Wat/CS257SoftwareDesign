@@ -12,8 +12,7 @@ function screenDimensions() {
   alert(x + ' × ' + y);
 }
 
-function collabpsibles(){
-  alert('collapsible')
+function collapsibles(){
   var coll = document.getElementsByClassName("collapsible");
   var i;
 
@@ -31,24 +30,25 @@ function collabpsibles(){
 }
 
 function directSearch(){
-  alert('search')
   location.href = "search.html";
 }
 
 function initialize() {
-  screenDimensions();
+  //screenDimensions();
+
+  //doesn't work
+  var searchButton = document.getElementById("input-search");
+  searchButton.onclick = directSearch;
 
   //doesn't work
   var teamPerformanceButton = document.getElementById("team-performance");
   var teamDepthButton = document.getElementById("team-depth");
-  var athleteDevButton = document.getElmentById("athlete-dev");
+  var athleteDevButton = document.getElementById("athlete-dev");
   teamPerformanceButton.onclick = collapsibles;
   teamDepthButton.onclick = collapsibles;
   athleteDevButton.onclick = collapsibles;
 
-  //doesn't work
-  var searchButton = document.getElementbyId("input-search");
-  searchButton.onclick = directSearch;
+
 }
 
 window.onload = initialize;
