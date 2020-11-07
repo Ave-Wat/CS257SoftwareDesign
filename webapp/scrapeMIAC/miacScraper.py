@@ -132,9 +132,47 @@ def scrape2016Champ():
     writeToCSV('2016MIAC.csv', athleteOutputList)
 
 def scrape2015Champ():
-    #isn't working for SHIT
-    file = "2015_MIAC_MXC_Results.pdf"
-    tabula.convert_into(file, "2015MIAC-temp.csv", pages = [2,3,4,5,6,7,8,9,10])
+    '''
+    file = open("2015MIAC-temp.txt", mode = 'r')
+    lines = file.readlines()
+    file.close()
+
+    outList = []
+    for i in range(len(lines)):
+        lineList = lines[i].split(" ")
+        if lineList[1].isnumeric():
+            lineList.pop(1)
+        lineList = lineList[:-1]
+        name = lineList[1] + " " + lineList[2]
+        lineList[1] = name
+        lineList.pop(2)
+        print(lineList)
+        outList.append(lineList)
+    #print(outLineList)
+
+    with open("2015MIAC-temp.csv",'w') as file:
+        writer = csv.writer(file)
+        writer.writerows(outList)
+        file.close()
+    '''
+
+    athleteOutputList = []
+    with open('2015MIAC-temp.csv') as file:
+        csvReader = csv.reader(file, delimiter=',')
+        for row in csvReader:
+            event = 'MIAC Championships'
+            name = row[1]
+            team = row[3]
+            time = row[4]
+            place = row[0]
+            year = '2015'
+            location = 'Como Park Golf Course, St. Paul'
+            athleteDict = {'event':event, 'name':name, 'team':team, 'time':time, 'place':place, 'year':year, 'location':location}
+            print(athleteDict)
+            athleteOutputList.append(athleteDict)
+        file.close()
+
+    writeToCSV('2015MIAC.csv', athleteOutputList)
 
 def scrape2014Champ():
     # need to amend data in csv
@@ -387,7 +425,6 @@ def main():
     scrape2010Champ()
     scrape2009Champ()
     scrape2019Champ()
-    scrape2016Champ()'''
-    #scrape2015Champ()
-    #2015 is now the only year that does not work
+    scrape2016Champ()
+    scrape2015Champ()'''
 main()
