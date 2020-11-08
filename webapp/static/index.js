@@ -32,21 +32,15 @@ function directSearch(){
 }
 
 function initialize() {
-  //screenDimensions();
-
-  //doesn't work
   var searchButton = document.getElementById("input-search");
   searchButton.onclick = directSearch;
 
-  //doesn't work
   var teamPerformanceButton = document.getElementById("team-performance");
   var teamDepthButton = document.getElementById("team-depth");
   var athleteDevButton = document.getElementById("athlete-dev");
   teamPerformanceButton.onclick = collapsibles;
   teamDepthButton.onclick = collapsibles;
   athleteDevButton.onclick = collapsibles;
-
-
 }
 
 window.onload = initialize;

@@ -20,6 +20,17 @@ header {
   font-family: Rubik;
 }
 
+header a {
+  display: block;
+  color: var(--main-whitegreen);
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+header a:hover{
+  text-decoration: underline;
+}
+
 #title-container {
   float: left;
   padding-left: 1vw;
@@ -29,13 +40,6 @@ header {
 
 .narrow-screen {
   display: none;
-}
-
-nav {
-  float: right;
-  display: flex;
-  width: 45vw;
-  min-width: 570px;
 }
 
 @media (max-width: 1225px) {
@@ -49,30 +53,6 @@ nav {
   #title-container {
     width: 45vw;
   }
-
-  nav {
-    width: 61vw;
-  }
-}
-
-nav ul {
-  display: flex;
-  list-style-type: none;
-  margin-right: 3rem;
-  flex: 1 0 0%;
-  justify-content: space-between;
-  padding-top: 17px;
-}
-
-nav a {
-  display: block;
-  color: var(--main-whitegreen);
-  text-decoration: none;
-  margin-left: 10px;
-}
-
-.hover:hover{
-  text-decoration: underline;
 }
 
 body {
