@@ -110,17 +110,19 @@ body {
 
 input {
   font-family: 'Roboto', sans-serif;
+  color: var(--main-darkblue);
 }
 
 button {
   font-family: 'Roboto', sans-serif;
 }
 
-h2 {
-
-}
 #champ-search {
   width: 400px;
+}
+
+#input-search {
+  color: var(--main-darkblue);
 }
 
 /* the button that is used to open and close the collapsible content */

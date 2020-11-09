@@ -29,33 +29,24 @@ def get_connection():
                             user=config.user,
                             password=config.password)
 
-#for the API we want teams, performances, and athletes
-
 ########### The API endpoints ###########
-@api.route('/authors/')
-def get_authors():
-    ''' Returns a list of all the authors in our database. See
-        get_author_by_id below for description of the author
-        resource representation.
-
-        By default, the list is presented in alphabetical order
-        by last name, then first_name. You may, however, use
-        the GET parameter sort to request sorting by birth year.
-
-            http://.../authors/?sort=birth_year
-
-        Returns an empty list if there's any database failure.
+@api.route('/search?field=[athletes,teams,year]&keyword={search_text}')
+def get_search_results():
+    ''' returns a list of race results by athlete, team, or year
     '''
-    query = '''SELECT id, first_name, last_name, birth_year, death_year
-               FROM authors ORDER BY '''
+    query = '''[insert SQL here]'''
 
-    sort_argument = flask.request.args.get('sort')
-    if sort_argument == 'birth_year':
-        query += 'birth_year'
-    else:
-        query += 'last_name, first_name'
+    field_argument = flask.request.args.get('field')
+    if sort_argument == 'athletes':
+        query += ''
+    elif sort_argument == 'teams':
+        query += ''
+    elif sort_argument == 'year':
+        query += ''
 
-    author_list = []
+    #will also have to query for keyword
+
+    results_list = []
     try:
         connection = get_connection()
         cursor = connection.cursor()
