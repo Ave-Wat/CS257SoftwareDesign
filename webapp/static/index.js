@@ -2,16 +2,6 @@
   miacJS.js
   3 November 2020
  */
-function screenDimensions() {
-  var win = window;
-  var doc = document;
-  var docElem = doc.documentElement;
-  var body = doc.getElementsByTagName('body')[0];
-  var x = win.innerWidth || docElem.clientWidth || body.clientWidth;
-  var y = win.innerHeight|| docElem.clientHeight|| body.clientHeight;
-  alert(x + ' × ' + y);
-}
-
 function collapsibles(){
   var coll = document.getElementsByClassName("collapsible");
   var i;
@@ -27,13 +17,38 @@ function collapsibles(){
   }
 }
 
-function directSearch(){
-  location.href = "search.html";
+function onSearchButton(){
+  /*var inputElement = document.getElementById('champ-search');
+  var inputValue = inputElement.value;
+
+  var radioButtons = document.getElementsByName('search-form');
+  var radioValue;
+  for(i = 0; i < radioButtons.length; i++) {
+    if(radioButtons[i].checked)
+      document.getElementById("result").innerHTML
+      radioValue = ele[i].value;
+    }
+  }
+  // /search?field=[athletes,teams,year]&keyword={search_text}
+  var url = getAPIBaseURL() + '/search?field=[' + radioValue + ']&keyword={' + inputValue + '}';
+  fetch(url, method: 'get')
+
+  .then((response) => response.json())
+  .then(function(resultList) {
+
+  })*/
+  location.href = "../templates/search.html"
+}
+
+// Returns the base URL of the API, onto which endpoint components can be appended.
+function getAPIBaseURL() {
+    var baseURL = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/api';
+    return baseURL;
 }
 
 function initialize() {
   var searchButton = document.getElementById("input-search");
-  searchButton.onclick = directSearch;
+  searchButton.onclick = onSearchButton;
 
   var teamPerformanceButton = document.getElementById("team-performance");
   var teamDepthButton = document.getElementById("team-depth");
