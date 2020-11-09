@@ -37,7 +37,7 @@ function onSearchButton(){
   .then(function(resultList) {
 
   })*/
-  location.href = "../templates/search.html"
+  location.href = "{{ url_for('templates', filename='search.html') }"
 }
 
 // Returns the base URL of the API, onto which endpoint components can be appended.
