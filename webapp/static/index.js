@@ -18,6 +18,7 @@ function collapsibles(){
 }
 
 function onSearchButton(){
+  location.href = "{{ url_for('templates', filename='search.html') }}"
   /*var inputElement = document.getElementById('champ-search');
   var inputValue = inputElement.value;
 
@@ -37,7 +38,7 @@ function onSearchButton(){
   .then(function(resultList) {
 
   })*/
-  location.href = "{{ url_for('templates', filename='search.html') }"
+
 }
 
 // Returns the base URL of the API, onto which endpoint components can be appended.

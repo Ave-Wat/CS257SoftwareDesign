@@ -6,11 +6,11 @@ Tables:
 CREATE TABLE Athletes(
 	id SERIAL,
 	name TEXT,
-	pr TEXT,
-	graduation_year INT
+	pr TEXT,?
+	graduation_year INT?
 );
 
-CREATE TABLE Individual_Performance(
+CREATE TABLE Individual_Performances(
 	id SERIAL,
 	ath_id INTEGER,
 	meet_id INTEGER,
@@ -32,7 +32,7 @@ CREATE TABLE Meets(
 	location TEXT
 );
 
-CREATE TABLE Team_Performance(
+CREATE TABLE Team_Performances(
 	id SERIAL,
 	place INTEGER,
 	points INTEGER
