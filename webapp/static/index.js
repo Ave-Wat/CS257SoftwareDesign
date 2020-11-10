@@ -18,7 +18,7 @@ function collapsibles(){
 }
 
 function onSearchButton(){
-  location.href = "{{ url_for('templates', filename='search.html') }}"
+  location.href = "/search.html"
   /*var inputElement = document.getElementById('champ-search');
   var inputValue = inputElement.value;
 
