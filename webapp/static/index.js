@@ -1,5 +1,5 @@
 /*
-  miacJS.js
+  index.js
   3 November 2020
  */
 function collapsibles(){
