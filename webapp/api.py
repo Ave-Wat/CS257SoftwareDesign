@@ -63,25 +63,3 @@ def get_search_results():
 
     return json.dumps(author_list)
 
-@api.route('/books/author/<author_id>')
-def get_books_for_author(author_id):
-    query = '''SELECT books.id, books.title, books.publication_year
-               FROM books, authors, books_authors
-               WHERE books.id = books_authors.book_id
-                 AND authors.id = books_authors.author_id
-                 AND authors.id = %s
-               ORDER BY books.publication_year'''
-    book_list = []
-    try:
-        connection = get_connection()
-        cursor = connection.cursor()
-        cursor.execute(query, (author_id,))
-        for row in cursor:
-            book = {'id':row[0], 'title':row[1], 'publication_year':row[2]}
-            book_list.append(book)
-        cursor.close()
-        connection.close()
-    except Exception as e:
-        print(e, file=sys.stderr)
-
-    return json.dumps(book_list)
