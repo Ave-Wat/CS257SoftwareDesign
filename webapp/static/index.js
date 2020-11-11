@@ -27,9 +27,9 @@ function onSearchButton(){
       searchField = radioButtons[i].value;
     }
   }
-  var url = getAPIBaseURL() + '/search?field=[' + searchField + ']&keyword={' + keyword + '}';
+  var url = getAPIBaseURL() + '/search?field=' + searchField + '&keyword=' + keyword;
   fetch(url, method: 'get')
-  
+
   var resultsHeaderElement = document.getElementById('results-header');
   resultsHeaderElement.innerHTML = 'Results for' + keyword + 'in' + searchField;
 
