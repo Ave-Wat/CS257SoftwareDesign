@@ -42,7 +42,7 @@ def get_search_results():
         results = search_teams(keyword)
     elif field == 'year':
         results = search_years(int(keyword))
-return json.dumps(results)
+    return json.dumps(results)
 
 def get_cursor(query):
     try:
