@@ -156,14 +156,6 @@ def main():
     put_ids_in_indiv_performances(teams)
     put_ids_in_team_performances(teams)
     create_links()
-    '''individual_performances_temp = []
-    athletes = []
-    teams = [[]]
-    meets = []
-    team_performances_temp = []
-    athlete_team_link = []
-    individual_performances = []
-    team_performances = []'''
     write_to_csv("athletes_table", athletes)
     write_to_csv("individual_performances_table", individual_performances)
     write_to_csv("teams_table", teams)
