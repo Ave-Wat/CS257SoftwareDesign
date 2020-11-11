@@ -3,14 +3,14 @@ Avery Watts & Ben Aoki-Sherwood
 Our dataset consists of MIAC men’s cross country championship meets results from 2009 to 2019. The data can be found in the MIAC archives at https://www.miacathletics.com/sports/mxc/archives
 
 Tables:
-CREATE TABLE Athletes(
+CREATE TABLE athletes(
 	id SERIAL,
 	name TEXT,
 	pr TEXT,?
 	graduation_year INT?
 );
 
-CREATE TABLE Individual_Performances(
+CREATE TABLE individual_performances(
 	id SERIAL,
 	ath_id INTEGER,
 	meet_id INTEGER,
@@ -19,20 +19,20 @@ CREATE TABLE Individual_Performances(
 	time TEXT // in seconds?? change to INT
 );
 
-CREATE TABLE Teams(
+CREATE TABLE teams(
 	id SERIAL,
 	name TEXT,
 	location TEXT
 );
 
-CREATE TABLE Meets(
+CREATE TABLE meets(
 	id SERIAL,
 	name TEXT,
 	year TEXT,
 	location TEXT
 );
 
-CREATE TABLE Team_Performances(
+CREATE TABLE team_performances(
 	id SERIAL,
 	place INTEGER,
 	points INTEGER
@@ -40,7 +40,7 @@ CREATE TABLE Team_Performances(
 	meet_id INTEGER
 );
 
-CREATE TABLE Athlete_Team_Link(
+CREATE TABLE athlete_team_link(
 	ath_id INTEGER
 	team_id INTEGER
 );
