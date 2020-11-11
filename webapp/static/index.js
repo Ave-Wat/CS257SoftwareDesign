@@ -18,7 +18,7 @@ function collapsibles(){
 }
 
 function onSearchButton(){
-  location.href = "/search.html";
+
   var searchBar = document.getElementById('champ-search');
   var keyword = searchBar.value;
   var radioButtons = document.getElementsByName('search-field');
@@ -27,12 +27,13 @@ function onSearchButton(){
       searchField = radioButtons[i].value;
     }
   }
-
+  var url = getAPIBaseURL() + '/search?field=[' + searchField + ']&keyword={' + keyword + '}';
+  fetch(url, method: 'get')
+  
   var resultsHeaderElement = document.getElementById('results-header');
   resultsHeaderElement.innerHTML = 'Results for' + keyword + 'in' + searchField;
 
-  var url = getAPIBaseURL() + '/search?field=[' + searchField + ']&keyword={' + keyword + '}';
-  fetch(url, method: 'get')
+  location.href = "/search.html";
 
   .then((response) => response.json())
 
