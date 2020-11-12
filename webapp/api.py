@@ -30,32 +30,34 @@ def get_connection():
                             password=config.password)
 
 ########### The API endpoints ###########
-@api.route('/search?field=[athletes,teams,year]&keyword={search_text}')
+
+@api.route('/search')
 def get_search_results():
     ''' returns a list of race results by athlete, team, or year
     '''
     field = flask.request.args.get('field')
-    keyword = str(flask.request.args.get('keyword'))
+    keyword = flask.request.args.get('keyword')
+    results = []
     if field == 'athletes':
         results = search_athletes(keyword)
     elif field == 'teams':
         results = search_teams(keyword)
     elif field == 'year':
-        results = search_years(int(keyword))
+        results = search_years(keyword)
     return json.dumps(results)
 
 def get_cursor(query):
     try:
         connection = get_connection()
         cursor = connection.cursor()
-        cursor.execute(query, tuple())
-        connection.close()
+        cursor.execute(query)
+        #close connection
     except Exception as e:
         print(e, file=sys.stderr)
     return cursor
 
 def search_athletes(keyword):
-    query = 'SELECT athletes.name, place, time, teams.name, year FROM athletes, teams, individual_performances WHERE ath_id = athletes.id AND team_id=teams.id AND meet_id=meets.id AND athletes.name LIKE ' + '%' + keyword + '%;'
+    query = 'SELECT athletes.name, place, time, teams.name, year FROM athletes, teams, individual_performances, meets WHERE ath_id = athletes.id AND team_id=teams.id AND meet_id=meets.id AND athletes.name LIKE' + " '%" + keyword + "%';"
     cursor = get_cursor(query)
     athletes_list = []
     for row in cursor:
@@ -65,8 +67,12 @@ def search_athletes(keyword):
     return athletes_list
 
 def search_teams(keyword):
-    query = 'SELECT teams.name, place, points, year, team.location FROM teams, meets, team_performances WHERE team_id=teams.id AND meet_id=meets.id AND teams.name = ' + '%' + keyword + '%;'
+    query = 'SELECT teams.name, place, points, year, teams.location FROM teams, meets, team_performances WHERE team_id=teams.id AND meet_id=meets.id AND teams.name LIKE' + " '%" + keyword + "%';"
     teams_list = []
+
+    print(query)
+
+    cursor = get_cursor(query)
     for row in cursor:
         team = {'name': row[0], 'location': row[4], 'place': row[1], 'points': row[2], 'year': row[3]}
         teams_list.append(team)
@@ -75,7 +81,7 @@ def search_teams(keyword):
 
 def search_years(keyword):
     teams_query = 'SELECT teams.name, place, points, meets.location FROM teams, meets, team_performances WHERE meet_id = meets.id AND team_id = teams.id AND year = ' + keyword + 'ORDER BY place;'
-    individuals_query = 'SELECT athletes.name, place, time, teams.name FROM athletes, individual_performances, teams WHERE meet_id = meets.id AND team_id = teams.id AND ath_id = athletes.id AND year = ' + keyword + 'ORDER BY place;'
+    individuals_query = 'SELECT athletes.name, place, time, teams.name FROM athletes, individual_performances, teams, meets WHERE meet_id = meets.id AND team_id = teams.id AND ath_id = athletes.id AND year = ' + keyword + 'ORDER BY place;'
     teams_cursor, individuals_cursor = get_cursor(teams_query), get_cursor(individuals_query)
     teams_list, individuals_list = [], []
     for row in teams_cursor:
