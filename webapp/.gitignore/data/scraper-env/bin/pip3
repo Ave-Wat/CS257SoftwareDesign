@@ -1,0 +1,10 @@
+#!/bin/sh
+'''exec' "/mnt/c/Users/afish/Google Drive/Carleton/Y2-1/CS 257/cs257-assignments-Ave-Wat/scrapeMIAC/scraper-env/bin/python3" "$0" "$@"
+' '''
+# -*- coding: utf-8 -*-
+import re
+import sys
+from pip._internal.cli.main import main
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    sys.exit(main())
