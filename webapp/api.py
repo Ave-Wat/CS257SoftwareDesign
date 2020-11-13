@@ -33,7 +33,7 @@ def get_connection():
 
 @api.route('/search')
 def get_search_results():
-    ''' returns a list of race results by athlete, team, or year
+    ''' returns a list of dictionaries of race results by athlete, team, or year
     '''
     field = flask.request.args.get('field')
     keyword = flask.request.args.get('keyword')
@@ -45,6 +45,15 @@ def get_search_results():
     elif field == 'year':
         results = search_years(keyword)
     return json.dumps(results)
+
+@api.route('/teams_performances')
+def get_teams_performances():
+    '''returns a list of dictionaries of each team's performance in every year with keys "name", "place", and "year"'''
+    #format the search url
+
+def get_single_team_performances(team_name):
+    query = 'SELECT teams.name, place, year FROM teams, meets, team_performances WHERE teams.id=team_id AND meets.id=meet_id AND '
+
 
 def get_cursor(query):
     try:
