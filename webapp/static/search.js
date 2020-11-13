@@ -34,6 +34,7 @@ function initialize() {
     }
   })
 
+
   .catch(function(error) {
       console.log(error);
   });
@@ -41,6 +42,7 @@ function initialize() {
 
 //athletesList: [name, team, place, time, year]
 function displayAthletesResults(athletesList) {
+
   var divBody = '<table>';
   for (var i=0; i < athletesList.length; i++) {
     divBody += '<tr>';
@@ -72,7 +74,7 @@ function displayYearResults(yearResults) {
   var divBody = '<p>Team Results: </p><table>';
   var teamResults = yearResults[0];
   var individualResults = yearResults[1];
-  for (var i=0; i < teamResults; i++) {
+  for (var i=0; i < teamResults.length; i++) {
     divBody += '<tr>';
     for (var key in teamResults[i]) {
       divBody += '<td>' + teamResults[i][key]; + '</td>';
@@ -80,16 +82,18 @@ function displayYearResults(yearResults) {
     divBody += '</tr>';
   }
   divBody += '</table><p>Individual Results: </p><table>'
-  for (var j=0; j < individualResults; j++) {
+  for (var j=0; j < individualResults.length; j++) {
     divBody += '<tr>';
-    for (var key in individualResults[i]) {
-      divBody += '<td>' + individualResults[i][key] + '</td>';
+    for (var key in individualResults[j]) {
+      divBody += '<td>' + individualResults[j][key] + '</td>';
     }
     divBody += '</tr>';
   }
   divBody += '</table>';
   var resultsDivElement = document.getElementById('search-results');
   resultsDivElement.innerHTML = divBody;
+
+  alert(divBody);
 }
 // Returns the base URL of the API, onto which endpoint components can be appended.
 function getAPIBaseURL() {

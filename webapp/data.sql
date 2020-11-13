@@ -21,7 +21,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: athlete_team_links; Type: TABLE; Schema: public; Owner: aokib
+-- Name: athlete_team_links; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.athlete_team_links (
@@ -30,10 +30,8 @@ CREATE TABLE public.athlete_team_links (
 );
 
 
-ALTER TABLE public.athlete_team_links OWNER TO aokib;
-
 --
--- Name: athletes; Type: TABLE; Schema: public; Owner: aokib
+-- Name: athletes; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.athletes (
@@ -42,10 +40,8 @@ CREATE TABLE public.athletes (
 );
 
 
-ALTER TABLE public.athletes OWNER TO aokib;
-
 --
--- Name: individual_performances; Type: TABLE; Schema: public; Owner: aokib
+-- Name: individual_performances; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.individual_performances (
@@ -58,10 +54,8 @@ CREATE TABLE public.individual_performances (
 );
 
 
-ALTER TABLE public.individual_performances OWNER TO aokib;
-
 --
--- Name: meets; Type: TABLE; Schema: public; Owner: aokib
+-- Name: meets; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.meets (
@@ -72,10 +66,8 @@ CREATE TABLE public.meets (
 );
 
 
-ALTER TABLE public.meets OWNER TO aokib;
-
 --
--- Name: team_performances; Type: TABLE; Schema: public; Owner: aokib
+-- Name: team_performances; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.team_performances (
@@ -87,10 +79,8 @@ CREATE TABLE public.team_performances (
 );
 
 
-ALTER TABLE public.team_performances OWNER TO aokib;
-
 --
--- Name: teams; Type: TABLE; Schema: public; Owner: aokib
+-- Name: teams; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.teams (
@@ -100,10 +90,8 @@ CREATE TABLE public.teams (
 );
 
 
-ALTER TABLE public.teams OWNER TO aokib;
-
 --
--- Data for Name: athlete_team_links; Type: TABLE DATA; Schema: public; Owner: aokib
+-- Data for Name: athlete_team_links; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.athlete_team_links (ath_id, team_id) FROM stdin;
@@ -1216,7 +1204,7 @@ COPY public.athlete_team_links (ath_id, team_id) FROM stdin;
 
 
 --
--- Data for Name: athletes; Type: TABLE DATA; Schema: public; Owner: aokib
+-- Data for Name: athletes; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.athletes (id, name) FROM stdin;
@@ -2329,7 +2317,7 @@ COPY public.athletes (id, name) FROM stdin;
 
 
 --
--- Data for Name: individual_performances; Type: TABLE DATA; Schema: public; Owner: aokib
+-- Data for Name: individual_performances; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.individual_performances (id, ath_id, meet_id, team_id, place, "time") FROM stdin;
@@ -4759,7 +4747,7 @@ COPY public.individual_performances (id, ath_id, meet_id, team_id, place, "time"
 
 
 --
--- Data for Name: meets; Type: TABLE DATA; Schema: public; Owner: aokib
+-- Data for Name: meets; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.meets (id, name, year, location) FROM stdin;
@@ -4778,7 +4766,7 @@ COPY public.meets (id, name, year, location) FROM stdin;
 
 
 --
--- Data for Name: team_performances; Type: TABLE DATA; Schema: public; Owner: aokib
+-- Data for Name: team_performances; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.team_performances (id, place, points, team_id, meet_id) FROM stdin;
@@ -4907,7 +4895,7 @@ COPY public.team_performances (id, place, points, team_id, meet_id) FROM stdin;
 
 
 --
--- Data for Name: teams; Type: TABLE DATA; Schema: public; Owner: aokib
+-- Data for Name: teams; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.teams (id, name, location) FROM stdin;

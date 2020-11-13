@@ -61,7 +61,7 @@ def search_athletes(keyword):
     cursor = get_cursor(query)
     athletes_list = []
     for row in cursor:
-        athlete = {'name': row[0], 'team': row[3], 'place': row[1], 'time': row[2], 'year': row[4]}
+        athlete = {'name': row[0], 'team': row[3], 'place': row[1], 'time': convert_time_to_minutes(row[2]), 'year': row[4]}
         athletes_list.append(athlete)
     cursor.close()
     return athletes_list
@@ -88,8 +88,28 @@ def search_years(keyword):
         team = {'name': row[0], 'place': row[1], 'points': row[2], 'location': row[3]}
         teams_list.append(team)
     for row in individuals_cursor:
-        individual = {'name': row[0], 'team': row[3], 'place': row[1], 'time': row[2]}
+        individual = {'name': row[0], 'team': row[3], 'place': row[1], 'time': convert_time_to_minutes(row[2])}
         individuals_list.append(individual)
     teams_cursor.close()
     individuals_cursor.close()
     return [teams_list, individuals_list]
+
+def convert_time_to_minutes(time):
+    print(time)
+    if time != None:
+        minutes = str(int(time // 60))
+        seconds = int(time % 60)
+        if seconds < 10:
+            seconds = '0' + str(seconds)
+        else:
+            seconds = str(seconds)
+        timeString = minutes + ':' + seconds
+        return timeString
+    else:
+        return "---"
+
+def parse_DNF(place):
+    if place == None:
+        return 'DNF'
+    else:
+        return place
