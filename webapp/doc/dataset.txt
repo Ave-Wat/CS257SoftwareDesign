@@ -4,44 +4,44 @@ Our dataset consists of MIAC men’s cross country championship meets results fr
 
 Tables:
 CREATE TABLE athletes(
-	id SERIAL,
+	id INTEGER,
 	name TEXT,
 	pr TEXT,?
 	graduation_year INT?
 );
 
 CREATE TABLE individual_performances(
-	id SERIAL,
+	id INTEGER,
 	ath_id INTEGER,
 	meet_id INTEGER,
-	team_id INTEGER
+	team_id INTEGER,
 	place INTEGER,
-	time TEXT // in seconds?? change to INT
+	time INTEGER
 );
 
 CREATE TABLE teams(
-	id SERIAL,
+	id INTEGER,
 	name TEXT,
 	location TEXT
 );
 
 CREATE TABLE meets(
-	id SERIAL,
+	id INTEGER,
 	name TEXT,
 	year TEXT,
 	location TEXT
 );
 
 CREATE TABLE team_performances(
-	id SERIAL,
+	id INTEGER,
 	place INTEGER,
-	points INTEGER
+	points INTEGER,
 	team_id INTEGER,
 	meet_id INTEGER
 );
 
 CREATE TABLE athlete_team_link(
-	ath_id INTEGER
+	ath_id INTEGER,
 	team_id INTEGER
 );
 

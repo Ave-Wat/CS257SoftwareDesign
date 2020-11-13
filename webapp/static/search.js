@@ -20,6 +20,7 @@ function initialize() {
   //Failed to load resource: the server responded with a status of 500 (INTERNAL SERVER ERROR)
   //UnboundLocalError: local variable 'cursor' referenced before assignment
   //line 57 in get_cursor
+  //I never opened the database...
 
   fetch(url, {method: 'get'})
   .then((response) => response.json())
