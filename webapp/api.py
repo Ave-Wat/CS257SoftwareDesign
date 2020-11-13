@@ -49,10 +49,19 @@ def get_search_results():
 @api.route('/teams_performances')
 def get_teams_performances():
     '''returns a list of dictionaries of each team's performance in every year with keys "name", "place", and "year"'''
-    #format the search url
+    teams = flask.request.args.get('teams').split(',')
+    teams_performances = []
+    for team_id in teams:
+        teams_performances.append(get_single_team_performances(team_id))
+    return json.dumps(teams_performances)
 
-def get_single_team_performances(team_name):
-    query = 'SELECT teams.name, place, year FROM teams, meets, team_performances WHERE teams.id=team_id AND meets.id=meet_id AND '
+def get_single_team_performances(team_id):
+    query = 'SELECT teams.name, place, year FROM teams, meets, team_performances WHERE teams.id=team_id AND meets.id=meet_id AND teams.name = ' + team_name + 'ORDER BY year'
+    cursor = get_cursor(query)
+    for row in cursor:
+        team_performances = {'name': row[0], 'place': row[1], 'year': row[2]}
+    cursor.close()
+    return team_performances
 
 
 def get_cursor(query):
