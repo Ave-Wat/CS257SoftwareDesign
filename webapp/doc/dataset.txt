@@ -16,7 +16,7 @@ CREATE TABLE individual_performances(
 	meet_id INTEGER,
 	team_id INTEGER,
 	place INTEGER,
-	time INTEGER
+	time REAL
 );
 
 CREATE TABLE teams(
@@ -40,7 +40,7 @@ CREATE TABLE team_performances(
 	meet_id INTEGER
 );
 
-CREATE TABLE athlete_team_link(
+CREATE TABLE athlete_team_links(
 	ath_id INTEGER,
 	team_id INTEGER
 );
