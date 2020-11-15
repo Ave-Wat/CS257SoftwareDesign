@@ -127,7 +127,7 @@ def get_teams_depth():
 
 def get_team_name(team_id):
     team_id = int(team_id)
-    team_list = ['Augsburg', 'Bethel', 'Carleton', 'Concordia-Moorhead', 'Gustavus Adolphus', 'Hamline', 'Macalester', "Saint John's", "Saint Mary's", 'St. Thomas', 'St. Olaf']
+    team_list = ['Augsburg', 'Bethel', 'Carleton', 'Concordia-Moorhead', 'Gustavus Adolphus', 'Hamline', 'Macalester', "Saint John's", "Saint Mary's", 'St. Olaf', 'St. Thomas']
     team_name = team_list[team_id]
     return team_name
 

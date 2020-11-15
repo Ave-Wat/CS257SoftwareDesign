@@ -33,6 +33,10 @@ function onSearchButton(){
 
 }
 
+function teamPerformanceAnalysis(){
+  
+}
+
 function initialize() {
   var searchButton = document.getElementById("input-search");
   searchButton.onclick = onSearchButton;
@@ -40,7 +44,7 @@ function initialize() {
   var teamPerformanceButton = document.getElementById("team-performance");
   var teamDepthButton = document.getElementById("team-depth");
   var athleteDevButton = document.getElementById("athlete-dev");
-  teamPerformanceButton.onclick = collapsibles;
+  teamPerformanceButton.onclick = collapsibles;teamPerformanceAnalysis;
   teamDepthButton.onclick = collapsibles;
   athleteDevButton.onclick = collapsibles;
 }
