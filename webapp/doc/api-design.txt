@@ -5,7 +5,7 @@ Api Design
 REQUEST: /search?field=[athletes,teams,year]&keyword={search_text}
 
 RESPONSE: a JSON list of dictionaries, each of which represents an athlete, team, or year
-depending on the search filter. 
+depending on the search filter.
 For athletes the dictionaries will have the fields
 	name -- (string) athlete first and last name
 	team -- (string) athlete's team
@@ -23,7 +23,7 @@ For years the dictionaries will have the fields
 	athlete_results -- (list of dicts) athlete dictionaries in the order of individual place, with
 				dicts taking the form {name: (str), time: (str)}
 
-REQUEST: /team_performance?teams={team_codes}
+REQUEST: /teams_performances?teams={team_codes}
 	*team_codes is a list of numbers 0-13 corresponding to a particular MIAC team alphabetically
 RESPONSE: a JSON dict of dictionaries with years as keys and the following key-value pairs in the value dicts:
 	place -- (int) the place of the team represented by this dict
@@ -40,6 +40,3 @@ REQUEST /athlete_development?sort_by=[place, time]&teams={team_codes}
 	*team_codes as before
 RESPONSE: a JSON dictionary of lists with teams as keys corresponding to a list of average change in athlete
 	performance (measured by place or time depending on the sort_by parameter) ordered by year for the team
-
-	
-
