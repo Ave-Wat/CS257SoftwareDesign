@@ -4,16 +4,10 @@
  */
 
 function onSearchButton(){
-  searchField = "";
   var searchBar = document.getElementById('champ-search');
   var keyword = searchBar.value;
-  var radioButtons = document.getElementsByName('search-field');
-  for(i = 0; i < radioButtons.length; i++) {
-    if(radioButtons[i].checked){
-      searchField = radioButtons[i].value;
-    }
-  }
-
+  var fieldSelect = document.getElementById('search-field-select');
+  var searchField = fieldSelect.value;
   var queryString = "?field=" + searchField + "&keyword=" + keyword;
   window.location.href = "search.html" + queryString;
 }
@@ -180,6 +174,13 @@ function getAPIBaseURL() {
 
 function initialize() {
   var searchButton = document.getElementById("input-search");
+  document.getElementById("champ-search")
+    .addEventListener("keyup", function(event) {
+      event.preventDefault();
+      if (event.keyCode === 13) {
+        searchButton.click();
+      }
+  });
   searchButton.onclick = onSearchButton;
 
   var teamPerformanceButton = document.getElementById("team-performance");

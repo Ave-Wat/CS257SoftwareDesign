@@ -32,12 +32,11 @@
       <div id="search">
         <h3>Search men's MIAC Cross Country Championships between 2009 and 2019 by Athlete, Team, or Year.</h3>
         <input id="champ-search" type="text"/>
-        <input type="radio" id="team0" name="search-field" value="teams" checked>
-        <label for="team">Team</label>
-        <input type="radio" id="athlete0" name="search-field" value="athletes">
-        <label for="athlete">Athlete</label>
-        <input type="radio" id="year0" name="search-field" value="year">
-        <label for="year">Year</label>
+        <select id="search-field-select">
+          <option value='athletes'>Athletes</option>
+          <option value='teams'>Teams</option>
+          <option value='year'>Year</option>
+        </select>
         <button id="input-search">Search</button>
       </div>
 
