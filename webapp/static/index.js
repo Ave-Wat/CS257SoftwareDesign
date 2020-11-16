@@ -34,7 +34,40 @@ function onSearchButton(){
 }
 
 function teamPerformanceAnalysis(){
-  
+  var checkboxDiv = document.getElementById('team-performance-checkboxes');
+  var checkBoxValues = [];
+  for (var i = 0; i < checkBoxDiv.elements.length; i++ ) {
+    if (checkBoxDiv.elements[i].type == 'checkbox'){
+      checkBoxValues.push(checkBoxDiv.elements[i].value);
+    }
+  }
+
+  var checkBoxValuesString = checkBoxValues.join();
+  var url = getAPIBaseURL() + '/teams_performances?teams=' + checkBoxValuesString;
+
+  fetch(url, {method: 'get'})
+
+  .then((response) => response.json())
+
+  .then(function(teamsPerformancesDict) {
+    //{team1: [list of places from 2009 to 2019], team2: [(same)]}
+    var divBody = '<table>';
+    for (var key in teamsPerformancesDict) {
+      divBody += '<tr>';
+      for (var i = 0; i < teamsPerformances[key]; i ++) {
+        divBody += '<td>' + teamsPerformances[key][i] + '</td>';
+      }
+      divBody += '</tr>';
+    }
+    divBody += '</table>';
+    var resultsDivElement = document.getElementById('teams-performances-content-div');
+    resultsDivElement.innerHTML = divBody;
+  })
+
+  .catch(function(error) {
+    console.log(error);
+  });
+
 }
 
 function initialize() {
