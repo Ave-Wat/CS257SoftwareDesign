@@ -2,20 +2,6 @@
   index.js
   3 November 2020
  */
-function collapsibles(){
-  var coll = document.getElementsByClassName("collapsible");
-  var i;
-
-  for (i = 0; i < coll.length; i++) {
-      this.classList.toggle("active");
-      var content = this.nextElementSibling;
-      if (content.style.display === "block") {
-        content.style.display = "none";
-      } else {
-        content.style.display = "block";
-      }
-  }
-}
 
 function onSearchButton(){
   searchField = "";
@@ -30,15 +16,31 @@ function onSearchButton(){
 
   var queryString = "?field=" + searchField + "&keyword=" + keyword;
   window.location.href = "search.html" + queryString;
+}
 
+function collapsibles(){
+  var collapsibles = document.getElementsByClassName("collapsible");
+  var i;
+
+  for (i = 0; i < collapsibles.length; i++) {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  }
 }
 
 function teamPerformanceAnalysis(){
-  var checkboxDiv = document.getElementById('team-performance-checkboxes');
+  var checkBoxDiv = document.getElementById('team-performance-checkboxes');
   var checkBoxValues = [];
-  for (var i = 0; i < checkBoxDiv.elements.length; i++ ) {
-    if (checkBoxDiv.elements[i].type == 'checkbox'){
-      checkBoxValues.push(checkBoxDiv.elements[i].value);
+  for (var i = 0; i < checkBoxDiv.children.length; i++ ) {
+    if (checkBoxDiv.children[i].type == 'checkbox'){
+      if(checkBoxDiv.children[i].checked){
+        checkBoxValues.push(checkBoxDiv.children[i].value);
+      }
     }
   }
 
@@ -54,8 +56,9 @@ function teamPerformanceAnalysis(){
     var divBody = '<table>';
     for (var key in teamsPerformancesDict) {
       divBody += '<tr>';
-      for (var i = 0; i < teamsPerformances[key]; i ++) {
-        divBody += '<td>' + teamsPerformances[key][i] + '</td>';
+      divBody += '<td>' + key + '</td>';
+      for (var i = 0; i < teamsPerformancesDict[key].length; i ++) {
+        divBody += '<td>' + teamsPerformancesDict[key][i] + '</td>';
       }
       divBody += '</tr>';
     }
@@ -67,7 +70,11 @@ function teamPerformanceAnalysis(){
   .catch(function(error) {
     console.log(error);
   });
+}
 
+function getAPIBaseURL() {
+    var baseURL = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/api';
+    return baseURL;
 }
 
 function initialize() {
@@ -77,9 +84,12 @@ function initialize() {
   var teamPerformanceButton = document.getElementById("team-performance");
   var teamDepthButton = document.getElementById("team-depth");
   var athleteDevButton = document.getElementById("athlete-dev");
-  teamPerformanceButton.onclick = collapsibles;teamPerformanceAnalysis;
+  teamPerformanceButton.onclick = collapsibles;
   teamDepthButton.onclick = collapsibles;
   athleteDevButton.onclick = collapsibles;
+
+  var teamPerformanceAnalysisButton = document.getElementById("input-team-performances");
+  teamPerformanceAnalysisButton.onclick = teamPerformanceAnalysis;
 }
 
 window.onload = initialize;

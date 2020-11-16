@@ -125,12 +125,6 @@ def get_teams_depth():
         teams_depth_dict[year] = teams_dicts
     return json.dumps(teams_depth_dict)
 
-def get_team_name(team_id):
-    team_id = int(team_id)
-    team_list = ['Augsburg', 'Bethel', 'Carleton', 'Concordia-Moorhead', 'Gustavus Adolphus', 'Hamline', 'Macalester', "Saint John's", "Saint Mary's", 'St. Olaf', 'St. Thomas']
-    team_name = team_list[team_id]
-    return team_name
-
 def get_team_depth_by_year(team_name, year):
     '''returns a list of up to 7 times'''
     query = "SELECT time FROM teams, athletes, meets, individual_performances, athlete_team_links WHERE individual_performances.team_id = teams.id AND meet_id = meets.id AND teams.name = '" + team_name + "' AND year = '" + year + "' AND teams.id = athlete_team_links.team_id AND athlete_team_links.ath_id = athletes.id AND individual_performances.ath_id = athletes.id LIMIT 7;"
@@ -198,6 +192,11 @@ def convert_time_to_minutes(time):
         return timeString
     else:
         return "---"
+def get_team_name(team_id):
+    team_id = int(team_id)
+    team_list = ['Augsburg', 'Bethel', 'Carleton', 'Concordia-Moorhead', 'Gustavus Adolphus', 'Hamline', 'Macalester', "Saint John''s", "Saint Mary''s", 'St. Olaf', 'St. Thomas']
+    team_name = team_list[team_id]
+    return team_name
 
 def parse_DNF(place):
     if place == None:
