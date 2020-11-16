@@ -72,6 +72,59 @@ function teamPerformanceAnalysis(){
   });
 }
 
+function teamDepthAnalysis(){
+  var checkBoxDivYears = document.getElementById('team-depth-year-checkboxes');
+  var checkBoxYearsValues = [];
+  for (var i = 0; i < checkBoxDivYears.children.length; i++ ) {
+    if (checkBoxDivYears.children[i].type == 'checkbox'){
+      if(checkBoxDivYears.children[i].checked){
+        checkBoxYearsValues.push(checkBoxDivYears.children[i].value);
+      }
+    }
+  }
+
+  var checkBoxDivTeams = document.getElementById('team-depth-team-checkboxes');
+  var checkBoxTeamsValues = [];
+  for (var i = 0; i < checkBoxDivTeams.children.length; i++ ) {
+    if (checkBoxDivTeams.children[i].type == 'checkbox'){
+      if(checkBoxDivTeams.children[i].checked){
+        checkBoxTeamsValues.push(checkBoxDivTeams.children[i].value);
+      }
+    }
+  }
+
+  var checkBoxYearsValuesString = checkBoxYearsValues.join();
+  var checkBoxTeamsValuesString = checkBoxTeamsValues.join();
+  var url = getAPIBaseURL() + '/team_depth?teams=' + checkBoxTeamsValuesString + '&years='+ checkBoxYearsValuesString;
+
+  fetch(url, {method: 'get'})
+  .then((response) => response.json())
+  .then(function(teamDepthByYearDict) {
+    //{"2019":{team1:[list of 7 times], team2:[list of 7 times], etc for each selected team}, "2018":{(as before)}, etc for each selected year}
+
+    //everything below is from above function -- need to adapt interval
+    var divBody = '<table>';
+    for (var yearKey in teamDepthByYearDict) {
+      divBody += '<p>' + yearKey + '</p>';
+      for (var teamKey in teamDepthByYearDict[yearKey]) {
+        divBody += '<tr>';
+        divBody += '<td>' + teamKey + '</td>';
+        for (var i = 0; i < teamDepthByYearDict[yearKey][teamKey].length; i ++){
+          divBody += '<td>' + teamDepthByYearDict[yearKey][teamKey][i] + '</td>';
+        }
+        divBody += '</tr>';
+      }
+    }
+    divBody += '</table>';
+    var resultsDivElement = document.getElementById('teams-depth-content-div');
+    resultsDivElement.innerHTML = divBody;
+  })
+
+  .catch(function(error) {
+    console.log(error);
+  });
+}
+
 function getAPIBaseURL() {
     var baseURL = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/api';
     return baseURL;
@@ -90,6 +143,8 @@ function initialize() {
 
   var teamPerformanceAnalysisButton = document.getElementById("input-team-performances");
   teamPerformanceAnalysisButton.onclick = teamPerformanceAnalysis;
+  var teamDepthAnalysisButton = document.getElementById('input-team-depth');
+  teamDepthAnalysisButton.onclick = teamDepthAnalysis;
 }
 
 window.onload = initialize;
