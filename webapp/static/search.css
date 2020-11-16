@@ -63,3 +63,16 @@ body {
 h2 {
   margin-top: 120px;
 }
+
+p {
+  font-size: 16pt;
+}
+table, tr, td, th {
+  border: 2px solid black;
+  border-collapse: collapse;
+}
+
+td, th {
+  font-size: 11pt;
+  padding: 5px;
+}

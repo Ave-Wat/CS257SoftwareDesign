@@ -59,9 +59,6 @@ def search_athletes(keyword):
 def search_teams(keyword):
     query = 'SELECT teams.name, place, points, year, teams.location FROM teams, meets, team_performances WHERE team_id=teams.id AND meet_id=meets.id AND teams.name LIKE' + " '%" + keyword + "%';"
     teams_list = []
-
-    print(query)
-
     cursor = get_cursor(query)
     for row in cursor:
         team = {'name': row[0], 'location': row[4], 'place': row[1], 'points': row[2], 'year': row[3]}
@@ -78,7 +75,11 @@ def search_years(keyword):
         team = {'name': row[0], 'place': row[1], 'points': row[2], 'location': row[3]}
         teams_list.append(team)
     for row in individuals_cursor:
-        individual = {'name': row[0], 'team': row[3], 'place': row[1], 'time': convert_time_to_minutes(row[2])}
+        if row[1] != None:
+            place = row[1]
+        else:
+            place = 'DNF'
+        individual = {'name': row[0], 'team': row[3], 'place': place, 'time': convert_time_to_minutes(row[2])}
         individuals_list.append(individual)
     teams_cursor.close()
     individuals_cursor.close()
@@ -180,7 +181,6 @@ def get_cursor(query):
     return cursor
 
 def convert_time_to_minutes(time):
-    print(time)
     if time != None:
         minutes = str(int(time // 60))
         seconds = int(time % 60)

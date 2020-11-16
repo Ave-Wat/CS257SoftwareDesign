@@ -65,17 +65,20 @@ function displayTeamsResults(teamsList) {
 }
 //two lists: [[name, place, points, location],[name, team, place, time]]
 function displayYearResults(yearResults) {
-  var divBody = '<p>Team Results: </p><table>';
   var teamResults = yearResults[0];
   var individualResults = yearResults[1];
+  var meet_location = teamResults[0]['location']
+  var divBody = '<p id="location">Meet Location: ' + meet_location + '</p><p>Team Results: </p><table><tr><th>Team</th><th>Place</th><th>Points</th></tr>';
   for (var i=0; i < teamResults.length; i++) {
     divBody += '<tr>';
     for (var key in teamResults[i]) {
-      divBody += '<td>' + teamResults[i][key]; + '</td>';
+      if (key != 'location') {
+        divBody += '<td>' + teamResults[i][key]; + '</td>';
+      }
     }
     divBody += '</tr>';
   }
-  divBody += '</table><p>Individual Results: </p><table>'
+  divBody += '</table><p>Individual Results: </p><table><tr><th>Name</th><th>Team</th><th>Place</th><th>Time</th></tr>'
   for (var j=0; j < individualResults.length; j++) {
     divBody += '<tr>';
     for (var key in individualResults[j]) {
@@ -86,8 +89,6 @@ function displayYearResults(yearResults) {
   divBody += '</table>';
   var resultsDivElement = document.getElementById('search-results');
   resultsDivElement.innerHTML = divBody;
-
-  alert(divBody);
 }
 // Returns the base URL of the API, onto which endpoint components can be appended.
 function getAPIBaseURL() {
