@@ -59,13 +59,13 @@ def search_athletes(keyword):
 
 def search_teams(keyword):
     query = 'SELECT teams.name, place, points, year, teams.location FROM teams, meets, team_performances WHERE team_id=teams.id AND meet_id=meets.id AND teams.name LIKE' + " '%" + keyword + "%';"
-    teams_list = []
+    team_performances_list = []
     cursor = get_cursor(query)
     for row in cursor:
-        team = {'name': row[0], 'location': row[4], 'place': row[1], 'points': row[2], 'year': row[3]}
-        teams_list.append(team)
+        team_performance = {'name': row[0], 'location': row[4], 'place': row[1], 'points': row[2], 'year': row[3]}
+        team_performances_list.append(team_performance)
     cursor.close()
-    return teams_list
+    return team_performances_list
 
 def search_years(keyword):
     teams_query = 'SELECT teams.name, place, points, meets.location FROM teams, meets, team_performances WHERE meet_id = meets.id AND team_id = teams.id AND year = ' + keyword + 'ORDER BY place;'
@@ -199,7 +199,7 @@ def get_team_name(team_id):
     team_list = ['Augsburg', 'Bethel', 'Carleton', 'Concordia-Moorhead', 'Gustavus Adolphus', 'Hamline', 'Macalester', "Saint John''s", "Saint Mary''s", 'St. Olaf', 'St. Thomas']
     team_name = team_list[team_id]
     return team_name
-    
+
 def parse_DNF(place):
     if place == None:
         return 'DNF'
