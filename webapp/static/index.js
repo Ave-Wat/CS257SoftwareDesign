@@ -101,14 +101,12 @@ function teamDepthAnalysis(){
   .then((response) => response.json())
   .then(function(teamDepthByYearDict) {
     //{"2019":{team1:[list of 7 times], team2:[list of 7 times], etc for each selected team}, "2018":{(as before)}, etc for each selected year}
-
-    //everything below is from above function -- need to adapt interval
     var divBody = '<table>';
     for (var yearKey in teamDepthByYearDict) {
-      divBody += '<p>' + yearKey + '</p>';
       for (var teamKey in teamDepthByYearDict[yearKey]) {
         divBody += '<tr>';
         divBody += '<td>' + teamKey + '</td>';
+        divBody += '<td>' + yearKey + '</td>';
         for (var i = 0; i < teamDepthByYearDict[yearKey][teamKey].length; i ++){
           divBody += '<td>' + teamDepthByYearDict[yearKey][teamKey][i] + '</td>';
         }
@@ -117,6 +115,56 @@ function teamDepthAnalysis(){
     }
     divBody += '</table>';
     var resultsDivElement = document.getElementById('teams-depth-content-div');
+    resultsDivElement.innerHTML = divBody;
+  })
+
+  .catch(function(error) {
+    console.log(error);
+  });
+}
+
+function athleteDevelopmentAnalysis (){
+  var metric = ""
+  var radioButtons = document.getElementsByName('data-form');
+  for(i = 0; i < radioButtons.length; i++) {
+    if(radioButtons[i].checked){
+      metric = radioButtons[i].value;
+    }
+  }
+
+  var checkBoxDiv = document.getElementById('athlete-dev-checkboxes');
+  var checkBoxValues = [];
+  for (var i = 0; i < checkBoxDiv.children.length; i++ ) {
+    if (checkBoxDiv.children[i].type == 'checkbox'){
+      if(checkBoxDiv.children[i].checked){
+        checkBoxValues.push(checkBoxDiv.children[i].value);
+      }
+    }
+  }
+
+  var checkBoxValuesString = checkBoxValues.join();
+  var url = getAPIBaseURL() + '/athlete_development?calculate_by=' + metric + '&teams=' + checkBoxValuesString;
+
+  fetch(url, {method: 'get'})
+  .then((response) => response.json())
+  .then(function(athletePerformances) {
+    //{team1:{athlete_name: [[time, year], etc for multiple years], etc for multiple athletes} team2:{}}
+    var divBody = '';
+    for (var teamKey in athletePerformances) {
+      divBody += '<table>';
+      divBody += '<tr>' + teamKey + '</tr>';
+      for (var athleteKey in athletePerformances[teamKey]) {
+        divBody += '<tr>';
+        divBody += '<td>' + athleteKey + '</td>';
+        for (var i = 0; i < athletePerformances[teamKey][athleteKey].length; i ++){
+          divBody += '<td>' + athletePerformances[teamKey][athleteKey][i] + '</td>';
+        }
+        divBody += '</tr>';
+      }
+      divBody += '</table>';
+    }
+
+    var resultsDivElement = document.getElementById('athlete-dev-content-div');
     resultsDivElement.innerHTML = divBody;
   })
 
@@ -145,6 +193,8 @@ function initialize() {
   teamPerformanceAnalysisButton.onclick = teamPerformanceAnalysis;
   var teamDepthAnalysisButton = document.getElementById('input-team-depth');
   teamDepthAnalysisButton.onclick = teamDepthAnalysis;
+  var athleteDevButton = document.getElementById('input-athlete-dev');
+  athleteDevButton.onclick = athleteDevelopmentAnalysis;
 }
 
 window.onload = initialize;
