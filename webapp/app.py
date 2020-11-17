@@ -1,5 +1,5 @@
 '''
-    example template
+    app.py
     Jeff Ondich, 25 April 2016
     Updated 4 November 2020
 
@@ -18,7 +18,6 @@ app.register_blueprint(api.api, url_prefix='/api')
 
 
 ########### The website routes ###########
-# (As you can see, there's not much of a website in this example.)
 @app.route('/')
 def get_main_page():
     ''' This is the only route intended for human users '''

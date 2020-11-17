@@ -13,7 +13,7 @@ function initialize() {
 
   var url = getAPIBaseURL() + '/search?field=' + searchField + '&keyword=' + keyword;
   var resultsHeaderElement = document.getElementById('results-header');
-  resultsHeaderElement.innerHTML = 'Results for ' + keyword + ' by ' + searchField + ":";
+  resultsHeaderElement.innerHTML = 'Results for "' + keyword + '" by ' + searchField + ':';
 
   fetch(url, {method: 'get'})
   .then((response) => response.json())
@@ -34,7 +34,6 @@ function initialize() {
   });
 }
 
-//athletesList: [name, team, place, time, year]
 function displayAthletesResults(athletesList) {
 
   var divBody = '<table>';
@@ -49,7 +48,7 @@ function displayAthletesResults(athletesList) {
   var resultsDivElement = document.getElementById('search-results');
   resultsDivElement.innerHTML = divBody;
 }
-//teamsList: [name, location, place, points, year]
+
 function displayTeamsResults(teamsList) {
   var divBody = '<table>';
   for (var i=0; i < teamsList.length; i++) {
@@ -63,7 +62,7 @@ function displayTeamsResults(teamsList) {
   var resultsDivElement = document.getElementById('search-results');
   resultsDivElement.innerHTML = divBody;
 }
-//two lists: [[name, place, points, location],[name, team, place, time]]
+
 function displayYearResults(yearResults) {
   var teamResults = yearResults[0];
   var individualResults = yearResults[1];
