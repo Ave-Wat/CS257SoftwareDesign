@@ -117,12 +117,41 @@ button {
   font-family: 'Roboto', sans-serif;
 }
 
+#search-line {
+  max-width: 600px;
+  height: 30px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #champ-search {
+  flex: 2.5;
   width: 400px;
+  margin-right: 0;
+}
+
+#search-field-select {
+  flex: .4;
+  float: left;
+  font-family: 'Roboto', sans-serif;
+  color: var(--main-darkblue);
+  margin-left: 0;
+  margin-right: 0;
+  padding: 1px;
 }
 
 #input-search {
+  display: inline-block;
+  height: 20.1px;
+  flex: .4;
+  background-color: white;
+  border-style: none;
   color: var(--main-darkblue);
+  margin-left: 1px;
+  padding: 1px;
+
 }
 
 /* the button that is used to open and close the collapsible content */
@@ -148,7 +177,7 @@ button {
 }
 
 .active, .collapsible:hover {
-  background-color: lightgray;
+  background-color: #0083b0;
 }
 
 /* hidden by default */
