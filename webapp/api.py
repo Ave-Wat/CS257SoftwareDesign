@@ -3,6 +3,7 @@
     Avery Watts and Ben Aoki-Sherwood
     15 November 2020
 
+    adapted from Jeff Ondich's api.py for CS257 Carleton College, Fall 2020
     API to support the MIAC analysis webapp.
 '''
 import sys
@@ -192,12 +193,13 @@ def convert_time_to_minutes(time):
         return timeString
     else:
         return "---"
+
 def get_team_name(team_id):
     team_id = int(team_id)
     team_list = ['Augsburg', 'Bethel', 'Carleton', 'Concordia-Moorhead', 'Gustavus Adolphus', 'Hamline', 'Macalester', "Saint John''s", "Saint Mary''s", 'St. Olaf', 'St. Thomas']
     team_name = team_list[team_id]
     return team_name
-
+    
 def parse_DNF(place):
     if place == None:
         return 'DNF'
