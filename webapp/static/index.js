@@ -47,16 +47,28 @@ function teamPerformanceAnalysis(){
 
   .then(function(teamsPerformancesDict) {
     //{team1: [list of places from 2009 to 2019], team2: [(same)]}
+    var teamsData = {};
+    var labels = ['2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019'];
+    var seriesData = [];
+    var options = {};
+
     var divBody = '<table>';
     for (var key in teamsPerformancesDict) {
       divBody += '<tr>';
       divBody += '<td>' + key + '</td>';
+      var dataDict = {data:teamsPerformancesDict[key]};
+      seriesData.push(dataDict);
       for (var i = 0; i < teamsPerformancesDict[key].length; i ++) {
         divBody += '<td>' + teamsPerformancesDict[key][i] + '</td>';
       }
       divBody += '</tr>';
     }
     divBody += '</table>';
+
+    teamsData = {labels: labels, series: [seriesData] };
+    /* Initialize the chart with the above settings */
+    new Chartist.Line('#teams-performances-chart', teamsData, options);
+
     var resultsDivElement = document.getElementById('teams-performances-content-div');
     resultsDivElement.innerHTML = divBody;
   })
