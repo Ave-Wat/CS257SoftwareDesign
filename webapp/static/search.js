@@ -18,13 +18,13 @@ function initialize() {
   fetch(url, {method: 'get'})
   .then((response) => response.json())
 
-  .then(function(list) {
+  .then(function(searchResults) {
     if (searchField == 'athletes') {
-      displayAthletesResults(list);
+      displayAthletesResults(searchResults);
     } else if (searchField == 'teams') {
-      displayTeamsResults(list);
+      displayTeamsResults(searchResults);
     } else {
-      displayYearResults(list);
+      displayYearResults(searchResults);
     }
   })
 
@@ -49,12 +49,19 @@ function displayAthletesResults(athletesList) {
   resultsDivElement.innerHTML = divBody;
 }
 
-function displayTeamsResults(teamsList) {
-  var divBody = '<table>';
-  for (var i=0; i < teamsList.length; i++) {
+function displayTeamsResults(teamPerformancesList) {
+  var curTeam = '';
+  var divBody = '';
+  var teamTableColumns = ['year','place','points'];
+  for (var i=0; i < teamPerformancesList.length; i++) {
+    if (teamPerformancesList[i]['name'] != curTeam) {
+      curTeam = teamPerformancesList[i]['name'];
+      divBody += '</table><p>' + curTeam + '</p><p>' + teamPerformancesList[i]['location'] + '</p><table><tr><th>Year</th><th>Place</th><th>Points</th></tr>';
+    }
     divBody += '<tr>';
-    for (var key in teamsList[i]) {
-      divBody += '<td>' + teamsList[i][key] + '</td>';
+    for (var j=0; j < teamTableColumns.length; j++) {
+      var key = teamTableColumns[j];
+      divBody += '<td>' + teamPerformancesList[i][key] + '</td>';
     }
     divBody += '</tr>';
   }
