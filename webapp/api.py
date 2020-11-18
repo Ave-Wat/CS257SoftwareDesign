@@ -55,7 +55,7 @@ def search_athletes(keyword):
                 AND meet_id=meets.id
                 AND LOWER(athletes.name) LIKE %s '''
     query_argument = '%' + keyword.lower() + '%'
-    cursor = get_cursor(query, query_argument)
+    cursor = get_cursor(query, (query_argument,))
     athletes_list = []
     for row in cursor:
         place = parse_DNF(row[1])
@@ -72,7 +72,7 @@ def search_teams(keyword):
                 AND LOWER(teams.name) LIKE %s '''
     query_argument = '%' + keyword.lower() + '%'
     team_performances_list = []
-    cursor = get_cursor(query, query_argument)
+    cursor = get_cursor(query, (query_argument,))
     for row in cursor:
         team_performance = {'name': row[0], 'location': row[4], 'place': row[1], 'points': row[2], 'year': row[3]}
         team_performances_list.append(team_performance)
@@ -92,7 +92,7 @@ def search_years(keyword):
                            AND team_id = teams.id
                            AND ath_id = athletes.id
                            AND year = %s ORDER BY place '''
-    teams_cursor, individuals_cursor = get_cursor(teams_query, query_argument), get_cursor(individuals_query, query_argument)
+    teams_cursor, individuals_cursor = get_cursor(teams_query, (query_argument,)), get_cursor(individuals_query, (query_argument,))
     teams_list, individuals_list = [], []
     for row in teams_cursor:
         team = {'name': row[0], 'place': row[1], 'points': row[2], 'location': row[3]}
@@ -119,11 +119,7 @@ def get_teams_performances():
     return json.dumps(teams_performances)
 
 def get_single_team_performances(team_name):
-    query = f'''SELECT teams.name, place, year
-               FROM teams, meets, team_performances
-               WHERE team_performances.team_id = teams.id
-               AND teams.name= {team_name}
-               AND meets.id=meet_id ORDER BY year '''
+    query = "SELECT teams.name, place, year FROM teams, meets, team_performances WHERE team_performances.team_id = teams.id AND teams.name = '" + team_name + "' AND meets.id=meet_id ORDER BY year"
     #SELECT teams.name, place, year FROM teams, meets, team_performances WHERE team_performances.team_id = teams.id AND teams.name='Carleton' AND meets.id=meet_id ORDER BY year;
     cursor = get_cursor(query, '')
     team_performances = []
@@ -152,14 +148,7 @@ def get_teams_depth():
 
 def get_team_depth_by_year(team_name, year):
     '''returns a list of up to 7 times'''
-    query = f'''SELECT time
-                FROM teams, athletes, meets, individual_performances, athlete_team_links WHERE individual_performances.team_id = teams.id
-                AND meet_id = meets.id
-                AND teams.name = {team_name}
-                AND year = {year}
-                AND teams.id = athlete_team_links.team_id
-                AND athlete_team_links.ath_id = athletes.id
-                AND individual_performances.ath_id = athletes.id LIMIT 7 '''
+    query = "SELECT time FROM teams, athletes, meets, individual_performances, athlete_team_links WHERE individual_performances.team_id = teams.id AND meet_id = meets.id AND teams.name = '" + team_name + "' AND year = '" + year + "' AND teams.id = athlete_team_links.team_id AND athlete_team_links.ath_id = athletes.id AND individual_performances.ath_id = athletes.id LIMIT 7"
     cursor = get_cursor(query, '')
     performances_list = []
     for row in cursor:
@@ -184,13 +173,7 @@ def athlete_development():
 
 def get_athlete_performances_by_team(team_name, calculate_by):
     '''returns a dict with athlete names as keys and a list of lists, so that: {athlete_name: [[time, year], etc for multiple years], etc for multiple athletes}'''
-    query = f'''SELECT athletes.name, {calculate_by}, year
-                FROM teams, athletes, meets, individual_performances, athlete_team_links WHERE individual_performances.team_id = teams.id
-                AND meet_id = meets.id
-                AND teams.name = {team_name}
-                AND teams.id = athlete_team_links.team_id
-                AND athlete_team_links.ath_id = athletes.id
-                AND individual_performances.ath_id = athletes.id '''
+    query = "SELECT athletes.name," + calculate_by + ", year FROM teams, athletes, meets, individual_performances, athlete_team_links WHERE individual_performances.team_id = teams.id AND meet_id = meets.id AND teams.name = '" + team_name + "' AND teams.id = athlete_team_links.team_id AND athlete_team_links.ath_id = athletes.id AND individual_performances.ath_id = athletes.id"
     #"SELECT athletes.name, time, teams.name FROM teams, athletes, meets, individual_performances, athlete_team_links WHERE individual_performances.team_id = teams.id AND meet_id = meets.id AND teams.name = 'Carleton' AND teams.id = athlete_team_links.team_id AND athlete_team_links.ath_id = athletes.id AND individual_performances.ath_id = athletes.id;"
 
     cursor = get_cursor(query, '')
@@ -211,7 +194,7 @@ def get_cursor(query, query_arguments):
         connection = get_connection()
         cursor = connection.cursor()
         if query_arguments != '':
-            cursor.execute(query, (query_arguments,))
+            cursor.execute(query, query_arguments)
         else:
             cursor.execute(query)
     except Exception as e:
