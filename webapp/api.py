@@ -48,12 +48,31 @@ def get_search_results():
     return json.dumps(results)
 
 def search_athletes(keyword):
-    query = ''' SELECT athletes.name, place, time, teams.name, year
+    #{athlete_name: {team:teamname, performances:{year:[place,time],...}}}
+    query = '''SELECT athletes.name, teams.name, year, place, time
+               FROM teams, athletes, meets, individual_performances
+               WHERE individual_performances.team_id = teams.id
+               AND meet_id = meets.id
+               AND individual_performances.ath_id = athletes.id
+               AND LOWER(athletes.name) LIKE %s '''
+    query_argument = '%' + keyword.lower() + '%'
+    cursor = get_cursor(query, query_argument)
+    athletes_dict = {}
+    for row in cursor:
+        if row[0] in athletes_dict:
+            athletes_dict[row[0]]['performances'][row[2]] = [row[3], row[4]]
+        else:
+            athletes_dict[row[0]] = {'team':row[1], 'performances':{row[2]:[row[3],row[4]]}}
+    cursor.close()
+
+    return athletes_dict
+    '''
+    query = 'SELECT athletes.name, place, time, teams.name, year
                 FROM athletes, teams, individual_performances, meets
                 WHERE ath_id = athletes.id
                 AND team_id=teams.id
                 AND meet_id=meets.id
-                AND LOWER(athletes.name) LIKE %s '''
+                AND LOWER(athletes.name) LIKE %s'
     query_argument = '%' + keyword.lower() + '%'
     cursor = get_cursor(query, (query_argument,))
     athletes_list = []
@@ -62,22 +81,40 @@ def search_athletes(keyword):
         athlete = {'name': row[0], 'team': row[3], 'place': place, 'time': convert_time_to_minutes(row[2]), 'year': row[4]}
         athletes_list.append(athlete)
     cursor.close()
-    return athletes_list
+    return athletes_list'''
 
 def search_teams(keyword):
-    query = ''' SELECT teams.name, place, points, year, teams.location
+    #{team:{'location':location, 'performances':{year:[place, points]},...}}
+    query = ''' SELECT teams.name, teams.location, year, place, points
                 FROM teams, meets, team_performances
-                WHERE team_id=teams.id
-                AND meet_id=meets.id
+                WHERE team_id = teams.id
+                AND meet_id = meets.id
                 AND LOWER(teams.name) LIKE %s '''
     query_argument = '%' + keyword.lower() + '%'
-    team_performances_list = []
-    cursor = get_cursor(query, (query_argument,))
+    cursor = get_cursor(query, query_argument)
+    teams_dict = {}
     for row in cursor:
-        team_performance = {'name': row[0], 'location': row[4], 'place': row[1], 'points': row[2], 'year': row[3]}
-        team_performances_list.append(team_performance)
+        if row[0] in teams_dict:
+            teams_dict[row[0]]['performances'][row[2]] = [row[3], row[4]]
+        else:
+            teams_dict[row[0]] = {'location':row[1], 'performances':{row[2]:[row[3],row[4]]}}
     cursor.close()
-    return team_performances_list
+
+    return teams_dict
+
+    # query = ''' SELECT teams.name, place, points, year, teams.location
+    #             FROM teams, meets, team_performances
+    #             WHERE team_id=teams.id
+    #             AND meet_id=meets.id
+    #             AND LOWER(teams.name) LIKE %s '''
+    # query_argument = '%' + keyword.lower() + '%'
+    # team_performances_list = []
+    # cursor = get_cursor(query, (query_argument,))
+    # for row in cursor:
+    #     team_performance = {'name': row[0], 'location': row[4], 'place': row[1], 'points': row[2], 'year': row[3]}
+    #     team_performances_list.append(team_performance)
+    # cursor.close()
+    # return team_performances_list
 
 def search_years(keyword):
     teams_query = ''' SELECT teams.name, place, points, meets.location
@@ -194,7 +231,7 @@ def get_cursor(query, query_arguments):
         connection = get_connection()
         cursor = connection.cursor()
         if query_arguments != '':
-            cursor.execute(query, query_arguments)
+            cursor.execute(query, (query_arguments,))
         else:
             cursor.execute(query)
     except Exception as e:

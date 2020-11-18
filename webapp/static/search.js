@@ -37,7 +37,28 @@ function initialize() {
   });
 }
 
-function displayAthletesResults(athletePerformancesList) {
+function displayAthletesResults(athletesDict) {
+  var divBody = '';
+  for (var name in athletesDict) {
+    var athleteEntry = '<p>' + name + ', ' + athletesDict[name]['team'] + '</p>';
+    var athletePerformances = athletesDict[name]['performances'];
+    var yearTableRow = '';
+    var placeTableRow = '';
+    var timeTableRow = '';
+    for (var year in athletePerformances) {
+      yearTableRow += '<td>' + year + '</td>';
+      placeTableRow += '<td>' + athletePerformances[year][0] + '</td>';
+      timeTableRow += '<td>' + athletePerformances[year][1] + '</td>';
+    }
+    athleteEntry += '<table><tr><th>Year</th>' + yearTableRow;
+    athleteEntry += '</tr><tr><th>Place</th>' + placeTableRow;
+    athleteEntry += '</tr><tr><th>Time</th>' + timeTableRow + '</tr></table>';
+    divBody = athleteEntry + divBody;
+  }
+  var resultsDivElement = document.getElementById('search-results');
+  resultsDivElement.innerHTML = divBody;
+}
+  /*
   var athletes = groupAthleteResultsByAthlete(athletePerformancesList);
   var divBody = '';
   for (var i = 0; i < athletes.length; i++) {
@@ -59,7 +80,7 @@ function displayAthletesResults(athletePerformancesList) {
   }
   var resultsDivElement = document.getElementById('search-results');
   resultsDivElement.innerHTML = divBody;
-}
+}*/
 
 function groupAthleteResultsByAthlete(athletePerformancesList) {
   var athletes = [];
@@ -81,7 +102,28 @@ function groupAthleteResultsByAthlete(athletePerformancesList) {
   }
   return athletes;
 }
-function displayTeamsResults(teamPerformancesList) {
+function displayTeamsResults(teamsDict) {
+  var divBody = '';
+  for (var name in teamsDict) {
+    var teamEntry = '<p>' + name + ' (' + teamsDict[name]['location'] + ')</p>';
+    var teamPerformances = teamsDict[name]['performances'];
+    var yearTableRow = '';
+    var placeTableRow = '';
+    var pointsTableRow = '';
+    for (var year in teamPerformances) {
+      yearTableRow += '<td>' + year + '</td>';
+      placeTableRow += '<td>' + teamPerformances[year][0] + '</td>';
+      pointsTableRow += '<td>' + teamPerformances[year][1] + '</td>';
+    }
+    teamEntry += '<table><tr><th>Year</th>' + yearTableRow;
+    teamEntry += '</tr><tr><th>Place</th>' + placeTableRow;
+    teamEntry += '</tr><tr><th>Points</th>' + pointsTableRow + '</tr></table>';
+    divBody = teamEntry + divBody;
+  }
+  var resultsDivElement = document.getElementById('search-results');
+  resultsDivElement.innerHTML = divBody;
+}
+/*
   var divBody = '';
   var teams = groupTeamResultsByTeam(teamPerformancesList);
   for (var i = 0; i < teams.length; i++) {
@@ -103,7 +145,7 @@ function displayTeamsResults(teamPerformancesList) {
   }
   var resultsDivElement = document.getElementById('search-results');
   resultsDivElement.innerHTML = divBody;
-}
+}*/
 
 function groupTeamResultsByTeam(teamPerformancesList) {
   var teams = [];
