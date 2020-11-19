@@ -39,6 +39,7 @@ function teamPerformanceAnalysis(){
   }
 
   var checkBoxValuesString = checkBoxValues.join();
+  alert(checkBoxValuesString);
   var url = getAPIBaseURL() + '/teams_performances?teams=' + checkBoxValuesString;
 
   fetch(url, {method: 'get'})
@@ -47,27 +48,27 @@ function teamPerformanceAnalysis(){
 
   .then(function(teamsPerformancesDict) {
     //{team1: [list of places from 2009 to 2019], team2: [(same)]}
-    var teamsData = {};
+    var teamPerformancesChartData = {};
     var labels = ['2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019'];
-    var seriesData = [];
+    var teamPerformancesChartSeries = [];
     var options = {};
 
     var divBody = '<table>';
-    for (var key in teamsPerformancesDict) {
+    for (var team in teamsPerformancesDict) {
       divBody += '<tr>';
-      divBody += '<td>' + key + '</td>';
-      var dataDict = {data:teamsPerformancesDict[key]};
-      seriesData.push(dataDict);
-      for (var i = 0; i < teamsPerformancesDict[key].length; i ++) {
-        divBody += '<td>' + teamsPerformancesDict[key][i] + '</td>';
+      divBody += '<td>' + team + '</td>';
+      var dataDict = {data: teamsPerformancesDict[team]};
+      teamPerformancesChartSeries.push(dataDict);
+      for (var i = 0; i < teamsPerformancesDict[team].length; i ++) {
+        divBody += '<td>' + teamsPerformancesDict[team][i] + '</td>';
       }
       divBody += '</tr>';
     }
     divBody += '</table>';
 
-    teamsData = {labels: labels, series: [seriesData] };
+    teamPerformancesChartData = {labels: labels, series: teamPerformancesChartSeries};
     /* Initialize the chart with the above settings */
-    //new Chartist.Line('#teams-performances-chart', teamsData, options);
+    var chart = new Chartist.Line('#teams-performances-chart', teamPerformancesChartData, options);
 
     var resultsDivElement = document.getElementById('teams-performances-content-div');
     resultsDivElement.innerHTML = divBody;
