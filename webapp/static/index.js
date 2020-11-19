@@ -108,35 +108,57 @@ function teamDepthAnalysis(){
 }
 
 function athleteDevelopmentAnalysis (){
-  var metric = ""
-  var radioButtons = document.getElementsByName('data-form');
-  for(i = 0; i < radioButtons.length; i++) {
-    if(radioButtons[i].checked){
-      metric = radioButtons[i].value;
-    }
-  }
-
+  var metric = document.getElementById('athlete-dev-metric').value;
   var checkBoxValuesString = getTeamCheckboxes();
   var url = getAPIBaseURL() + '/athlete_development?calculate_by=' + metric + '&teams=' + checkBoxValuesString;
-
+  var giveAvgAsPercent = false;
+  var giveAvgAsMedian = false;
+  var dataFormatSelector = document.getElementById('athlete-dev-data-format');
+  if (dataFormatSelector.value.split(',')[0] === 'percent') {
+    giveAvgAsPercent = true;
+  }
+  if (dataFormatSelector.value.split(',')[1] === 'median') {
+    giveAvgAsMedian = true;
+  }
   fetch(url, {method: 'get'})
   .then((response) => response.json())
   .then(function(athletePerformances) {
     //{team1:{athlete_name: [[time, year], etc for multiple years], etc for multiple athletes} team2:{}}
-    var divBody = '';
-    for (var teamKey in athletePerformances) {
-      divBody += '<table>';
-      divBody += '<tr>' + teamKey + '</tr>';
-      for (var athleteKey in athletePerformances[teamKey]) {
-        divBody += '<tr>';
-        divBody += '<td>' + athleteKey + '</td>';
-        for (var i = 0; i < athletePerformances[teamKey][athleteKey].length; i ++){
-          divBody += '<td>' + athletePerformances[teamKey][athleteKey][i] + '</td>';
+    var athleteImprovementByTeam = {};
+    for (var team in athletePerformances) {
+      var athletesOnTeam = athletePerformances[team];
+      var avgAthleteYearlyImprovements = [];
+      for (var athlete in athletesOnTeam) {
+        var currAthleteResults = athletesOnTeam[athlete];
+        var currAthleteYearlyImprovements = [];
+        if (currAthleteResults.length === 1) {
+          continue;
+        } else {
+          for (var i = 1; i < currAthleteResults.length; i++) {
+            var singleYearImprovement = currAthleteResults[i-1][0] - currAthleteResults[i][0];
+            if (giveAvgAsPercent) {
+              singleYearImprovement = (singleYearImprovement / currAthleteResults[i-1][0]) * 100;
+            }
+            currAthleteYearlyImprovements.push(singleYearImprovement);
+          }
+          var athleteAvgYearlyImprovement = calculateMean(currAthleteYearlyImprovements);
+          avgAthleteYearlyImprovements.push(athleteAvgYearlyImprovement);
         }
-        divBody += '</tr>';
       }
-      divBody += '</table>';
+      if (giveAvgAsMedian) {
+        var teamAvgYearlyImprovement = calculateMedian(avgAthleteYearlyImprovements);
+      } else {
+        var teamAvgYearlyImprovement = calculateMean(avgAthleteYearlyImprovements);
+      }
+
+      athleteImprovementByTeam[team] = teamAvgYearlyImprovement;
     }
+    //temporary results display table
+    var divBody = '<table><tr><th>Team</th><th>Avg. Yearly Improvement</th></tr>';
+    for (var teamKey in athleteImprovementByTeam) {
+      divBody += '<tr><td>' + teamKey + '</td><td>' + athleteImprovementByTeam[teamKey] + '</td></tr>';
+    }
+    divBody += '</table>';
 
     var resultsDivElement = document.getElementById('athlete-dev-content-div');
     resultsDivElement.innerHTML = divBody;
@@ -145,11 +167,6 @@ function athleteDevelopmentAnalysis (){
   .catch(function(error) {
     console.log(error);
   });
-}
-function teamDepth(years) {
-  for (var i = 0; i < years.length; i++) {
-    alert(years[i]);
-  }
 }
 
 function getTeamCheckboxes() {
@@ -170,6 +187,30 @@ function getTeamCheckboxes() {
 function getAPIBaseURL() {
     var baseURL = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/api';
     return baseURL;
+}
+
+function calculateMean(numberList) {
+  var sum = 0.0;
+  for (var i = 0; i < numberList.length; i++) {
+    sum += numberList[i];
+  }
+  return sum / numberList.length;
+}
+
+function calculateMedian(numberList) {
+  numberList.sort(function(a, b) {
+    return a - b;
+  });
+  var middleIndex = numberList.length / 2;
+  if (numberList.length % 2 === 1) {
+    return numberList[Math.floor(middleIndex)];
+  } else {
+    return (numberList[middleIndex] + numberList[middleIndex - 1]) / 2;
+  }
+}
+
+function compareNumbers(a, b) {
+  return a - b;
 }
 
 function filterPips(value, type) {
@@ -206,7 +247,7 @@ function initialize() {
     }},
     range: {'min': [2009], 'max': [2019]},
   });
-  teamDepthSlider.noUiSlider.on('set', teamDepth);
+  //teamDepthSlider.noUiSlider.on('set', teamDepth);
 
   var teamPerformanceButton = document.getElementById("team-performance");
   var teamDepthButton = document.getElementById("team-depth");

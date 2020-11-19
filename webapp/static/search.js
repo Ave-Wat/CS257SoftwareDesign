@@ -1,5 +1,3 @@
-import Athlete from './athlete.js';
-import Team from './team.js';
 
 function initialize() {
   var queryString = decodeURIComponent(window.location.search);
