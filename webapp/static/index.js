@@ -67,7 +67,7 @@ function teamPerformanceAnalysis(){
 
     teamsData = {labels: labels, series: [seriesData] };
     /* Initialize the chart with the above settings */
-    new Chartist.Line('#teams-performances-chart', teamsData, options);
+    //new Chartist.Line('#teams-performances-chart', teamsData, options);
 
     var resultsDivElement = document.getElementById('teams-performances-content-div');
     resultsDivElement.innerHTML = divBody;
