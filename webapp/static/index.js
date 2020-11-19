@@ -1,6 +1,18 @@
 /*
-  index.js
-  3 November 2020
+   index.js
+   3 November 2020
+
+   Uses the Chartist library: https://gionkunz.github.io/chartist-js/
+   Copyright © 2019 Gion Kunz
+   Free to use under either the WTFPL license or the MIT license.
+
+   Uses the noUiSlider library: https://refreshless.com/nouislider/
+   Copyright © 2020 Leon Gersen
+   Open source under the MIT license.
+
+   Uses the Plotly library: https://plotly.com/javascript/
+   Copyright © 2020 Plotly
+   Open source under the MIT license.
  */
 
 function onSearchButton(){
