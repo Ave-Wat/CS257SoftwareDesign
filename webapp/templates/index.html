@@ -4,9 +4,9 @@
     <title>MIAC XC Championships</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='chartist.min.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Rubik&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}" defer></script>
   </head>
 
   <body>
@@ -175,5 +175,8 @@
       <p>Data collected from the <a class="hover" target="_blank" href="https://www.miacathletics.com/sports/mxc/archives">MIAC archives</a>.</p>
       <p>Website maintained by <a class="hover" target="_blank" href="https://github.com/aoki-sherwoodb">Ben Aoki-Sherwood</a> and <a class="hover" target="_blank" href="https://github.com/Ave-Wat">Avery Watts</a></p>
     </footer>
+    <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='chartist.min.js') }}"></script>
   </body>
 </html>

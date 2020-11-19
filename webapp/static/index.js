@@ -39,7 +39,6 @@ function teamPerformanceAnalysis(){
   }
 
   var checkBoxValuesString = checkBoxValues.join();
-  alert(checkBoxValuesString);
   var url = getAPIBaseURL() + '/teams_performances?teams=' + checkBoxValuesString;
 
   fetch(url, {method: 'get'})
@@ -68,7 +67,7 @@ function teamPerformanceAnalysis(){
 
     teamPerformancesChartData = {labels: labels, series: teamPerformancesChartSeries};
     /* Initialize the chart with the above settings */
-    var chart = new Chartist.Line('#teams-performances-chart', teamPerformancesChartData, options);
+    new Chartist.Line('#teams-performances-chart', teamPerformancesChartData, options);
 
     var resultsDivElement = document.getElementById('teams-performances-content-div');
     resultsDivElement.innerHTML = divBody;
