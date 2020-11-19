@@ -195,6 +195,16 @@ function initialize() {
   });
   searchButton.onclick = onSearchButton;
 
+  //initializing team depth double year slider
+  var teamDepthSlider = document.getElementById('team-depth-slider');
+  noUiSlider.create(teamDepthSlider, {
+    start: [2009, 2019],
+    step: 1,
+    connect: [false, true, false],
+    pips: {mode: 'steps'},
+    range: {'min': [2009], 'max': [2019]}
+  });
+
   var teamPerformanceButton = document.getElementById("team-performance");
   var teamDepthButton = document.getElementById("team-depth");
   var athleteDevButton = document.getElementById("athlete-dev");

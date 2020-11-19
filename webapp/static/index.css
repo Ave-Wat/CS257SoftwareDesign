@@ -189,6 +189,16 @@ button {
   color: var(--main-darkblue);
 }
 
+#team-depth-slider {
+  margin: 20px;
+  margin-bottom: 40px;
+  max-width: 500px;
+}
+
+#team-depth-slider .noUi-connect {
+  background: var(--main-darkblue);
+}
+
 /*for the graphs*/
 .ct-series-a .ct-line {
     stroke: orange;
