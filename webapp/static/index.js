@@ -178,10 +178,23 @@ function athleteDevelopmentAnalysis (){
     console.log(error);
   });
 }
+function teamDepth(years) {
+  for (var i = 0; i < years.length; i++) {
+    alert(years[i]);
+  }
+}
 
 function getAPIBaseURL() {
     var baseURL = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/api';
     return baseURL;
+}
+
+function filterPips(value, type) {
+  if (type === 0) {
+    return -1;
+  } else {
+    return 1;
+  }
 }
 
 function initialize() {
@@ -201,9 +214,16 @@ function initialize() {
     start: [2009, 2019],
     step: 1,
     connect: [false, true, false],
-    pips: {mode: 'steps'},
-    range: {'min': [2009], 'max': [2019]}
+    pips: {mode: 'steps', filter: function(value, type) {
+      if (type === 0) {
+        return -1;
+      } else {
+        return 1;
+      }
+    }},
+    range: {'min': [2009], 'max': [2019]},
   });
+  teamDepthSlider.noUiSlider.on('set', teamDepth);
 
   var teamPerformanceButton = document.getElementById("team-performance");
   var teamDepthButton = document.getElementById("team-depth");
