@@ -14,9 +14,7 @@ function onSearchButton(){
 
 function collapsibles(){
   var collapsibles = document.getElementsByClassName("collapsible");
-  var i;
-
-  for (i = 0; i < collapsibles.length; i++) {
+  for (var i = 0; i < collapsibles.length; i++) {
     this.classList.toggle("active");
     var content = this.nextElementSibling;
     if (content.style.display === "block") {
@@ -28,17 +26,7 @@ function collapsibles(){
 }
 
 function teamPerformanceAnalysis(){
-  var checkBoxDiv = document.getElementById('team-performance-checkboxes');
-  var checkBoxValues = [];
-  for (var i = 0; i < checkBoxDiv.children.length; i++ ) {
-    if (checkBoxDiv.children[i].type == 'checkbox'){
-      if(checkBoxDiv.children[i].checked){
-        checkBoxValues.push(checkBoxDiv.children[i].value);
-      }
-    }
-  }
-
-  var checkBoxValuesString = checkBoxValues.join();
+  var checkBoxValuesString = getTeamCheckboxes();
   var url = getAPIBaseURL() + '/teams_performances?teams=' + checkBoxValuesString;
 
   fetch(url, {method: 'get'})
@@ -89,18 +77,8 @@ function teamDepthAnalysis(){
     }
   }
 
-  var checkBoxDivTeams = document.getElementById('team-depth-team-checkboxes');
-  var checkBoxTeamsValues = [];
-  for (var i = 0; i < checkBoxDivTeams.children.length; i++ ) {
-    if (checkBoxDivTeams.children[i].type == 'checkbox'){
-      if(checkBoxDivTeams.children[i].checked){
-        checkBoxTeamsValues.push(checkBoxDivTeams.children[i].value);
-      }
-    }
-  }
-
   var checkBoxYearsValuesString = checkBoxYearsValues.join();
-  var checkBoxTeamsValuesString = checkBoxTeamsValues.join();
+  var checkBoxTeamsValuesString = getTeamCheckboxes();
   var url = getAPIBaseURL() + '/team_depth?teams=' + checkBoxTeamsValuesString + '&years='+ checkBoxYearsValuesString;
 
   fetch(url, {method: 'get'})
@@ -138,17 +116,7 @@ function athleteDevelopmentAnalysis (){
     }
   }
 
-  var checkBoxDiv = document.getElementById('athlete-dev-checkboxes');
-  var checkBoxValues = [];
-  for (var i = 0; i < checkBoxDiv.children.length; i++ ) {
-    if (checkBoxDiv.children[i].type == 'checkbox'){
-      if(checkBoxDiv.children[i].checked){
-        checkBoxValues.push(checkBoxDiv.children[i].value);
-      }
-    }
-  }
-
-  var checkBoxValuesString = checkBoxValues.join();
+  var checkBoxValuesString = getTeamCheckboxes();
   var url = getAPIBaseURL() + '/athlete_development?calculate_by=' + metric + '&teams=' + checkBoxValuesString;
 
   fetch(url, {method: 'get'})
@@ -182,6 +150,21 @@ function teamDepth(years) {
   for (var i = 0; i < years.length; i++) {
     alert(years[i]);
   }
+}
+
+function getTeamCheckboxes() {
+  var checkboxDivTeams = document.getElementById('team-checkboxes');
+  var checkboxTeamsValues = [];
+  for (var i = 0; i < checkboxDivTeams.children.length; i++ ) {
+    if (checkboxDivTeams.children[i].type == 'checkbox'){
+      if(checkboxDivTeams.children[i].checked){
+        checkboxTeamsValues.push(checkboxDivTeams.children[i].value);
+      }
+    }
+  }
+
+  var checkboxValuesString = checkboxTeamsValues.join();
+  return checkboxValuesString;
 }
 
 function getAPIBaseURL() {
