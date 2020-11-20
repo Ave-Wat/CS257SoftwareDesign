@@ -38,7 +38,7 @@ function collapsibles(){
 }
 
 function teamPerformanceAnalysis(){
-  var checkBoxValuesString = getTeamCheckboxes();
+  var checkBoxValuesString = getTeamCheckboxes("team-checkboxes");
   var url = getAPIBaseURL() + '/teams_performances?teams=' + checkBoxValuesString;
 
   fetch(url, {method: 'get'})
@@ -46,11 +46,10 @@ function teamPerformanceAnalysis(){
   .then((response) => response.json())
 
   .then(function(teamsPerformancesDict) {
-    //{team1: [list of places from 2009 to 2019], team2: [(same)]}
+    //input: {team1: [list of places from 2009 to 2019], team2: [(same)]}
     var teamPerformancesChartData = {};
     var labels = ['2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019'];
     var teamPerformancesChartSeries = [];
-    var options = {};
 
     var divBody = '<table>';
     for (var team in teamsPerformancesDict) {
@@ -66,8 +65,21 @@ function teamPerformanceAnalysis(){
     divBody += '</table>';
 
     teamPerformancesChartData = {labels: labels, series: teamPerformancesChartSeries};
+    var options = {lineSmooth: Chartist.Interpolation.none(),
+      axisY: {
+        labelInterpolationFnc: function(value) {
+          return -value;
+        }
+      }
+    }
     /* Initialize the chart with the above settings */
-    new Chartist.Line('#teams-performances-chart', teamPerformancesChartData, options);
+    new Chartist.Line('#teams-performances-chart', teamPerformancesChartData, options.on('data', function(context) {
+      context.data.series = context.data.series.map(function(series) {
+        return series.map(function(value) {
+          return -value;
+        });
+      });
+    }));
 
     var resultsDivElement = document.getElementById('teams-performances-content-div');
     resultsDivElement.innerHTML = divBody;
@@ -79,18 +91,8 @@ function teamPerformanceAnalysis(){
 }
 
 function teamDepthAnalysis(){
-  var checkBoxDivYears = document.getElementById('team-depth-year-checkboxes');
-  var checkBoxYearsValues = [];
-  for (var i = 0; i < checkBoxDivYears.children.length; i++ ) {
-    if (checkBoxDivYears.children[i].type == 'checkbox'){
-      if(checkBoxDivYears.children[i].checked){
-        checkBoxYearsValues.push(checkBoxDivYears.children[i].value);
-      }
-    }
-  }
-
-  var checkBoxYearsValuesString = checkBoxYearsValues.join();
-  var checkBoxTeamsValuesString = getTeamCheckboxes();
+  var checkBoxYearsValuesString = getTeamCheckboxes('team-depth-year-checkboxes');
+  var checkBoxTeamsValuesString = getTeamCheckboxes("team-checkboxes");
   var url = getAPIBaseURL() + '/team_depth?teams=' + checkBoxTeamsValuesString + '&years='+ checkBoxYearsValuesString;
 
   fetch(url, {method: 'get'})
@@ -181,8 +183,8 @@ function athleteDevelopmentAnalysis (){
   });
 }
 
-function getTeamCheckboxes() {
-  var checkboxDivTeams = document.getElementById('team-checkboxes');
+function getTeamCheckboxes(idStr) {
+  var checkboxDivTeams = document.getElementById(idStr);
   var checkboxTeamsValues = [];
   for (var i = 0; i < checkboxDivTeams.children.length; i++ ) {
     if (checkboxDivTeams.children[i].type == 'checkbox'){
@@ -191,14 +193,13 @@ function getTeamCheckboxes() {
       }
     }
   }
-
   var checkboxValuesString = checkboxTeamsValues.join();
   return checkboxValuesString;
 }
 
 function getAPIBaseURL() {
-    var baseURL = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/api';
-    return baseURL;
+  var baseURL = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/api';
+  return baseURL;
 }
 
 function calculateMean(numberList) {
@@ -236,11 +237,11 @@ function filterPips(value, type) {
 function initialize() {
   var searchButton = document.getElementById("input-search");
   document.getElementById("champ-search")
-    .addEventListener("keyup", function(event) {
-      event.preventDefault();
-      if (event.keyCode === 13) {
-        searchButton.click();
-      }
+  .addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode === 13) {
+      searchButton.click();
+    }
   });
   searchButton.onclick = onSearchButton;
 

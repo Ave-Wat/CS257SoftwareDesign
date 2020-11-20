@@ -23,6 +23,7 @@ header {
   color: var(--main-whitegreen);
   background-color: var(--main-darkgreen);
   font-family: Rubik;
+  z-index: 2;
 }
 
 #title-container {
@@ -165,7 +166,7 @@ button {
 }
 
 #intro-graphing {
-  padding: 20px 15px;
+  padding: 15px 15px 20px 15px;
 }
 
 #intro-text {
