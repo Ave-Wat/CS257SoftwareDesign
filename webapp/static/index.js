@@ -112,7 +112,6 @@ function athleteDevelopmentAnalysis (){
   var giveAvgAsPercent = false;
   var giveAvgAsMedian = false;
   var dataFormatSelector = document.getElementById('athlete-dev-data-format');
-  alert(dataFormatSelector.innerHTML);
   if (dataFormatSelector.value.split(',')[0] === 'percent') {
     giveAvgAsPercent = true;
   }
@@ -181,7 +180,7 @@ function plotAthleteDevelopment(athleteDevDict) {
     },
     yaxis: {
       title: {
-        text: getAthleteDevPlotYAxisTitle,
+        text: getAthleteDevPlotYAxisTitle(),
         font: {
           family: 'Roboto'
         }
@@ -196,14 +195,14 @@ function getAthleteDevPlotYAxisTitle() {
   var yAxisTitle = '';
   var dataFormat = document.getElementById('athlete-dev-data-format').value.split(',');
   if (dataFormat[1] === 'mean') {
-    yAxisTitle += 'Mean';
+    yAxisTitle += 'Mean ';
   } else {
-    yAxisTitle += 'Median';
+    yAxisTitle += 'Median ';
   }
   if (dataFormat[0] === 'unweighted') {
-    yAxisTitle += 'Unweighted';
+    yAxisTitle += 'Unweighted ';
   } else {
-    yAxisTitle += 'Percent';
+    yAxisTitle += 'Percent ';
   }
   yAxisTitle += 'Change';
   return yAxisTitle;
