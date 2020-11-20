@@ -59,10 +59,12 @@ def search_athletes(keyword):
     cursor = get_cursor(query, query_argument)
     athletes_dict = {}
     for row in cursor:
+        time = convert_time_to_minutes(row[4])
+        place = parse_DNF(row[3])
         if row[0] in athletes_dict:
-            athletes_dict[row[0]]['performances'][row[2]] = [row[3], row[4]]
+            athletes_dict[row[0]]['performances'][row[2]] = [place, time]
         else:
-            athletes_dict[row[0]] = {'team':row[1], 'performances':{row[2]:[row[3],row[4]]}}
+            athletes_dict[row[0]] = {'team':row[1], 'performances':{row[2]:[place,time]}}
     cursor.close()
 
     return athletes_dict
@@ -258,6 +260,8 @@ def get_team_name(team_id):
     return team_name
 
 def parse_DNF(place):
+    '''Handles the case when an athlete entered the race but Did Not Finish,
+    indicating DNF if this is the case'''
     if place == None:
         return 'DNF'
     else:
