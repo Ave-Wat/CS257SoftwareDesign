@@ -189,6 +189,23 @@ button {
   color: var(--main-darkblue);
 }
 
+/*for the graphs*/
+.ct-series-a .ct-line {
+    stroke: orange;
+}
+
+.ct-series-a .ct-point {
+    stroke: gray;
+}
+
+.ct-series-b .ct-line {
+    stroke: blue;
+}
+
+.ct-series-b .ct-point {
+    stroke: black;
+}
+
 footer {
   position: absolute;
   width: 100%;

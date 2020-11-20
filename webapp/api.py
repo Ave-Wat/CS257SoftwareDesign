@@ -148,7 +148,7 @@ def search_years(keyword):
 def get_teams_performances():
     '''returns a dictionary as such: {team1: [list of places from 2009 to 2019], team2: [(same)], etc for all teams in team_codes}'''
     '''input: ?teams={team_codes}
-    	*team_codes is a list of numbers 0-13 corresponding to a particular MIAC team alphabetically'''
+    	*team_codes is a list of numbers 0-10 corresponding to a particular MIAC team alphabetically'''
     team_codes = flask.request.args.get('teams').split(',')
     teams_performances = {}
     for team_id in team_codes:
