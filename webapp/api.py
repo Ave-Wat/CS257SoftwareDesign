@@ -170,8 +170,8 @@ def get_single_team_performances(team_name, metric, years):
     cursor.close()
     return team_performances
 
-@api.route('/team_depth')
-def get_teams_depth():
+@api.route('/team_spread')
+def get_team_spreads():
     '''returns a JSON dict of dictionaries as such: {"2019":{team1:[list of 7 times], team2:[list of 7 times], etc for each selected team}, "2018":{(as before)}, etc for each selected year}'''
     '''input: ?teams={team_codes}&years={years}&limit=[true, false]
         team_codes is a list of numbers 0-13 corresponding to a particular MIAC team alphabetically and
@@ -184,16 +184,16 @@ def get_teams_depth():
     limit = True
     if limit_string == 'false':
         limit = False
-    teams_depth_dict = {}
+    team_spreads_dict = {}
     for year in years:
         teams_dicts = {}
         for team_id in teams:
             team_name = get_team_name(team_id)
-            teams_dicts[team_name] = get_team_depth_by_year(team_name, year, limit)
-        teams_depth_dict[year] = teams_dicts
-    return json.dumps(teams_depth_dict)
+            teams_dicts[team_name] = get_team_spread_by_year(team_name, year, limit)
+        team_spreads_dict[year] = teams_dicts
+    return json.dumps(team_spreads_dict)
 
-def get_team_depth_by_year(team_name, year, limit):
+def get_team_spread_by_year(team_name, year, limit):
     '''returns a list of up to 7 times'''
     query = "SELECT time FROM teams, athletes, meets, individual_performances, athlete_team_links WHERE individual_performances.team_id = teams.id AND meet_id = meets.id AND teams.name = '" + team_name + "' AND year = '" + year + "' AND teams.id = athlete_team_links.team_id AND athlete_team_links.ath_id = athletes.id AND individual_performances.ath_id = athletes.id"
     if limit:

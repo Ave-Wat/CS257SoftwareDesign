@@ -61,9 +61,6 @@ function teamPerformanceAnalysis(){
     }
     var layout = {yaxis: {autorange:'reversed', dtick: plotTickSeparation, title: {text: metric.charAt(0).toUpperCase() + metric.slice(1), font: {family:'Roboto'}}}, xaxis:{dtick: 1, title: {text: 'Year', font: {family:'Roboto'}}}, title: {text: 'Team Performances for ' + getYearRangeAsString(), font: {family:'Roboto'}}};
     Plotly.newPlot('teams-performances-chart', traceList, layout);
-
-    /*var resultsDivElement = document.getElementById('teams-performances-content-div');
-    resultsDivElement.innerHTML = divBody;*/
   })
 
   .catch(function(error) {
@@ -71,30 +68,30 @@ function teamPerformanceAnalysis(){
   });
 }
 
-function teamDepthAnalysis(){
+function teamSpreadAnalysis(){
   var yearsAsString = getYearsList().join(',');
   var listOfYearStrings = yearsAsString.split(',');
   var checkBoxTeamsValuesString = getTeamCheckboxes();
-  var limitSelection = document.getElementById('team-depth-athlete-limit').value;
+  var limitSelection = document.getElementById('team-spread-athlete-limit').value;
   var limit = 'true';
   if (limitSelection === 'team') {
     limit = 'false';
   }
-  var url = getAPIBaseURL() + '/team_depth?teams=' + checkBoxTeamsValuesString + '&years='+ yearsAsString + '&limit=' + limit;
+  var url = getAPIBaseURL() + '/team_spread?teams=' + checkBoxTeamsValuesString + '&years='+ yearsAsString + '&limit=' + limit;
 
   fetch(url, {method: 'get'})
   .then((response) => response.json())
-  .then(function(teamDepthByYearDict) {
+  .then(function(teamSpreadByYearDict) {
     //{"2019":{team1:[list of 7 times], team2:[list of 7 times], etc for each selected team}, "2018":{(as before)}, etc for each selected year}
     divBody = '';
     for (var i = listOfYearStrings.length - 1; i >= 0; i--) {
       divBody += '<div class="year-boxplot" id=' + listOfYearStrings[i] + '></div>';
     }
-    var contentDivElement = document.getElementById('team-depth-charts');
+    var contentDivElement = document.getElementById('team-spread-charts');
     contentDivElement.innerHTML = divBody;
     for (var i = listOfYearStrings.length - 1; i >= 0; i--) {
       var yearKey = listOfYearStrings[i];
-      plotTeamDepth(yearKey, teamDepthByYearDict[yearKey]);
+      plotTeamSpread(yearKey, teamSpreadByYearDict[yearKey]);
     }
   })
 
@@ -103,10 +100,10 @@ function teamDepthAnalysis(){
   });
 }
 
-function plotTeamDepth(yearString, teamDepthsThisYear) {
+function plotTeamSpread(yearString, teamSpreadsThisYear) {
   var data = [];
-  for (var teamNameKey in teamDepthsThisYear) {
-    var times = teamDepthsThisYear[teamNameKey];
+  for (var teamNameKey in teamSpreadsThisYear) {
+    var times = teamSpreadsThisYear[teamNameKey];
     for (var i = 0; i < times.length; i++) {
       if (times[i] === null) {
         times.splice(i, 1);
@@ -125,7 +122,7 @@ function plotTeamDepth(yearString, teamDepthsThisYear) {
   }
   var layout = {
     title: {
-      text: getTeamDepthPlotTitle() + yearString,
+      text: getTeamSpreadPlotTitle() + yearString,
       font: {
         family: 'Roboto'
       }
@@ -179,14 +176,22 @@ function athleteDevelopmentAnalysis (){
           continue;
         } else {
           for (var i = 1; i < currAthleteResults.length; i++) {
-            var singleYearImprovement = currAthleteResults[i-1][0] - currAthleteResults[i][0];
-            if (giveAvgAsPercent) {
-              singleYearImprovement = (singleYearImprovement / currAthleteResults[i-1][0]) * 100;
+            var currYear = currAthleteResults[i][1];
+            var prevYear = currAthleteResults[i-1][1];
+            var currTime = currAthleteResults[i][0];
+            var prevTime = currAthleteResults[i-1][0];
+            if (currTime != null && prevTime != null){
+              var yearlyImprovement = (prevTime - currTime) / (currYear - prevYear);
+              if (giveAvgAsPercent) {
+                yearlyImprovement = (yearlyImprovement / currTime) * 100;
+              }
+              currAthleteYearlyImprovements.push(yearlyImprovement);
             }
-            currAthleteYearlyImprovements.push(singleYearImprovement);
           }
           var athleteAvgYearlyImprovement = calculateMean(currAthleteYearlyImprovements);
-          avgAthleteYearlyImprovements.push(athleteAvgYearlyImprovement);
+          if (athleteAvgYearlyImprovement != null) {
+            avgAthleteYearlyImprovements.push(athleteAvgYearlyImprovement);
+          }
         }
       }
       if (giveAvgAsMedian) {
@@ -267,8 +272,8 @@ function getAthleteDevYAxisTitle() {
   return yAxisTitle;
 }
 
-function getTeamDepthPlotTitle() {
-  var limitSelection = document.getElementById('team-depth-athlete-limit').value;
+function getTeamSpreadPlotTitle() {
+  var limitSelection = document.getElementById('team-spread-athlete-limit').value;
   var title = 'Distribution of ';
   if (limitSelection === 'top7') {
     title += 'Top 7 ';
@@ -334,6 +339,9 @@ function getAPIBaseURL() {
 }
 
 function calculateMean(numberList) {
+  if (numberList.length === 0) {
+    return null;
+  }
   var sum = 0.0;
   for (var i = 0; i < numberList.length; i++) {
     sum += numberList[i];
@@ -342,6 +350,9 @@ function calculateMean(numberList) {
 }
 
 function calculateMedian(numberList) {
+  if (numberList.length === 0) {
+    return null;
+  }
   numberList.sort(function(a, b) {
     return a - b;
   });
@@ -356,10 +367,6 @@ function calculateMedian(numberList) {
 function convertSecondsToMinutes(timeInSeconds) {
   var timeInMinutes = (timeInSeconds / 60).toFixed(2);
   return timeInMinutes;
-}
-
-function compareNumbers(a, b) {
-  return a - b;
 }
 
 function filterPips(value, type) {
@@ -436,18 +443,18 @@ function initialize() {
 
   //var dataSelectionButton = document.getElementById('data-selection');
   var teamPerformanceButton = document.getElementById('team-performance');
-  var teamDepthButton = document.getElementById('team-depth');
+  var teamSpreadButton = document.getElementById('team-spread');
   var athleteDevButton = document.getElementById('athlete-dev');
   //dataSelectionButton.onload = collapsibles;
   //dataSelectionButton.onclick = collapsibles;
   teamPerformanceButton.onclick = collapsibles;
-  teamDepthButton.onclick = collapsibles;
+  teamSpreadButton.onclick = collapsibles;
   athleteDevButton.onclick = collapsibles;
 
   var teamPerformanceAnalysisButton = document.getElementById('input-team-performances');
   teamPerformanceAnalysisButton.onclick = teamPerformanceAnalysis;
-  var teamDepthAnalysisButton = document.getElementById('input-team-depth');
-  teamDepthAnalysisButton.onclick = teamDepthAnalysis;
+  var teamSpreadAnalysisButton = document.getElementById('input-team-spread');
+  teamSpreadAnalysisButton.onclick = teamSpreadAnalysis;
   var athleteDevButton = document.getElementById('input-athlete-dev');
   athleteDevButton.onclick = athleteDevelopmentAnalysis;
 }

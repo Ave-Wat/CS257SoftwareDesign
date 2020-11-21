@@ -20,7 +20,7 @@
         <ul>
           <li><a class="hover" href="#search-anchor">Search</a></li>
           <li><a class="hover" href="#team-performance-anchor">Team Performance</a></li>
-          <li><a class="hover" href="#team-depth-anchor">Team Depth</a></li>
+          <li><a class="hover" href="#team-spread-anchor">Team Spread</a></li>
           <li><a class="hover" href="#athlete-dev-anchor">Athlete Development</a></li>
         </ul>
       </nav>
@@ -30,7 +30,7 @@
   <main>
     <div class="anchor" id="search-anchor"></div>
     <div id="search">
-      <h3>Search men's MIAC Cross Country Championships between 2009 and 2019 by Athlete, Team, or Year.</h3>
+      <h3>Search men's MIAC Cross Country Championship results from 2009-2019 by athlete, team, or year.</h3>
       <div id="search-line">
         <select id="search-field-select">
           <option value='athletes'>Athletes</option>
@@ -44,7 +44,7 @@
     <p id="data-selection">Data Analysis</p>
     <div id='data-selection-content'>
       <div id="intro-text">
-        <p>Select all desired teams for the graphing analysis. To view a section of the analysis, click a collapsible below.</p>
+        <p>Select all desired teams and years for the graphing analyses below. To view a section of the analysis, click a collapsible below.</p>
       </div>
       <div id="data-selectors">
         <div id="team-checkboxes">
@@ -81,7 +81,7 @@
       <div class="anchor" id="team-performance-anchor"></div>
       <button type="button" class="collapsible" id="team-performance">Team Performances</button>
       <div class="content">
-        <p>Select all desired teams to see a graph of the place they received from 2009 to 2019 at the MIAC championships.</p>
+        <p>Creates a line graph showing the places or points of the selected teams at the MIAC championship meet for the selected years.</p>
         <select id="team-performances-metric">
           <option value="place">Place</option>
           <option value="points">Points</option>
@@ -91,22 +91,26 @@
         <div id="teams-performances-content-div"></div>
       </div>
 
-      <div class="anchor" id="team-depth-anchor"></div>
-      <button type="button" class="collapsible" id="team-depth">Team Depth</button>
+      <div class="anchor" id="team-spread-anchor"></div>
+      <button type="button" class="collapsible" id="team-spread">Team Spread</button>
       <div class="content">
-        <p>Creates a boxplot for each year in the selected year range showing the statistical distribution of times for the selected teams.</p>
-        <select id="team-depth-athlete-limit">
+        <p>Creates a boxplot for each year in the selected year range showing the distribution of times for the selected teams.
+        Use the drop-down menu to choose between the times for the top 7 runners on each team or the times for entire teams.</p>
+        <select id="team-spread-athlete-limit">
           <option value="top7">Top 7</option>
           <option value="team">Whole Team</option>
         </select>
-        <button id="input-team-depth">Submit</button>
-        <div id="team-depth-charts"></div>
+        <button id="input-team-spread">Submit</button>
+        <div id="team-spread-charts"></div>
       </div>
 
       <div class="anchor" id="athlete-dev-anchor"></div>
       <button type="button" class="collapsible" id="athlete-dev">Athlete Development</button>
       <div class="content">
-        <p>Creates a bar chart. [insert detail on statistical terminology and how to interpret results] </p>
+        <p>Creates a bar chart showing the average yearly change in athlete time or place over the selected range of years.
+          The yearly development for each athlete can be calculated as either a raw change or a year-over-year percent change.
+          The average of these yearly changes can be calculated as either a mean or a median.
+          Note that at least two years must be selected to produce a chart, as this analysis involves change over time.</p>
           <select id="athlete-dev-metric">
             <option value="time">Time</option>
             <option value="place">Place</option>

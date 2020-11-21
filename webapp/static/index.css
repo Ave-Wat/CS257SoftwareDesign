@@ -249,7 +249,7 @@ button {
   color: var(--main-darkblue);
 }
 /*styling for drop-down menus in collapsibles*/
-#athlete-dev-metric, #athlete-dev-data-format, #team-performances-metric, #team-depth-athlete-limit {
+#athlete-dev-metric, #athlete-dev-data-format, #team-performances-metric, #team-spread-athlete-limit {
   font-family: 'Roboto', sans-serif;
   color: var(--main-darkblue);
 }
