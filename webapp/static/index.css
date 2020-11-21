@@ -159,8 +159,13 @@ button {
   color: var(--main-darkblue);
   padding: 1px 1px;
   border-style: solid;
+  border-top: none;
   border-color: var(--main-darkblue);
   border-width: 1px;
+}
+
+#intro-graphing {
+  padding: 20px 15px;
 }
 
 #intro-text {

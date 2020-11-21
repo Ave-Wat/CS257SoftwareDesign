@@ -1,15 +1,5 @@
 <!DOCTYPE html>
 <html>
-<<<<<<< HEAD
-<head>
-  <title>MIAC XC Championships</title>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='chartist.min.css') }}">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Rubik&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-</head>
-=======
 <head>
   <title>MIAC XC Championships</title>
   <meta charset="UTF-8">
@@ -19,7 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Rubik&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
->>>>>>> f0f7df7be648435e02e14570a818594bee1688f5
 
 <body>
   <header>
@@ -54,32 +43,33 @@
       </div>
     </div>
     <div id="graphing-container">
-      <div id="intro-text"><p>Select all desired teams for the graphing analysis. To view a section of the analysis, click a collapsible below.</p></div>
-      <div id="team-checkboxes">
-        <input type="checkbox" name="augsburg" value="0" checked>
-        <label for="augsburg">Augsburg University</label><br>
-        <input type="checkbox" name="bethel" value="1" checked>
-        <label for="bethel">Bethel University</label><br>
-        <input type="checkbox" name="carleton" value="2" checked>
-        <label for="carleton">Carleton College</label><br>
-        <input type="checkbox" name="concordia" value="3" checked>
-        <label for="concordia">Concordia College</label><br>
-        <input type="checkbox" name="gustavus" value="4"  checked>
-        <label for="gustavus">Gustavus Adolphus College</label><br>
-        <input type="checkbox" name="hamline" value="5"  checked>
-        <label for="hamline">Hamline University</label><br>
-        <input type="checkbox" name="macalester" value="6" checked>
-        <label for="macalester">Macalester College</label><br>
-        <input type="checkbox" name="john" value="7" checked>
-        <label for="john">St. John's University</label><br>
-        <input type="checkbox" name="mary" value="8" checked>
-        <label for="mary">St. Mary's University</label><br>
-        <input type="checkbox" name="olaf" value="9"  checked>
-        <label for="olaf">St. Olaf College</label><br>
-        <input type="checkbox" name="thomas" value="10"  checked>
-        <label for="thomas">University of St. Thomas</label><br>
+      <div id="intro-graphing">
+        <div id="intro-text"><p>Select all desired teams for the graphing analysis. To view a section of the analysis, click a collapsible below.</p></div>
+        <div id="team-checkboxes">
+          <input type="checkbox" name="augsburg" value="0" checked>
+          <label for="augsburg">Augsburg University</label><br>
+          <input type="checkbox" name="bethel" value="1" checked>
+          <label for="bethel">Bethel University</label><br>
+          <input type="checkbox" name="carleton" value="2" checked>
+          <label for="carleton">Carleton College</label><br>
+          <input type="checkbox" name="concordia" value="3" checked>
+          <label for="concordia">Concordia College</label><br>
+          <input type="checkbox" name="gustavus" value="4"  checked>
+          <label for="gustavus">Gustavus Adolphus College</label><br>
+          <input type="checkbox" name="hamline" value="5"  checked>
+          <label for="hamline">Hamline University</label><br>
+          <input type="checkbox" name="macalester" value="6" checked>
+          <label for="macalester">Macalester College</label><br>
+          <input type="checkbox" name="john" value="7" checked>
+          <label for="john">St. John's University</label><br>
+          <input type="checkbox" name="mary" value="8" checked>
+          <label for="mary">St. Mary's University</label><br>
+          <input type="checkbox" name="olaf" value="9"  checked>
+          <label for="olaf">St. Olaf College</label><br>
+          <input type="checkbox" name="thomas" value="10"  checked>
+          <label for="thomas">University of St. Thomas</label><br>
+        </div>
       </div>
-
       <div class="anchor" id="team-performance-anchor"></div>
       <button type="button" class="collapsible" id="team-performance">Team Performances</button>
       <div class="content">
