@@ -36,7 +36,9 @@ function collapsibles(){
 function teamPerformanceAnalysis(){
   var checkBoxValuesString = getTeamCheckboxes();
   var metric = document.getElementById('team-performances-metric').value;
-  var url = getAPIBaseURL() + '/teams_performances?metric=' + metric + '&teams=' + checkBoxValuesString;
+  var yearsList = getYearsList();
+  var yearsAsString = yearsList.join(',');
+  var url = getAPIBaseURL() + '/teams_performances?metric=' + metric + '&teams=' + checkBoxValuesString + '&years=' + yearsAsString;
 
   fetch(url, {method: 'get'})
 
@@ -45,7 +47,6 @@ function teamPerformanceAnalysis(){
   .then(function(teamsPerformancesDict) {
     //input: {team1: [list of places/points from 2009 to 2019], team2: [(same)]}
     var teamPerformancesChartData = {};
-    var yearsList = ['2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019'];
     var traceList = [];
 
     for (var team in teamsPerformancesDict) {
@@ -58,7 +59,7 @@ function teamPerformanceAnalysis(){
     if (metric === 'points') {
       plotTickSeparation = 15;
     }
-    var layout = {yaxis: {autorange:'reversed', dtick: plotTickSeparation, title: {text: metric.charAt(0).toUpperCase() + metric.slice(1), font: {family:'Roboto'}}}, xaxis:{dtick: 1, title: {text: 'Year', font: {family:'Roboto'}}}, title: {text: 'Team Performances', font: {family:'Roboto'}}};
+    var layout = {yaxis: {autorange:'reversed', dtick: plotTickSeparation, title: {text: metric.charAt(0).toUpperCase() + metric.slice(1), font: {family:'Roboto'}}}, xaxis:{dtick: 1, title: {text: 'Year', font: {family:'Roboto'}}}, title: {text: 'Team Performances for ' + getYearRangeAsString(), font: {family:'Roboto'}}};
     Plotly.newPlot('teams-performances-chart', traceList, layout);
 
     /*var resultsDivElement = document.getElementById('teams-performances-content-div');
@@ -71,10 +72,15 @@ function teamPerformanceAnalysis(){
 }
 
 function teamDepthAnalysis(){
-  var yearsAsString = getYearRange().join(',');
+  var yearsAsString = getYearsList().join(',');
   var listOfYearStrings = yearsAsString.split(',');
   var checkBoxTeamsValuesString = getTeamCheckboxes();
-  var url = getAPIBaseURL() + '/team_depth?teams=' + checkBoxTeamsValuesString + '&years='+ yearsAsString;
+  var limitSelection = document.getElementById('team-depth-athlete-limit').value;
+  var limit = 'true';
+  if (limitSelection === 'team') {
+    limit = 'false';
+  }
+  var url = getAPIBaseURL() + '/team_depth?teams=' + checkBoxTeamsValuesString + '&years='+ yearsAsString + '&limit=' + limit;
 
   fetch(url, {method: 'get'})
   .then((response) => response.json())
@@ -100,14 +106,17 @@ function teamDepthAnalysis(){
 function plotTeamDepth(yearString, teamDepthsThisYear) {
   var data = [];
   for (var teamNameKey in teamDepthsThisYear) {
-    var top7Times = teamDepthsThisYear[teamNameKey];
-    for (var i = 0; i < top7Times.length; i++) {
-      top7Times[i] = convertSecondsToMinutes(top7Times[i]);
+    var times = teamDepthsThisYear[teamNameKey];
+    for (var i = 0; i < times.length; i++) {
+      if (times[i] === null) {
+        times.splice(i, 1);
+      }
+      times[i] = convertSecondsToMinutes(times[i]);
     }
     var teamName = escapeDoubleQuotes(teamNameKey);
     var teamColor = getTeamColor(teamName);
     var teamTrace = {
-      y: top7Times,
+      y: times,
       type: 'box',
       name: teamName,
       marker: {color: teamColor}
@@ -116,7 +125,7 @@ function plotTeamDepth(yearString, teamDepthsThisYear) {
   }
   var layout = {
     title: {
-      text: 'Team Top 7 Times in ' + yearString,
+      text: getTeamDepthPlotTitle() + yearString,
       font: {
         family: 'Roboto'
       }
@@ -138,7 +147,7 @@ function plotTeamDepth(yearString, teamDepthsThisYear) {
 function athleteDevelopmentAnalysis (){
   var metric = document.getElementById('athlete-dev-metric').value;
   var checkBoxValuesString = getTeamCheckboxes("team-checkboxes");
-  var yearsList = getYearRange();
+  var yearsList = getYearsList();
   if (yearsList.length < 2) {
     athleteDevUsage();
     return;
@@ -231,13 +240,7 @@ function plotAthleteDevelopment(athleteDevDict) {
 }
 
 function getAthleteDevPlotTitle() {
-  var yearRange = getYearRange();
-  var title = 'Average Yearly Athlete Development By Team From ';
-  if (yearRange.length === 1) {
-    title += yearRange[0].toString();
-  } else {
-    title += yearRange[0] + '-' + yearRange[yearRange.length - 1];
-  }
+  var title = 'Average Yearly Athlete Development By Team From ' + getYearRangeAsString();
   return title;
 }
 
@@ -262,6 +265,29 @@ function getAthleteDevYAxisTitle() {
     yAxisTitle += 'Time';
   }
   return yAxisTitle;
+}
+
+function getTeamDepthPlotTitle() {
+  var limitSelection = document.getElementById('team-depth-athlete-limit').value;
+  var title = 'Distribution of ';
+  if (limitSelection === 'top7') {
+    title += 'Top 7 ';
+  } else {
+    title += 'All '
+  }
+  title += 'Times by Team in ';
+  return title;
+}
+
+function getYearRangeAsString() {
+  var yearsList = getYearsList();
+  var yearRange = '';
+  if (yearsList.length === 1) {
+    yearRange += yearsList[0].toString();
+  } else {
+    yearRange += yearsList[0] + '-' + yearsList[yearsList.length - 1];
+  }
+  return yearRange;
 }
 
 function athleteDevUsage() {
@@ -363,7 +389,7 @@ function initializeYearSlider() {
   });
 }
 
-function getYearRange() {
+function getYearsList() {
   var yearSlider = document.getElementById('year-slider');
   var yearsList = [];
   var startYear = parseInt(yearSlider.noUiSlider.get()[0]);

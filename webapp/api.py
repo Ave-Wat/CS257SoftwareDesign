@@ -147,21 +147,22 @@ def search_years(keyword):
 @api.route('/teams_performances')
 def get_teams_performances():
     '''returns a dictionary as such: {team1: [list of places for the given years in chronological order], team2: [(same)], etc for all teams in team_codes}'''
-    '''input: ?metric=['place','points']&teams={team_codes}
-    	*team_codes is a list of numbers 0-10 corresponding to a particular MIAC team alphabetically'''
+    '''input: ?metric=['place','points']&teams={team_codes}&years={years}
+    	team_codes is a list of numbers 0-10 corresponding to a particular MIAC team alphabetically
+        years is a string of the years to be queried separated by commas'''
     team_codes = flask.request.args.get('teams').split(',')
     metric = flask.request.args.get('metric')
+    years_string = '(' + flask.request.args.get('years') + ')'
     teams_performances = {}
     for team_id in team_codes:
         team_name = get_team_name(team_id)
-        teams_performances[team_name] = get_single_team_performances(team_name, metric)
+        teams_performances[team_name] = get_single_team_performances(team_name, metric, years_string)
 
     return json.dumps(teams_performances)
 
-def get_single_team_performances(team_name, metric):
-    query = "SELECT " + metric + " FROM teams, meets, team_performances WHERE team_performances.team_id = teams.id AND teams.name = '" + team_name + "' AND meets.id=meet_id ORDER BY year"
+def get_single_team_performances(team_name, metric, years):
+    query = "SELECT " + metric + " FROM teams, meets, team_performances WHERE team_performances.team_id = teams.id AND teams.name = '" + team_name + "' AND meets.id=meet_id AND year IN " + years + " ORDER BY year"
     #SELECT teams.name, place, year FROM teams, meets, team_performances WHERE team_performances.team_id = teams.id AND teams.name='Carleton' AND meets.id=meet_id ORDER BY year;
-    print(query)
     cursor = get_cursor(query, '')
     team_performances = []
     for row in cursor:
@@ -172,24 +173,31 @@ def get_single_team_performances(team_name, metric):
 @api.route('/team_depth')
 def get_teams_depth():
     '''returns a JSON dict of dictionaries as such: {"2019":{team1:[list of 7 times], team2:[list of 7 times], etc for each selected team}, "2018":{(as before)}, etc for each selected year}'''
-    '''input: ?teams={team_codes}&years={years}
+    '''input: ?teams={team_codes}&years={years}&limit=[true, false]
         team_codes is a list of numbers 0-13 corresponding to a particular MIAC team alphabetically and
-        years is string with each year included in the query separated by commas'''
+        years is string with each year included in the query separated by commas
+        limit is a boolean indicating whether the query is limited to each team's top 7 athletes or not'''
 
     teams = flask.request.args.get('teams').split(",")
     years = flask.request.args.get('years').split(",")
+    limit_string = flask.request.args.get('limit')
+    limit = True
+    if limit_string == 'false':
+        limit = False
     teams_depth_dict = {}
     for year in years:
         teams_dicts = {}
         for team_id in teams:
             team_name = get_team_name(team_id)
-            teams_dicts[team_name] = get_team_depth_by_year(team_name, year)
+            teams_dicts[team_name] = get_team_depth_by_year(team_name, year, limit)
         teams_depth_dict[year] = teams_dicts
     return json.dumps(teams_depth_dict)
 
-def get_team_depth_by_year(team_name, year):
+def get_team_depth_by_year(team_name, year, limit):
     '''returns a list of up to 7 times'''
-    query = "SELECT time FROM teams, athletes, meets, individual_performances, athlete_team_links WHERE individual_performances.team_id = teams.id AND meet_id = meets.id AND teams.name = '" + team_name + "' AND year = '" + year + "' AND teams.id = athlete_team_links.team_id AND athlete_team_links.ath_id = athletes.id AND individual_performances.ath_id = athletes.id LIMIT 7"
+    query = "SELECT time FROM teams, athletes, meets, individual_performances, athlete_team_links WHERE individual_performances.team_id = teams.id AND meet_id = meets.id AND teams.name = '" + team_name + "' AND year = '" + year + "' AND teams.id = athlete_team_links.team_id AND athlete_team_links.ath_id = athletes.id AND individual_performances.ath_id = athletes.id"
+    if limit:
+        query += " LIMIT 7"
     cursor = get_cursor(query, '')
     performances_list = []
     for row in cursor:

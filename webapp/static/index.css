@@ -248,8 +248,8 @@ button {
   font-family: 'Roboto', sans-serif;
   color: var(--main-darkblue);
 }
-
-#athlete-dev-metric, #athlete-dev-data-format, #team-performances-metric {
+/*styling for drop-down menus in collapsibles*/
+#athlete-dev-metric, #athlete-dev-data-format, #team-performances-metric, #team-depth-athlete-limit {
   font-family: 'Roboto', sans-serif;
   color: var(--main-darkblue);
 }
