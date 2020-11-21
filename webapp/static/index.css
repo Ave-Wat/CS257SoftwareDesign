@@ -154,6 +154,19 @@ button {
 
 }
 
+#graphing-container {
+  background-color: var(--main-whitegreen);
+  color: var(--main-darkblue);
+  padding: 1px 1px;
+  border-style: solid;
+  border-color: var(--main-darkblue);
+  border-width: 1px;
+}
+
+#intro-text {
+  padding-bottom: 10px;
+}
+
 /* the button that is used to open and close the collapsible content */
 .collapsible {
   width: 100%;

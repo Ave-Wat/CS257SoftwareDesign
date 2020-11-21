@@ -1,75 +1,77 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>MIAC XC Championships</title>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
-      <link rel="stylesheet" href="{{ url_for('static', filename='chartist.min.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Rubik&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  </head>
+<head>
+  <title>MIAC XC Championships</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='chartist.min.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Rubik&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
 
-  <body>
-    <header>
-      <div id="title-container">
-        <h1 class="wide-screen">Men's Cross Country MIAC Championships</h1>
-        <h1 class="narrow-screen">MIAC Championships</h1>
-      </div>
-      <div id="nav-container">
-        <nav id="navbar">
-          <ul>
-            <li><a class="hover" href="#search-anchor">Search</a></li>
-            <li><a class="hover" href="#team-performance-anchor">Team Performance</a></li>
-            <li><a class="hover" href="#team-depth-anchor">Team Depth</a></li>
-            <li><a class="hover" href="#athlete-dev-anchor">Athlete Development</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+<body>
+  <header>
+    <div id="title-container">
+      <h1 class="wide-screen">Men's Cross Country MIAC Championships</h1>
+      <h1 class="narrow-screen">MIAC Championships</h1>
+    </div>
+    <div id="nav-container">
+      <nav id="navbar">
+        <ul>
+          <li><a class="hover" href="#search-anchor">Search</a></li>
+          <li><a class="hover" href="#team-performance-anchor">Team Performance</a></li>
+          <li><a class="hover" href="#team-depth-anchor">Team Depth</a></li>
+          <li><a class="hover" href="#athlete-dev-anchor">Athlete Development</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-    <main>
-      <div class="anchor" id="search-anchor"></div>
-      <div id="search">
-        <h3>Search men's MIAC Cross Country Championships between 2009 and 2019 by Athlete, Team, or Year.</h3>
-        <div id="search-line">
-          <select id="search-field-select">
-            <option value='athletes'>Athletes</option>
-            <option value='teams'>Teams</option>
-            <option value='year'>Year</option>
-          </select>
-          <input id="champ-search" type="text"/>
-          <button id="input-search">Search</button>
-        </div>
+  <main>
+    <div class="anchor" id="search-anchor"></div>
+    <div id="search">
+      <h3>Search men's MIAC Cross Country Championships between 2009 and 2019 by Athlete, Team, or Year.</h3>
+      <div id="search-line">
+        <select id="search-field-select">
+          <option value='athletes'>Athletes</option>
+          <option value='teams'>Teams</option>
+          <option value='year'>Year</option>
+        </select>
+        <input id="champ-search" type="text"/>
+        <button id="input-search">Search</button>
+      </div>
+    </div>
+    <div id="graphing-container">
+      <div id="intro-text"><p>Select all desired teams for the graphing analysis. To view a section of the analysis, click a collapsible below.</p></div>
+      <div id="team-checkboxes">
+        <input type="checkbox" name="augsburg" value="0" checked>
+        <label for="augsburg">Augsburg University</label><br>
+        <input type="checkbox" name="bethel" value="1" checked>
+        <label for="bethel">Bethel University</label><br>
+        <input type="checkbox" name="carleton" value="2" checked>
+        <label for="carleton">Carleton College</label><br>
+        <input type="checkbox" name="concordia" value="3" checked>
+        <label for="concordia">Concordia College</label><br>
+        <input type="checkbox" name="gustavus" value="4"  checked>
+        <label for="gustavus">Gustavus Adolphus College</label><br>
+        <input type="checkbox" name="hamline" value="5"  checked>
+        <label for="hamline">Hamline University</label><br>
+        <input type="checkbox" name="macalester" value="6" checked>
+        <label for="macalester">Macalester College</label><br>
+        <input type="checkbox" name="john" value="7" checked>
+        <label for="john">St. John's University</label><br>
+        <input type="checkbox" name="mary" value="8" checked>
+        <label for="mary">St. Mary's University</label><br>
+        <input type="checkbox" name="olaf" value="9"  checked>
+        <label for="olaf">St. Olaf College</label><br>
+        <input type="checkbox" name="thomas" value="10"  checked>
+        <label for="thomas">University of St. Thomas</label><br>
       </div>
 
       <div class="anchor" id="team-performance-anchor"></div>
       <button type="button" class="collapsible" id="team-performance">Team Performances</button>
       <div class="content">
         <p>Select all desired teams to see a graph of the place they received from 2009 to 2019 at the MIAC championships.</p>
-        <div id="team-performance-checkboxes">
-          <input type="checkbox" name="augsburg" value="0" checked>
-          <label for="augsburg">Augsburg University</label><br>
-          <input type="checkbox" name="bethel" value="1" checked>
-          <label for="bethel">Bethel University</label><br>
-          <input type="checkbox" name="carleton" value="2" checked>
-          <label for="carleton">Carleton College</label><br>
-          <input type="checkbox" name="concordia" value="3" checked>
-          <label for="concordia">Concordia College</label><br>
-          <input type="checkbox" name="gustavus" value="4"  checked>
-          <label for="gustavus">Gustavus Adolphus College</label><br>
-          <input type="checkbox" name="hamline" value="5"  checked>
-          <label for="hamline">Hamline University</label><br>
-          <input type="checkbox" name="macalester" value="6" checked>
-          <label for="macalester">Macalester College</label><br>
-          <input type="checkbox" name="john" value="7" checked>
-          <label for="john">St. John's University</label><br>
-          <input type="checkbox" name="mary" value="8" checked>
-          <label for="mary">St. Mary's University</label><br>
-          <input type="checkbox" name="olaf" value="9"  checked>
-          <label for="olaf">St. Olaf College</label><br>
-          <input type="checkbox" name="thomas" value="10"  checked>
-          <label for="thomas">University of St. Thomas</label><br>
-        </div>
         <button id="input-team-performances">Submit</button>
         <div id="teams-performances-chart"></div>
         <div id="teams-performances-content-div"></div>
@@ -103,32 +105,8 @@
           <input type="checkbox" name="2019" value="2019" checked>
           <label for="2019">2019</label>
         </div>
-        <div id="team-depth-team-checkboxes">
-          <input type="checkbox" name="augsburg" value="0" checked>
-          <label for="augsburg">Augsburg University</label><br>
-          <input type="checkbox" name="bethel" value="1" checked>
-          <label for="bethel">Bethel University</label><br>
-          <input type="checkbox" name="carleton" value="2" checked>
-          <label for="carleton">Carleton College</label><br>
-          <input type="checkbox" name="concordia" value="3" checked>
-          <label for="concordia">Concordia College</label><br>
-          <input type="checkbox" name="gustavus" value="4"  checked>
-          <label for="gustavus">Gustavus Adolphus College</label><br>
-          <input type="checkbox" name="hamline" value="5"  checked>
-          <label for="hamline">Hamline University</label><br>
-          <input type="checkbox" name="macalester" value="6" checked>
-          <label for="macalester">Macalester College</label><br>
-          <input type="checkbox" name="john" value="7" checked>
-          <label for="john">St. John's University</label><br>
-          <input type="checkbox" name="mary" value="8" checked>
-          <label for="mary">St. Mary's University</label><br>
-          <input type="checkbox" name="olaf" value="9"  checked>
-          <label for="olaf">St. Olaf College</label><br>
-          <input type="checkbox" name="thomas" value="10"  checked>
-          <label for="thomas">University of St. Thomas</label><br>
-          <button id="input-team-depth">Submit</button>
-          <div id="teams-depth-content-div"></div>
-        </div>
+        <button id="input-team-depth">Submit</button>
+        <div id="teams-depth-content-div"></div>
       </div>
 
       <div class="anchor" id="athlete-dev-anchor"></div>
@@ -141,42 +119,19 @@
           <input type="radio" id="time" name="data-form" value="time">
           <label for="time">Time</label>
         </div>
-        <div id="athlete-dev-checkboxes">
-          <input type="checkbox" name="augsburg" value="0" checked>
-          <label for="augsburg">Augsburg University</label><br>
-          <input type="checkbox" name="bethel" value="1" checked>
-          <label for="bethel">Bethel University</label><br>
-          <input type="checkbox" name="carleton" value="2" checked>
-          <label for="carleton">Carleton College</label><br>
-          <input type="checkbox" name="concordia" value="3" checked>
-          <label for="concordia">Concordia College</label><br>
-          <input type="checkbox" name="gustavus" value="4"  checked>
-          <label for="gustavus">Gustavus Adolphus College</label><br>
-          <input type="checkbox" name="hamline" value="5"  checked>
-          <label for="hamline">Hamline University</label><br>
-          <input type="checkbox" name="macalester" value="6" checked>
-          <label for="macalester">Macalester College</label><br>
-          <input type="checkbox" name="john" value="7" checked>
-          <label for="john">St. John's University</label><br>
-          <input type="checkbox" name="mary" value="8" checked>
-          <label for="mary">St. Mary's University</label><br>
-          <input type="checkbox" name="olaf" value="9"  checked>
-          <label for="olaf">St. Olaf College</label><br>
-          <input type="checkbox" name="thomas" value="10"  checked>
-          <label for="thomas">University of St. Thomas</label><br>
-        </div>
         <button id="input-athlete-dev">Submit</button>
         <div id="athlete-dev-content-div"></div>
       </div>
+    </div>
+    
+  </main>
 
-    </main>
-
-    <footer>
-      <p>Data collected from the <a class="hover" target="_blank" href="https://www.miacathletics.com/sports/mxc/archives">MIAC archives</a>.</p>
-      <p>Website maintained by <a class="hover" target="_blank" href="https://github.com/aoki-sherwoodb">Ben Aoki-Sherwood</a> and <a class="hover" target="_blank" href="https://github.com/Ave-Wat">Avery Watts</a></p>
-    </footer>
-    <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}" defer></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='chartist.min.js') }}"></script>
-  </body>
+  <footer>
+    <p>Data collected from the <a class="hover" target="_blank" href="https://www.miacathletics.com/sports/mxc/archives">MIAC archives</a>.</p>
+    <p>Website maintained by <a class="hover" target="_blank" href="https://github.com/aoki-sherwoodb">Ben Aoki-Sherwood</a> and <a class="hover" target="_blank" href="https://github.com/Ave-Wat">Avery Watts</a></p>
+  </footer>
+  <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}" defer></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='chartist.min.js') }}"></script>
+</body>
 </html>
