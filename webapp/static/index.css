@@ -88,6 +88,10 @@ nav a {
   visibility: hidden;
 }
 
+.bold {
+  font-weight: bold;
+}
+
 #search {
   width: auto;
   display: block;
@@ -174,11 +178,30 @@ button {
 
 #intro-text {
   padding-bottom: 10px;
+  float: top;
+}
+
+#data-selectors {
+  display: flex;
 }
 
 #team-checkboxes{
+  flex: 1;
+  float: right;
   padding-left: 10px;
   padding-bottom: 10px;
+}
+
+#year-slider {
+  flex: 1.8;
+  float: left;
+  margin: 20px;
+  margin-bottom: 40px;
+  max-width: 600px;
+}
+
+#year-slider .noUi-connect {
+  background: var(--main-darkblue);
 }
 
 #analysis-container {
@@ -220,27 +243,15 @@ button {
   color: var(--main-darkblue);
 }
 
-#teams-performances-chart{
+#teams-performances-chart, #athlete-dev-chart, .year-boxplot{
   margin: 50px;
-}
-
-#athlete-dev-metric, #athlete-dev-data-format {
   font-family: 'Roboto', sans-serif;
   color: var(--main-darkblue);
 }
 
-#athlete-dev-chart {
-  margin: 50px;
-}
-
-#team-depth-slider {
-  margin: 20px;
-  margin-bottom: 40px;
-  max-width: 600px;
-}
-
-#team-depth-slider .noUi-connect {
-  background: var(--main-darkblue);
+#athlete-dev-metric, #athlete-dev-data-format, #team-performances-metric {
+  font-family: 'Roboto', sans-serif;
+  color: var(--main-darkblue);
 }
 
 footer {
