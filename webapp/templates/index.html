@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<<<<<<< HEAD
 <head>
   <title>MIAC XC Championships</title>
   <meta charset="UTF-8">
@@ -8,6 +9,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Rubik&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
+=======
+  <head>
+    <title>MIAC XC Championships</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='chartist.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='nouislider.min.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Rubik&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  </head>
+>>>>>>> f0f7df7be648435e02e14570a818594bee1688f5
 
 <body>
   <header>
@@ -81,6 +93,7 @@
       <button type="button" class="collapsible" id="team-depth">Team Depth</button>
       <div class="content">
         <p>Select all the years and teams for which you would like to see a box-and-whisker plot describing the spread of times of a team's top seven runners at the MIAC championships.</p>
+        <div id="team-depth-slider"></div>
         <div id="team-depth-year-checkboxes">
           <input type="checkbox" name="2009" value="2009">
           <label for="2009">2009</label>
@@ -123,15 +136,18 @@
         <div id="athlete-dev-content-div"></div>
       </div>
     </div>
-    
+
   </main>
 
-  <footer>
-    <p>Data collected from the <a class="hover" target="_blank" href="https://www.miacathletics.com/sports/mxc/archives">MIAC archives</a>.</p>
-    <p>Website maintained by <a class="hover" target="_blank" href="https://github.com/aoki-sherwoodb">Ben Aoki-Sherwood</a> and <a class="hover" target="_blank" href="https://github.com/Ave-Wat">Avery Watts</a></p>
-  </footer>
-  <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}" defer></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='chartist.min.js') }}"></script>
-</body>
+    </main>
+
+    <footer>
+      <p>Data collected from the <a class="hover" target="_blank" href="https://www.miacathletics.com/sports/mxc/archives">MIAC archives</a>.</p>
+      <p>Website maintained by <a class="hover" target="_blank" href="https://github.com/aoki-sherwoodb">Ben Aoki-Sherwood</a> and <a class="hover" target="_blank" href="https://github.com/Ave-Wat">Avery Watts</a></p>
+    </footer>
+    <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}" defer></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='nouislider.min.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='chartist.min.js') }}"></script>
+  </body>
 </html>
