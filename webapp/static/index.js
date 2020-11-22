@@ -143,20 +143,51 @@ function athleteDevelopmentAnalysis (){
 
       athleteImprovementByTeam[team] = teamAvgYearlyImprovement;
     }
+    plotAthleteDevelopment(athleteImprovementByTeam);
     //temporary results display table
-    var divBody = '<table><tr><th>Team</th><th>Avg. Yearly Improvement</th></tr>';
+    /*var divBody = '<table><tr><th>Team</th><th>Avg. Yearly Improvement</th></tr>';
     for (var teamKey in athleteImprovementByTeam) {
       divBody += '<tr><td>' + teamKey + '</td><td>' + athleteImprovementByTeam[teamKey] + '</td></tr>';
     }
     divBody += '</table>';
 
     var resultsDivElement = document.getElementById('athlete-dev-content-div');
-    resultsDivElement.innerHTML = divBody;
+    resultsDivElement.innerHTML = divBody;*/
   })
 
   .catch(function(error) {
     console.log(error);
   });
+}
+
+function plotAthleteDevelopment(athleteDevDict) {
+  var data = [];
+  /*var teamNamesList = [];
+  var athleteDevByTeam = [];*/
+  for (var teamKey in athleteDevDict) {
+    var teamTrace = {
+      x: [teamKey],
+      y: [athleteDevDict[teamKey].toFixed(2)],
+      type: 'bar'
+    }
+    data.push(teamTrace);
+    /*teamNamesList.push(teamKey);
+    athleteDevByTeam.push(athleteDevDict[teamKey]);*/
+  }
+  var layout = {
+    title: {
+      text: 'Average Yearly Athlete Development From 2009-2019',
+      font: {
+        family: 'Roboto'
+      }
+    },
+    yaxis: {
+      title: {
+        text: 'Athlete Development'
+      }
+    }
+  }
+  Plotly.newPlot('athlete-dev-content-div', data, layout);
 }
 
 function getTeamCheckboxes() {
@@ -174,7 +205,7 @@ function getTeamCheckboxes() {
 }
 
 function teamColor(team) {
-  var teamList = ['Augsburg', 'Bethel', 'Carleton', 'Concordia-Moorhead', 'Gustavus Adolphus', 'Hamline', 'Macalester', "Saint John''s", "Saint Mary''s", 'St. Olaf', 'St. Thomas'];
+  var teamList = ['Augsburg', 'Bethel', 'Carleton', 'Concordia-Moorhead', 'Gustavus Adolphus', 'Hamline', 'Macalester', "Saint John's", "Saint Mary's", 'St. Olaf', 'St. Thomas'];
   var colorList = ['#800000', '#000080', '#f2c649', '#A52A2A', '#000000', '#FF0000', '#FFA500', '#add8e6', '#ffcccb', '#d4af37', '#551a8b'];
   for (var i = 0; i < teamList.length; i ++){
     if(teamList[i] == team){
@@ -182,6 +213,12 @@ function teamColor(team) {
     }
   }
   return -1;
+
+function escapeDoubleQuotes(teamNameString) {
+  if (teamNameString === 'Saint John"s' || teamNameString === 'Saint Mary"s') {
+    teamNameString = teamNameString.replace('"', "'");
+  }
+  return teamNameString;
 }
 
 function getAPIBaseURL() {
