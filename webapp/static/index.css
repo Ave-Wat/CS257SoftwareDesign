@@ -163,18 +163,13 @@ button {
   font-size: 20px;
 }
 
-#analysis-container {
+#data-selection-content {
   background-color: var(--main-whitegreen);
   color: var(--main-darkblue);
-  padding: 2px 2px 0px 2px;
-  border-style: solid;
-  border-top: none;
+  padding: 15px;
+  border-style: none solid none solid;
   border-color: var(--main-darkblue);
   border-width: 1px;
-}
-
-#data-selection-content {
-  padding: 15px;
 }
 
 #intro-text {
@@ -184,6 +179,15 @@ button {
 #team-checkboxes{
   padding-left: 10px;
   padding-bottom: 10px;
+}
+
+#analysis-container {
+  background-color: var(--main-whitegreen);
+  color: var(--main-darkblue);
+  padding: 4px 4px 2px 4px;
+  border-style: solid;
+  border-color: var(--main-darkblue);
+  border-width: 1px;
 }
 
 /* the button that is used to open and close the collapsible content */
@@ -243,7 +247,7 @@ footer {
   position: absolute;
   width: 100%;
   left: 0;
-  margin-top: 30px;
+  margin-top: 10px;
   background-color: var(--main-darkgreen);
   color: var(--main-whitegreen)
 }
