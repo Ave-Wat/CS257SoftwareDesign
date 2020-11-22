@@ -104,6 +104,7 @@ function athleteDevelopmentAnalysis (){
   var giveAvgAsPercent = false;
   var giveAvgAsMedian = false;
   var dataFormatSelector = document.getElementById('athlete-dev-data-format');
+  alert(dataFormatSelector.innerHTML);
   if (dataFormatSelector.value.split(',')[0] === 'percent') {
     giveAvgAsPercent = true;
   }
@@ -144,15 +145,6 @@ function athleteDevelopmentAnalysis (){
       athleteImprovementByTeam[team] = teamAvgYearlyImprovement;
     }
     plotAthleteDevelopment(athleteImprovementByTeam);
-    //temporary results display table
-    /*var divBody = '<table><tr><th>Team</th><th>Avg. Yearly Improvement</th></tr>';
-    for (var teamKey in athleteImprovementByTeam) {
-      divBody += '<tr><td>' + teamKey + '</td><td>' + athleteImprovementByTeam[teamKey] + '</td></tr>';
-    }
-    divBody += '</table>';
-
-    var resultsDivElement = document.getElementById('athlete-dev-content-div');
-    resultsDivElement.innerHTML = divBody;*/
   })
 
   .catch(function(error) {
@@ -162,17 +154,15 @@ function athleteDevelopmentAnalysis (){
 
 function plotAthleteDevelopment(athleteDevDict) {
   var data = [];
-  /*var teamNamesList = [];
-  var athleteDevByTeam = [];*/
   for (var teamKey in athleteDevDict) {
+    var teamName = escapeDoubleQuotes(teamKey);
     var teamTrace = {
-      x: [teamKey],
+      x: [teamName],
       y: [athleteDevDict[teamKey].toFixed(2)],
+      name: teamName,
       type: 'bar'
     }
     data.push(teamTrace);
-    /*teamNamesList.push(teamKey);
-    athleteDevByTeam.push(athleteDevDict[teamKey]);*/
   }
   var layout = {
     title: {
@@ -183,11 +173,32 @@ function plotAthleteDevelopment(athleteDevDict) {
     },
     yaxis: {
       title: {
-        text: 'Athlete Development'
+        text: getAthleteDevPlotYAxisTitle,
+        font: {
+          family: 'Roboto'
+        }
       }
-    }
+    },
+    showlegend: false
   }
-  Plotly.newPlot('athlete-dev-content-div', data, layout);
+  Plotly.newPlot('athlete-dev-chart', data, layout);
+}
+
+function getAthleteDevPlotYAxisTitle() {
+  var yAxisTitle = '';
+  var dataFormat = document.getElementById('athlete-dev-data-format').value.split(',');
+  if (dataFormat[1] === 'mean') {
+    yAxisTitle += 'Mean';
+  } else {
+    yAxisTitle += 'Median';
+  }
+  if (dataFormat[0] === 'unweighted') {
+    yAxisTitle += 'Unweighted';
+  } else {
+    yAxisTitle += 'Percent';
+  }
+  yAxisTitle += 'Change';
+  return yAxisTitle;
 }
 
 function getTeamCheckboxes() {
@@ -215,8 +226,8 @@ function teamColor(team) {
   return -1;
 
 function escapeDoubleQuotes(teamNameString) {
-  if (teamNameString === 'Saint John"s' || teamNameString === 'Saint Mary"s') {
-    teamNameString = teamNameString.replace('"', "'");
+  if (teamNameString === "Saint John''s" || teamNameString === "Saint Mary''s") {
+    teamNameString = teamNameString.replace("''", "'");
   }
   return teamNameString;
 }
