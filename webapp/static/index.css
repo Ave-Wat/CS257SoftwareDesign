@@ -203,6 +203,15 @@ button {
   margin: 50px;
 }
 
+#athlete-dev-metric, #athlete-dev-data-format {
+  font-family: 'Roboto', sans-serif;
+  color: var(--main-darkblue);
+}
+
+#athlete-dev-chart {
+  margin: 50px;
+}
+
 .active, .collapsible:hover {
   background-color: #0083b0;
 }
