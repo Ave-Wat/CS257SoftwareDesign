@@ -28,7 +28,7 @@ CREATE TABLE teams(
 CREATE TABLE meets(
 	id INTEGER,
 	name TEXT,
-	year TEXT,
+	year INTEGER,
 	location TEXT
 );
 
