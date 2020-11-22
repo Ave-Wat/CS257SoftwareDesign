@@ -2,10 +2,6 @@
    index.js
    3 November 2020
 
-   Uses the Chartist library: https://gionkunz.github.io/chartist-js/
-   Copyright © 2019 Gion Kunz
-   Free to use under either the WTFPL license or the MIT license.
-
    Uses the noUiSlider library: https://refreshless.com/nouislider/
    Copyright © 2020 Leon Gersen
    Open source under the MIT license.
@@ -38,7 +34,7 @@ function collapsibles(){
 }
 
 function teamPerformanceAnalysis(){
-  var checkBoxValuesString = getTeamCheckboxes("team-checkboxes");
+  var checkBoxValuesString = getTeamCheckboxes();
   var url = getAPIBaseURL() + '/teams_performances?teams=' + checkBoxValuesString;
 
   fetch(url, {method: 'get'})
@@ -79,8 +75,8 @@ function teamPerformanceAnalysis(){
 }
 
 function teamDepthAnalysis(){
-  var checkBoxYearsValuesString = getTeamCheckboxes('team-depth-year-checkboxes');
-  var checkBoxTeamsValuesString = getTeamCheckboxes("team-checkboxes");
+  //var checkBoxYearsValuesString = getTeamCheckboxes('team-depth-year-checkboxes');
+  var checkBoxTeamsValuesString = getTeamCheckboxes();
   var url = getAPIBaseURL() + '/team_depth?teams=' + checkBoxTeamsValuesString + '&years='+ checkBoxYearsValuesString;
 
   fetch(url, {method: 'get'})
@@ -171,8 +167,8 @@ function athleteDevelopmentAnalysis (){
   });
 }
 
-function getTeamCheckboxes(idStr) {
-  var checkboxDivTeams = document.getElementById(idStr);
+function getTeamCheckboxes() {
+  var checkboxDivTeams = document.getElementById('team-checkboxes');
   var checkboxTeamsValues = [];
   for (var i = 0; i < checkboxDivTeams.children.length; i++ ) {
     if (checkboxDivTeams.children[i].type == 'checkbox'){
