@@ -48,15 +48,16 @@ function teamPerformanceAnalysis(){
   .then(function(teamsPerformancesDict) {
     //input: {team1: [list of places from 2009 to 2019], team2: [(same)]}
     var teamPerformancesChartData = {};
-    var labels = ['2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019'];
-    var teamPerformancesChartSeries = [];
+    var yearsList = ['2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019'];
+    var traceList = [];
 
     var divBody = '<table>';
     for (var team in teamsPerformancesDict) {
       divBody += '<tr>';
       divBody += '<td>' + team + '</td>';
-      var dataDict = {data: teamsPerformancesDict[team]};
-      teamPerformancesChartSeries.push(dataDict);
+      //var color = teamColorMethod();
+      var trace = {x: yearsList, y: teamsPerformancesDict[team], name: team};
+      traceList.push(trace);
       for (var i = 0; i < teamsPerformancesDict[team].length; i ++) {
         divBody += '<td>' + teamsPerformancesDict[team][i] + '</td>';
       }
@@ -64,22 +65,9 @@ function teamPerformanceAnalysis(){
     }
     divBody += '</table>';
 
-    teamPerformancesChartData = {labels: labels, series: teamPerformancesChartSeries};
-    var options = {lineSmooth: Chartist.Interpolation.none(),
-      axisY: {
-        labelInterpolationFnc: function(value) {
-          return -value;
-        }
-      }
-    }
     /* Initialize the chart with the above settings */
-    new Chartist.Line('#teams-performances-chart', teamPerformancesChartData, options.on('data', function(context) {
-      context.data.series = context.data.series.map(function(series) {
-        return series.map(function(value) {
-          return -value;
-        });
-      });
-    }));
+    var layout = {yaxis: {autorange:'reversed'}};
+    Plotly.newPlot('teams-performances-chart', traceList, layout);
 
     var resultsDivElement = document.getElementById('teams-performances-content-div');
     resultsDivElement.innerHTML = divBody;
