@@ -47,10 +47,10 @@ function teamPerformanceAnalysis(){
     var yearsList = ['2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019'];
     var traceList = [];
 
-    var divBody = '<table>';
     for (var team in teamsPerformancesDict) {
-      var color = teamColor(team);
-      var trace = {x: yearsList, y: teamsPerformancesDict[team], name: team, marker: {color: color}};
+      teamName = escapeDoubleQuotes(team);
+      var color = teamColor(teamName);
+      var trace = {x: yearsList, y: teamsPerformancesDict[team], name: teamName, marker: {color: color}};
       traceList.push(trace);
     }
 
@@ -140,7 +140,6 @@ function athleteDevelopmentAnalysis (){
       } else {
         var teamAvgYearlyImprovement = calculateMean(avgAthleteYearlyImprovements);
       }
-
       athleteImprovementByTeam[team] = teamAvgYearlyImprovement;
     }
     plotAthleteDevelopment(athleteImprovementByTeam);
@@ -160,7 +159,7 @@ function plotAthleteDevelopment(athleteDevDict) {
       y: [athleteDevDict[teamKey].toFixed(2)],
       name: teamName,
       type: 'bar'
-    }
+    };
     data.push(teamTrace);
   }
   var layout = {
@@ -223,6 +222,7 @@ function teamColor(team) {
     }
   }
   return -1;
+}
 
 function escapeDoubleQuotes(teamNameString) {
   if (teamNameString === "Saint John''s" || teamNameString === "Saint Mary''s") {
@@ -296,9 +296,12 @@ function initialize() {
   });
   //teamDepthSlider.noUiSlider.on('set', teamDepth);
 
+  var dataSelectionButton = document.getElementById('data-selection');
   var teamPerformanceButton = document.getElementById("team-performance");
   var teamDepthButton = document.getElementById("team-depth");
   var athleteDevButton = document.getElementById("athlete-dev");
+  dataSelectionButton.onload = collapsibles;
+  dataSelectionButton.onclick = collapsibles;
   teamPerformanceButton.onclick = collapsibles;
   teamDepthButton.onclick = collapsibles;
   athleteDevButton.onclick = collapsibles;

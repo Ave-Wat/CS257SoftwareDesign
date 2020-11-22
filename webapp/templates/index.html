@@ -41,9 +41,12 @@
         <button id="input-search">Search</button>
       </div>
     </div>
-    <div id="graphing-container">
-      <div id="intro-graphing">
-        <div id="intro-text"><p>Select all desired teams for the graphing analysis. To view a section of the analysis, click a collapsible below.</p></div>
+    <p id="data-selection">Data Selection</p>
+    <div id="analysis-container">
+      <div id=data-selection-content>
+        <div id="intro-text">
+          <p>Select all desired teams for the graphing analysis. To view a section of the analysis, click a collapsible below.</p>
+        </div>
         <div id="team-checkboxes">
           <input type="checkbox" name="augsburg" value="0" checked>
           <label for="augsburg">Augsburg University</label><br>
@@ -114,7 +117,7 @@
       <div class="anchor" id="athlete-dev-anchor"></div>
       <button type="button" class="collapsible" id="athlete-dev">Athlete Development</button>
       <div class="content">
-        <p>Creates a bar chart </p>
+        <p>Creates a bar chart. [insert detail on statistical terminology and how to interpret results] </p>
         <p>
           <select id="athlete-dev-metric">
             <option value="time">Time</option>
@@ -128,20 +131,20 @@
           </select>
         </p>
         <div>
-        <button id="input-athlete-dev">Submit</button>
-        <div id="athlete-dev-chart"></div>
+          <button id="input-athlete-dev">Submit</button>
+          <div id="athlete-dev-chart"></div>
+        </div>
       </div>
-    </div>
 
-  </main>
+    </main>
 
-  <footer>
-    <p>Data collected from the <a class="hover" target="_blank" href="https://www.miacathletics.com/sports/mxc/archives">MIAC archives</a>.</p>
-    <p>Website maintained by <a class="hover" target="_blank" href="https://github.com/aoki-sherwoodb">Ben Aoki-Sherwood</a> and <a class="hover" target="_blank" href="https://github.com/Ave-Wat">Avery Watts</a></p>
-  </footer>
-  <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}" defer></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='nouislider.min.js') }}"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='plotly.js') }}"></script>
-</body>
-</html>
+    <footer>
+      <p>Data collected from the <a class="hover" target="_blank" href="https://www.miacathletics.com/sports/mxc/archives">MIAC archives</a>.</p>
+      <p>Website maintained by <a class="hover" target="_blank" href="https://github.com/aoki-sherwoodb">Ben Aoki-Sherwood</a> and <a class="hover" target="_blank" href="https://github.com/Ave-Wat">Avery Watts</a></p>
+    </footer>
+    <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}" defer></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='nouislider.min.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='plotly.js') }}"></script>
+  </body>
+  </html>

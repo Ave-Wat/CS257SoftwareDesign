@@ -152,21 +152,29 @@ button {
   color: var(--main-darkblue);
   margin-left: 1px;
   padding: 1px;
-
 }
 
-#graphing-container {
+#data-selection {
+  margin: auto;
+  padding: 10px;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--main-darkblue);
+  color: var(--main-whitegreen);
+  font-size: 20px;
+}
+
+#analysis-container {
   background-color: var(--main-whitegreen);
   color: var(--main-darkblue);
-  padding: 1px 1px;
+  padding: 2px 2px 0px 2px;
   border-style: solid;
   border-top: none;
   border-color: var(--main-darkblue);
   border-width: 1px;
 }
 
-#intro-graphing {
-  padding: 15px 15px 20px 15px;
+#data-selection-content {
+  padding: 15px;
 }
 
 #intro-text {
@@ -175,6 +183,7 @@ button {
 
 #team-checkboxes{
   padding-left: 10px;
+  padding-bottom: 10px;
 }
 
 /* the button that is used to open and close the collapsible content */
@@ -189,14 +198,22 @@ button {
   cursor: pointer;
   text-align: left;
   font-size: 20px;
-  border: none;
   outline: none;
-}
-
-#team-performance, #team-depth{
   border-style: none none solid none;
   border-color: var(--main-whitegreen);
-  border-width: 1px;
+  border-width: 2px;
+}
+
+.active, .collapsible:hover {
+  background-color: #0083b0;
+}
+
+.content {
+  padding: 15px 15px;
+  display: none;
+  overflow: hidden;
+  background-color: var(--main-whitegreen);
+  color: var(--main-darkblue);
 }
 
 #teams-performances-chart{
@@ -210,19 +227,6 @@ button {
 
 #athlete-dev-chart {
   margin: 50px;
-}
-
-.active, .collapsible:hover {
-  background-color: #0083b0;
-}
-
-/* hidden by default */
-.content {
-  padding: 15px 15px;
-  display: none;
-  overflow: hidden;
-  background-color: var(--main-whitegreen);
-  color: var(--main-darkblue);
 }
 
 #team-depth-slider {
