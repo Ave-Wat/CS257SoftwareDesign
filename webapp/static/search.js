@@ -20,6 +20,10 @@ function initialize() {
   .then((response) => response.json())
 
   .then(function(searchResults) {
+    if (searchResults === {}) {
+      alert('no results');
+      return;
+    }
     if (searchField == 'athletes') {
       displayAthletesResults(searchResults);
     } else if (searchField == 'teams') {
@@ -54,7 +58,7 @@ function displayAthletesResults(athletesDict) {
     divBody = athleteEntry + divBody;
   }
   var resultsDivElement = document.getElementById('search-results');
-  resultsDivElement.innerHTML = divBody;
+  resultsDivElement.innerHTML = parseEmptySearchResults(divBody);
 }
 
 function displayTeamsResults(teamsDict) {
@@ -76,7 +80,7 @@ function displayTeamsResults(teamsDict) {
     divBody = teamEntry + divBody;
   }
   var resultsDivElement = document.getElementById('search-results');
-  resultsDivElement.innerHTML = divBody;
+  resultsDivElement.innerHTML = parseEmptySearchResults(divBody);
 }
 
 function displayYearResults(yearResults) {
@@ -103,8 +107,18 @@ function displayYearResults(yearResults) {
   }
   divBody += '</table>';
   var resultsDivElement = document.getElementById('search-results');
-  resultsDivElement.innerHTML = divBody;
+  resultsDivElement.innerHTML = parseEmptySearchResults(divBody);
 }
+
+//provides a feedback string when no search results are found
+function parseEmptySearchResults(resultsString) {
+  if (resultsString === '') {
+    return 'No Results Found.';
+  } else {
+    return resultsString;
+  }
+}
+
 // Returns the base URL of the API, onto which endpoint components can be appended.
 function getAPIBaseURL() {
     var baseURL = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/api';
