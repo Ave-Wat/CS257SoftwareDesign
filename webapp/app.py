@@ -6,7 +6,7 @@
     A tiny Flask application that provides a website with an accompanying
     API (which is also tiny) to support that website.
 
-    Your website and API will be more complex.
+    For use with Avery Watts and Ben Aoki-Sherwood's MIAC webapp API.
 '''
 import sys
 import flask

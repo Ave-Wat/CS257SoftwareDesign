@@ -203,14 +203,14 @@ button {
 }
 
 #slider-content-container{
-    flex: 1.5;
+    flex: 1.4;
 }
 
 #year-slider {
   margin: 20px;
   margin-bottom: 40px;
   max-width: 600px;
-  min-width: 600px;
+  min-width: 450px;
 }
 
 #year-slider .noUi-connect {

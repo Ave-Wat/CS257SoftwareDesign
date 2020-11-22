@@ -341,7 +341,7 @@ function getTeamColor(team) {
   return -1;
 }
 
-//bc of SQL, we needed a way for our output to not have: '' in it.
+//because of SQL, we need to replace '' with ' in team names
 function escapeDoubleQuotes(teamNameString) {
   if (teamNameString === "Saint John''s" || teamNameString === "Saint Mary''s") {
     teamNameString = teamNameString.replace("''", "'");
