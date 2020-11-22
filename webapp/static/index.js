@@ -284,6 +284,10 @@ function getTeamSpreadPlotTitle() {
   return title;
 }
 
+/*
+* Returns a string expression of the year range (ie "2010-2015")
+* selected by the year slider for use in chart titles.
+*/
 function getYearRangeAsString() {
   var yearsList = getYearsList();
   var yearRange = '';
@@ -295,6 +299,10 @@ function getYearRangeAsString() {
   return yearRange;
 }
 
+/*
+* prints a usage statement to the Athlete Development div, to be used
+* in the event of incorrect usage (ie only one year selected)
+*/
 function athleteDevUsage() {
   var usageStatement = 'To view athlete development charts, please select multiple years on the year slider.';
   var divElement = document.getElementById('athlete-dev-chart');
@@ -409,7 +417,7 @@ function getYearsList() {
   return yearsList;
 }
 
-function changeSelectAllBox(checkbox) {
+function onChangeSelectAllBox(checkbox) {
   var teamCheckboxes = document.getElementById('team-checkboxes');
   if (checkbox.checked) {
     for (var i = 0; i < teamCheckboxes.children.length; i++ ) {
@@ -422,9 +430,9 @@ function changeSelectAllBox(checkbox) {
   }
 }
 
-
 function initialize() {
   var searchButton = document.getElementById("input-search");
+  //enter-key functionality for the search bar
   document.getElementById("champ-search")
   .addEventListener("keyup", function(event) {
     event.preventDefault();
@@ -438,15 +446,12 @@ function initialize() {
 
   var selectAllCheckbox = document.getElementById('select-all');
   selectAllCheckbox.addEventListener('change', (event) => {
-    changeSelectAllBox(selectAllCheckbox);
+    onChangeSelectAllBox(selectAllCheckbox);
   })
 
-  //var dataSelectionButton = document.getElementById('data-selection');
   var teamPerformanceButton = document.getElementById('team-performance');
   var teamSpreadButton = document.getElementById('team-spread');
   var athleteDevButton = document.getElementById('athlete-dev');
-  //dataSelectionButton.onload = collapsibles;
-  //dataSelectionButton.onclick = collapsibles;
   teamPerformanceButton.onclick = collapsibles;
   teamSpreadButton.onclick = collapsibles;
   athleteDevButton.onclick = collapsibles;

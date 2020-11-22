@@ -12,16 +12,9 @@ import json
 import config
 import psycopg2
 
-########### Initializing Flask ###########
-# We're using a Flask "Blueprint" to enable us to put the website pages
-# in the main Flask application (in books_webapp.py) and the API over
-# here. Since the website and the API are conceptually separate, I like
-# to keep them in separate files. This gets more worthwhile as the
-# application grows.
+#Initializing Flask
 api = flask.Blueprint('api', __name__)
 
-
-########### Utility functions ###########
 def get_connection():
     ''' Returns a connection to the database described in the
         config module. May raise an exception as described in the
@@ -68,22 +61,6 @@ def search_athletes(keyword):
     cursor.close()
 
     return athletes_dict
-    '''
-    query = 'SELECT athletes.name, place, time, teams.name, year
-                FROM athletes, teams, individual_performances, meets
-                WHERE ath_id = athletes.id
-                AND team_id=teams.id
-                AND meet_id=meets.id
-                AND LOWER(athletes.name) LIKE %s'
-    query_argument = '%' + keyword.lower() + '%'
-    cursor = get_cursor(query, (query_argument,))
-    athletes_list = []
-    for row in cursor:
-        place = parse_DNF(row[1])
-        athlete = {'name': row[0], 'team': row[3], 'place': place, 'time': convert_time_to_minutes(row[2]), 'year': row[4]}
-        athletes_list.append(athlete)
-    cursor.close()
-    return athletes_list'''
 
 def search_teams(keyword):
     #{team:{'location':location, 'performances':{year:[place, points]},...}}
@@ -103,20 +80,6 @@ def search_teams(keyword):
     cursor.close()
 
     return teams_dict
-
-    # query = ''' SELECT teams.name, place, points, year, teams.location
-    #             FROM teams, meets, team_performances
-    #             WHERE team_id=teams.id
-    #             AND meet_id=meets.id
-    #             AND LOWER(teams.name) LIKE %s '''
-    # query_argument = '%' + keyword.lower() + '%'
-    # team_performances_list = []
-    # cursor = get_cursor(query, (query_argument,))
-    # for row in cursor:
-    #     team_performance = {'name': row[0], 'location': row[4], 'place': row[1], 'points': row[2], 'year': row[3]}
-    #     team_performances_list.append(team_performance)
-    # cursor.close()
-    # return team_performances_list
 
 def search_years(keyword):
     teams_query = ''' SELECT teams.name, place, points, meets.location
@@ -146,7 +109,7 @@ def search_years(keyword):
 
 @api.route('/teams_performances')
 def get_teams_performances():
-    '''returns a dictionary as such: {team1: [list of places for the given years in chronological order], team2: [(same)], etc for all teams in team_codes}'''
+    '''returns a JSON dictionary as such: {team1: [list of places for the given years in chronological order], team2: [(same)], etc for all teams in team_codes}'''
     '''input: ?metric=['place','points']&teams={team_codes}&years={years}
     	team_codes is a list of numbers 0-10 corresponding to a particular MIAC team alphabetically
         years is a string of the years to be queried separated by commas'''
@@ -222,7 +185,7 @@ def athlete_development():
     return json.dumps(teams_athlete_performances)
 
 def get_athlete_performances_by_team(team_name, calculate_by, years):
-    '''returns a dict with athlete names as keys and a list of lists, so that: {athlete_name: [[time, year], etc for multiple years], etc for multiple athletes}'''
+    '''returns a dict with athlete names as keys and a list of lists, so that: {athlete_name: [[time/place, year], etc for multiple years], etc for multiple athletes}'''
     query = "SELECT athletes.name," + calculate_by + ", year FROM teams, athletes, meets, individual_performances, athlete_team_links WHERE individual_performances.team_id = teams.id AND meet_id = meets.id AND teams.name = '" + team_name + "' AND teams.id = athlete_team_links.team_id AND athlete_team_links.ath_id = athletes.id AND individual_performances.ath_id = athletes.id AND year IN " + years + "ORDER BY year"
     #"SELECT athletes.name, time, teams.name FROM teams, athletes, meets, individual_performances, athlete_team_links WHERE individual_performances.team_id = teams.id AND meet_id = meets.id AND teams.name = 'Carleton' AND teams.id = athlete_team_links.team_id AND athlete_team_links.ath_id = athletes.id AND individual_performances.ath_id = athletes.id;"
 
@@ -238,8 +201,8 @@ def get_athlete_performances_by_team(team_name, calculate_by, years):
 
     return performances_dict
 
-'''methods below are used for multiple methods'''
 def get_cursor(query, query_arguments):
+    '''Sanitizes the input arguments if any are passed in. If an empty string is passed in for query_arguments, executes a default query'''
     try:
         connection = get_connection()
         cursor = connection.cursor()
@@ -272,7 +235,7 @@ def get_team_name(team_id):
 
 def parse_DNF(place):
     '''Handles the case when an athlete entered the race but Did Not Finish,
-    indicating DNF if this is the case'''
+    indicating 'DNF' if this is the case'''
     if place == None:
         return 'DNF'
     else:
