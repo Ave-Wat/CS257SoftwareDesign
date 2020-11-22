@@ -111,7 +111,7 @@ function teamDepthAnalysis(){
 
 function athleteDevelopmentAnalysis (){
   var metric = document.getElementById('athlete-dev-metric').value;
-  var checkBoxValuesString = getTeamCheckboxes();
+  var checkBoxValuesString = getTeamCheckboxes("team-checkboxes");
   var url = getAPIBaseURL() + '/athlete_development?calculate_by=' + metric + '&teams=' + checkBoxValuesString;
   var giveAvgAsPercent = false;
   var giveAvgAsMedian = false;
