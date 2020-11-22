@@ -49,20 +49,12 @@ function teamPerformanceAnalysis(){
 
     var divBody = '<table>';
     for (var team in teamsPerformancesDict) {
-      divBody += '<tr>';
-      divBody += '<td>' + team + '</td>';
-      //var color = teamColorMethod();
-      var trace = {x: yearsList, y: teamsPerformancesDict[team], name: team};
+      var color = teamColor(team);
+      var trace = {x: yearsList, y: teamsPerformancesDict[team], name: team, marker: {color: color}};
       traceList.push(trace);
-      for (var i = 0; i < teamsPerformancesDict[team].length; i ++) {
-        divBody += '<td>' + teamsPerformancesDict[team][i] + '</td>';
-      }
-      divBody += '</tr>';
     }
-    divBody += '</table>';
 
-    /* Initialize the chart with the above settings */
-    var layout = {yaxis: {autorange:'reversed'}};
+    var layout = {yaxis: {autorange:'reversed', dtick: 1, title: {text: 'Place', font: {family:'Roboto'}}}, xaxis:{dtick: 1, title: {text: 'Year', font: {family:'Roboto'}}}, title: {text: 'Team Performances', font: {family:'Roboto'}}};
     Plotly.newPlot('teams-performances-chart', traceList, layout);
 
     var resultsDivElement = document.getElementById('teams-performances-content-div');
@@ -179,6 +171,17 @@ function getTeamCheckboxes() {
   }
   var checkboxValuesString = checkboxTeamsValues.join();
   return checkboxValuesString;
+}
+
+function teamColor(team) {
+  var teamList = ['Augsburg', 'Bethel', 'Carleton', 'Concordia-Moorhead', 'Gustavus Adolphus', 'Hamline', 'Macalester', "Saint John''s", "Saint Mary''s", 'St. Olaf', 'St. Thomas'];
+  var colorList = ['#800000', '#000080', '#f2c649', '#A52A2A', '#000000', '#FF0000', '#FFA500', '#add8e6', '#ffcccb', '#d4af37', '#551a8b'];
+  for (var i = 0; i < teamList.length; i ++){
+    if(teamList[i] == team){
+      return colorList[i];
+    }
+  }
+  return -1;
 }
 
 function getAPIBaseURL() {
