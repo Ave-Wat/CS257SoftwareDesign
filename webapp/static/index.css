@@ -2,6 +2,14 @@
     style.css
     3 November 2020
     CSS for index.html (MIAC Championships website)
+
+    Uses the noUiSlider library: https://refreshless.com/nouislider/
+    Copyright © 2020 Leon Gersen
+    Open source under the MIT license.
+
+    Uses the Plotly library: https://plotly.com/javascript/
+    Copyright © 2020 Plotly
+    Open source under the MIT license.
 */
 :root {
   --main-darkblue: #00688B;
@@ -41,7 +49,7 @@ nav {
   float: right;
   display: flex;
   width: 45vw;
-  min-width: 570px;
+  min-width: 575px;
 }
 
 @media (max-width: 1225px) {
@@ -86,6 +94,10 @@ nav a {
   position: relative;
   top: -100px;
   visibility: hidden;
+}
+
+.bold {
+  font-weight: bold;
 }
 
 #search {
@@ -174,11 +186,30 @@ button {
 
 #intro-text {
   padding-bottom: 10px;
+  float: top;
+}
+
+#data-selectors {
+  display: flex;
 }
 
 #team-checkboxes{
+  flex: 1;
+  float: right;
   padding-left: 10px;
   padding-bottom: 10px;
+}
+
+#year-slider {
+  flex: 1.8;
+  float: left;
+  margin: 20px;
+  margin-bottom: 40px;
+  max-width: 600px;
+}
+
+#year-slider .noUi-connect {
+  background: var(--main-darkblue);
 }
 
 #analysis-container {
@@ -220,27 +251,15 @@ button {
   color: var(--main-darkblue);
 }
 
-#teams-performances-chart{
+#teams-performances-chart, #athlete-dev-chart, .year-boxplot{
   margin: 50px;
-}
-
-#athlete-dev-metric, #athlete-dev-data-format {
   font-family: 'Roboto', sans-serif;
   color: var(--main-darkblue);
 }
-
-#athlete-dev-chart {
-  margin: 50px;
-}
-
-#team-depth-slider {
-  margin: 20px;
-  margin-bottom: 40px;
-  max-width: 600px;
-}
-
-#team-depth-slider .noUi-connect {
-  background: var(--main-darkblue);
+/*styling for drop-down menus in collapsibles*/
+#athlete-dev-metric, #athlete-dev-data-format, #team-performances-metric, #team-spread-athlete-limit {
+  font-family: 'Roboto', sans-serif;
+  color: var(--main-darkblue);
 }
 
 footer {

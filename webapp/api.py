@@ -12,16 +12,9 @@ import json
 import config
 import psycopg2
 
-########### Initializing Flask ###########
-# We're using a Flask "Blueprint" to enable us to put the website pages
-# in the main Flask application (in books_webapp.py) and the API over
-# here. Since the website and the API are conceptually separate, I like
-# to keep them in separate files. This gets more worthwhile as the
-# application grows.
+#Initializing Flask
 api = flask.Blueprint('api', __name__)
 
-
-########### Utility functions ###########
 def get_connection():
     ''' Returns a connection to the database described in the
         config module. May raise an exception as described in the
@@ -68,22 +61,6 @@ def search_athletes(keyword):
     cursor.close()
 
     return athletes_dict
-    '''
-    query = 'SELECT athletes.name, place, time, teams.name, year
-                FROM athletes, teams, individual_performances, meets
-                WHERE ath_id = athletes.id
-                AND team_id=teams.id
-                AND meet_id=meets.id
-                AND LOWER(athletes.name) LIKE %s'
-    query_argument = '%' + keyword.lower() + '%'
-    cursor = get_cursor(query, (query_argument,))
-    athletes_list = []
-    for row in cursor:
-        place = parse_DNF(row[1])
-        athlete = {'name': row[0], 'team': row[3], 'place': place, 'time': convert_time_to_minutes(row[2]), 'year': row[4]}
-        athletes_list.append(athlete)
-    cursor.close()
-    return athletes_list'''
 
 def search_teams(keyword):
     #{team:{'location':location, 'performances':{year:[place, points]},...}}
@@ -103,20 +80,6 @@ def search_teams(keyword):
     cursor.close()
 
     return teams_dict
-
-    # query = ''' SELECT teams.name, place, points, year, teams.location
-    #             FROM teams, meets, team_performances
-    #             WHERE team_id=teams.id
-    #             AND meet_id=meets.id
-    #             AND LOWER(teams.name) LIKE %s '''
-    # query_argument = '%' + keyword.lower() + '%'
-    # team_performances_list = []
-    # cursor = get_cursor(query, (query_argument,))
-    # for row in cursor:
-    #     team_performance = {'name': row[0], 'location': row[4], 'place': row[1], 'points': row[2], 'year': row[3]}
-    #     team_performances_list.append(team_performance)
-    # cursor.close()
-    # return team_performances_list
 
 def search_years(keyword):
     teams_query = ''' SELECT teams.name, place, points, meets.location
@@ -146,48 +109,58 @@ def search_years(keyword):
 
 @api.route('/teams_performances')
 def get_teams_performances():
-    '''returns a dictionary as such: {team1: [list of places from 2009 to 2019], team2: [(same)], etc for all teams in team_codes}'''
-    '''input: ?teams={team_codes}
-    	*team_codes is a list of numbers 0-10 corresponding to a particular MIAC team alphabetically'''
+    '''returns a JSON dictionary as such: {team1: [list of places for the given years in chronological order], team2: [(same)], etc for all teams in team_codes}'''
+    '''input: ?metric=['place','points']&teams={team_codes}&years={years}
+    	team_codes is a list of numbers 0-10 corresponding to a particular MIAC team alphabetically
+        years is a string of the years to be queried separated by commas'''
     team_codes = flask.request.args.get('teams').split(',')
+    metric = flask.request.args.get('metric')
+    years_string = '(' + flask.request.args.get('years') + ')'
     teams_performances = {}
     for team_id in team_codes:
         team_name = get_team_name(team_id)
-        teams_performances[team_name] = get_single_team_performances(team_name)
+        teams_performances[team_name] = get_single_team_performances(team_name, metric, years_string)
 
     return json.dumps(teams_performances)
 
-def get_single_team_performances(team_name):
-    query = "SELECT teams.name, place, year FROM teams, meets, team_performances WHERE team_performances.team_id = teams.id AND teams.name = '" + team_name + "' AND meets.id=meet_id ORDER BY year"
+def get_single_team_performances(team_name, metric, years):
+    query = "SELECT " + metric + " FROM teams, meets, team_performances WHERE team_performances.team_id = teams.id AND teams.name = '" + team_name + "' AND meets.id=meet_id AND year IN " + years + " ORDER BY year"
     #SELECT teams.name, place, year FROM teams, meets, team_performances WHERE team_performances.team_id = teams.id AND teams.name='Carleton' AND meets.id=meet_id ORDER BY year;
     cursor = get_cursor(query, '')
     team_performances = []
     for row in cursor:
-        team_performances.append(row[1])
+        team_performances.append(row[0])
     cursor.close()
     return team_performances
 
-@api.route('/team_depth')
-def get_teams_depth():
+@api.route('/team_spread')
+def get_team_spreads():
     '''returns a JSON dict of dictionaries as such: {"2019":{team1:[list of 7 times], team2:[list of 7 times], etc for each selected team}, "2018":{(as before)}, etc for each selected year}'''
-    '''input: ?teams={team_codes}&years={years}
+    '''input: ?teams={team_codes}&years={years}&limit=[true, false]
         team_codes is a list of numbers 0-13 corresponding to a particular MIAC team alphabetically and
-        years is a list of the years to be included in the query'''
+        years is string with each year included in the query separated by commas
+        limit is a boolean indicating whether the query is limited to each team's top 7 athletes or not'''
 
     teams = flask.request.args.get('teams').split(",")
     years = flask.request.args.get('years').split(",")
-    teams_depth_dict = {}
+    limit_string = flask.request.args.get('limit')
+    limit = True
+    if limit_string == 'false':
+        limit = False
+    team_spreads_dict = {}
     for year in years:
         teams_dicts = {}
         for team_id in teams:
             team_name = get_team_name(team_id)
-            teams_dicts[team_name] = get_team_depth_by_year(team_name, year)
-        teams_depth_dict[year] = teams_dicts
-    return json.dumps(teams_depth_dict)
+            teams_dicts[team_name] = get_team_spread_by_year(team_name, year, limit)
+        team_spreads_dict[year] = teams_dicts
+    return json.dumps(team_spreads_dict)
 
-def get_team_depth_by_year(team_name, year):
+def get_team_spread_by_year(team_name, year, limit):
     '''returns a list of up to 7 times'''
-    query = "SELECT time FROM teams, athletes, meets, individual_performances, athlete_team_links WHERE individual_performances.team_id = teams.id AND meet_id = meets.id AND teams.name = '" + team_name + "' AND year = '" + year + "' AND teams.id = athlete_team_links.team_id AND athlete_team_links.ath_id = athletes.id AND individual_performances.ath_id = athletes.id LIMIT 7"
+    query = "SELECT time FROM teams, athletes, meets, individual_performances, athlete_team_links WHERE individual_performances.team_id = teams.id AND meet_id = meets.id AND teams.name = '" + team_name + "' AND year = '" + year + "' AND teams.id = athlete_team_links.team_id AND athlete_team_links.ath_id = athletes.id AND individual_performances.ath_id = athletes.id"
+    if limit:
+        query += " LIMIT 7"
     cursor = get_cursor(query, '')
     performances_list = []
     for row in cursor:
@@ -199,20 +172,21 @@ def get_team_depth_by_year(team_name, year):
 def athlete_development():
     ''' returns a JSON dictionary of lists with teams as keys corresponding to a list of average change in athlete
     	performance (measured by place or time depending on the sort_by parameter) ordered by year for the team
-        input: ?calculate_by=[place, time]&teams={team_codes}, team_codes as before'''
+        input: ?calculate_by=[place, time]&teams={team_codes}&years={years}'''
     team_codes = flask.request.args.get('teams').split(",")
     calculate_by = flask.request.args.get('calculate_by')
+    years_string = '(' + flask.request.args.get('years') + ')'
 
     teams_athlete_performances = {}
     for team_id in team_codes:
         team_name = get_team_name(team_id)
-        teams_athlete_performances[team_name] = get_athlete_performances_by_team(team_name, calculate_by)
+        teams_athlete_performances[team_name] = get_athlete_performances_by_team(team_name, calculate_by, years_string)
 
     return json.dumps(teams_athlete_performances)
 
-def get_athlete_performances_by_team(team_name, calculate_by):
-    '''returns a dict with athlete names as keys and a list of lists, so that: {athlete_name: [[time, year], etc for multiple years], etc for multiple athletes}'''
-    query = "SELECT athletes.name," + calculate_by + ", year FROM teams, athletes, meets, individual_performances, athlete_team_links WHERE individual_performances.team_id = teams.id AND meet_id = meets.id AND teams.name = '" + team_name + "' AND teams.id = athlete_team_links.team_id AND athlete_team_links.ath_id = athletes.id AND individual_performances.ath_id = athletes.id"
+def get_athlete_performances_by_team(team_name, calculate_by, years):
+    '''returns a dict with athlete names as keys and a list of lists, so that: {athlete_name: [[time/place, year], etc for multiple years], etc for multiple athletes}'''
+    query = "SELECT athletes.name," + calculate_by + ", year FROM teams, athletes, meets, individual_performances, athlete_team_links WHERE individual_performances.team_id = teams.id AND meet_id = meets.id AND teams.name = '" + team_name + "' AND teams.id = athlete_team_links.team_id AND athlete_team_links.ath_id = athletes.id AND individual_performances.ath_id = athletes.id AND year IN " + years + "ORDER BY year"
     #"SELECT athletes.name, time, teams.name FROM teams, athletes, meets, individual_performances, athlete_team_links WHERE individual_performances.team_id = teams.id AND meet_id = meets.id AND teams.name = 'Carleton' AND teams.id = athlete_team_links.team_id AND athlete_team_links.ath_id = athletes.id AND individual_performances.ath_id = athletes.id;"
 
     cursor = get_cursor(query, '')
@@ -220,15 +194,15 @@ def get_athlete_performances_by_team(team_name, calculate_by):
 
     for row in cursor:
         if row[0] in performances_dict:
-            performances_dict[row[0]].insert(0, [row[1], row[2]])
+            performances_dict[row[0]].append([row[1], row[2]])
         else:
             performances_dict[row[0]] = [[row[1], row[2]]]
     cursor.close()
 
     return performances_dict
 
-'''methods below are used for multiple methods'''
 def get_cursor(query, query_arguments):
+    '''Sanitizes the input arguments if any are passed in. If an empty string is passed in for query_arguments, executes a default query'''
     try:
         connection = get_connection()
         cursor = connection.cursor()
@@ -261,7 +235,7 @@ def get_team_name(team_id):
 
 def parse_DNF(place):
     '''Handles the case when an athlete entered the race but Did Not Finish,
-    indicating DNF if this is the case'''
+    indicating 'DNF' if this is the case'''
     if place == None:
         return 'DNF'
     else:

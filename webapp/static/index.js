@@ -35,30 +35,32 @@ function collapsibles(){
 
 function teamPerformanceAnalysis(){
   var checkBoxValuesString = getTeamCheckboxes();
-  var url = getAPIBaseURL() + '/teams_performances?teams=' + checkBoxValuesString;
+  var metric = document.getElementById('team-performances-metric').value;
+  var yearsList = getYearsList();
+  var yearsAsString = yearsList.join(',');
+  var url = getAPIBaseURL() + '/teams_performances?metric=' + metric + '&teams=' + checkBoxValuesString + '&years=' + yearsAsString;
 
   fetch(url, {method: 'get'})
 
   .then((response) => response.json())
 
   .then(function(teamsPerformancesDict) {
-    //input: {team1: [list of places from 2009 to 2019], team2: [(same)]}
+    //input: {team1: [list of places/points from 2009 to 2019], team2: [(same)]}
     var teamPerformancesChartData = {};
-    var yearsList = ['2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019'];
     var traceList = [];
 
     for (var team in teamsPerformancesDict) {
       teamName = escapeDoubleQuotes(team);
-      var color = teamColor(teamName);
+      var color = getTeamColor(teamName);
       var trace = {x: yearsList, y: teamsPerformancesDict[team], name: teamName, marker: {color: color}};
       traceList.push(trace);
     }
-
-    var layout = {yaxis: {autorange:'reversed', dtick: 1, title: {text: 'Place', font: {family:'Roboto'}}}, xaxis:{dtick: 1, title: {text: 'Year', font: {family:'Roboto'}}}, title: {text: 'Team Performances', font: {family:'Roboto'}}};
+    var plotTickSeparation = 1;
+    if (metric === 'points') {
+      plotTickSeparation = 15;
+    }
+    var layout = {yaxis: {autorange:'reversed', dtick: plotTickSeparation, title: {text: metric.charAt(0).toUpperCase() + metric.slice(1), font: {family:'Roboto'}}}, xaxis:{dtick: 1, title: {text: 'Year', font: {family:'Roboto'}}}, title: {text: 'Team Performances for ' + getYearRangeAsString(), font: {family:'Roboto'}}};
     Plotly.newPlot('teams-performances-chart', traceList, layout);
-
-    var resultsDivElement = document.getElementById('teams-performances-content-div');
-    resultsDivElement.innerHTML = divBody;
   })
 
   .catch(function(error) {
@@ -66,41 +68,89 @@ function teamPerformanceAnalysis(){
   });
 }
 
-function teamDepthAnalysis(){
-  //var checkBoxYearsValuesString = getTeamCheckboxes('team-depth-year-checkboxes');
+function teamSpreadAnalysis(){
+  var yearsAsString = getYearsList().join(',');
+  var listOfYearStrings = yearsAsString.split(',');
   var checkBoxTeamsValuesString = getTeamCheckboxes();
-  var url = getAPIBaseURL() + '/team_depth?teams=' + checkBoxTeamsValuesString + '&years='+ checkBoxYearsValuesString;
+  var limitSelection = document.getElementById('team-spread-athlete-limit').value;
+  var limit = 'true';
+  if (limitSelection === 'team') {
+    limit = 'false';
+  }
+  var url = getAPIBaseURL() + '/team_spread?teams=' + checkBoxTeamsValuesString + '&years='+ yearsAsString + '&limit=' + limit;
 
   fetch(url, {method: 'get'})
   .then((response) => response.json())
-  .then(function(teamDepthByYearDict) {
+  .then(function(teamSpreadByYearDict) {
     //{"2019":{team1:[list of 7 times], team2:[list of 7 times], etc for each selected team}, "2018":{(as before)}, etc for each selected year}
-    var divBody = '<table>';
-    for (var yearKey in teamDepthByYearDict) {
-      for (var teamKey in teamDepthByYearDict[yearKey]) {
-        divBody += '<tr>';
-        divBody += '<td>' + teamKey + '</td>';
-        divBody += '<td>' + yearKey + '</td>';
-        for (var i = 0; i < teamDepthByYearDict[yearKey][teamKey].length; i ++){
-          divBody += '<td>' + teamDepthByYearDict[yearKey][teamKey][i] + '</td>';
-        }
-        divBody += '</tr>';
-      }
+    divBody = '';
+    for (var i = listOfYearStrings.length - 1; i >= 0; i--) {
+      divBody += '<div class="year-boxplot" id=' + listOfYearStrings[i] + '></div>';
     }
-    divBody += '</table>';
-    var resultsDivElement = document.getElementById('teams-depth-content-div');
-    resultsDivElement.innerHTML = divBody;
+    var contentDivElement = document.getElementById('team-spread-charts');
+    contentDivElement.innerHTML = divBody;
+    for (var i = listOfYearStrings.length - 1; i >= 0; i--) {
+      var yearKey = listOfYearStrings[i];
+      plotTeamSpread(yearKey, teamSpreadByYearDict[yearKey]);
+    }
   })
 
   .catch(function(error) {
     console.log(error);
   });
+}
+
+function plotTeamSpread(yearString, teamSpreadsThisYear) {
+  var data = [];
+  for (var teamNameKey in teamSpreadsThisYear) {
+    var times = teamSpreadsThisYear[teamNameKey];
+    for (var i = 0; i < times.length; i++) {
+      if (times[i] === null) {
+        times.splice(i, 1);
+      }
+      times[i] = convertSecondsToMinutes(times[i]);
+    }
+    var teamName = escapeDoubleQuotes(teamNameKey);
+    var teamColor = getTeamColor(teamName);
+    var teamTrace = {
+      y: times,
+      type: 'box',
+      name: teamName,
+      marker: {color: teamColor}
+    }
+    data.push(teamTrace);
+  }
+  var layout = {
+    title: {
+      text: getTeamSpreadPlotTitle() + yearString,
+      font: {
+        family: 'Roboto'
+      }
+    },
+    yaxis: {
+      title: {
+        text: 'Time (min)',
+        font: {
+          family: 'Roboto'
+        }
+      },
+      autorange: 'reversed',
+      dtick: 1
+    }
+  }
+  Plotly.newPlot(yearString, data, layout);
 }
 
 function athleteDevelopmentAnalysis (){
   var metric = document.getElementById('athlete-dev-metric').value;
   var checkBoxValuesString = getTeamCheckboxes("team-checkboxes");
-  var url = getAPIBaseURL() + '/athlete_development?calculate_by=' + metric + '&teams=' + checkBoxValuesString;
+  var yearsList = getYearsList();
+  if (yearsList.length < 2) {
+    athleteDevUsage();
+    return;
+  }
+  var yearsAsString = yearsList.join(',');
+  var url = getAPIBaseURL() + '/athlete_development?calculate_by=' + metric + '&teams=' + checkBoxValuesString + '&years=' + yearsAsString;
   var giveAvgAsPercent = false;
   var giveAvgAsMedian = false;
   var dataFormatSelector = document.getElementById('athlete-dev-data-format');
@@ -113,7 +163,7 @@ function athleteDevelopmentAnalysis (){
   fetch(url, {method: 'get'})
   .then((response) => response.json())
   .then(function(athletePerformances) {
-    //{team1:{athlete_name: [[time, year], etc for multiple years], etc for multiple athletes} team2:{}}
+    //{team1:{athlete_name: [[time, year],...],...}, team2:{},...}
     var athleteImprovementByTeam = {};
     for (var team in athletePerformances) {
       var athletesOnTeam = athletePerformances[team];
@@ -122,17 +172,26 @@ function athleteDevelopmentAnalysis (){
         var currAthleteResults = athletesOnTeam[athlete];
         var currAthleteYearlyImprovements = [];
         if (currAthleteResults.length === 1) {
+          //skipping athletes who only competed 1 year
           continue;
         } else {
           for (var i = 1; i < currAthleteResults.length; i++) {
-            var singleYearImprovement = currAthleteResults[i-1][0] - currAthleteResults[i][0];
-            if (giveAvgAsPercent) {
-              singleYearImprovement = (singleYearImprovement / currAthleteResults[i-1][0]) * 100;
+            var currYear = currAthleteResults[i][1];
+            var prevYear = currAthleteResults[i-1][1];
+            var currTime = currAthleteResults[i][0];
+            var prevTime = currAthleteResults[i-1][0];
+            if (currTime != null && prevTime != null){
+              var yearlyImprovement = (prevTime - currTime) / (currYear - prevYear);
+              if (giveAvgAsPercent) {
+                yearlyImprovement = (yearlyImprovement / currTime) * 100;
+              }
+              currAthleteYearlyImprovements.push(yearlyImprovement);
             }
-            currAthleteYearlyImprovements.push(singleYearImprovement);
           }
           var athleteAvgYearlyImprovement = calculateMean(currAthleteYearlyImprovements);
-          avgAthleteYearlyImprovements.push(athleteAvgYearlyImprovement);
+          if (athleteAvgYearlyImprovement != null) {
+            avgAthleteYearlyImprovements.push(athleteAvgYearlyImprovement);
+          }
         }
       }
       if (giveAvgAsMedian) {
@@ -151,27 +210,30 @@ function athleteDevelopmentAnalysis (){
 }
 
 function plotAthleteDevelopment(athleteDevDict) {
+  document.getElementById('athlete-dev-chart').innerHTML = '';
   var data = [];
   for (var teamKey in athleteDevDict) {
     var teamName = escapeDoubleQuotes(teamKey);
+    var teamColor = getTeamColor(teamName);
     var teamTrace = {
       x: [teamName],
       y: [athleteDevDict[teamKey].toFixed(2)],
       name: teamName,
+      marker: {color: teamColor},
       type: 'bar'
     };
     data.push(teamTrace);
   }
   var layout = {
     title: {
-      text: 'Average Yearly Athlete Development From 2009-2019',
+      text: getAthleteDevPlotTitle(),
       font: {
         family: 'Roboto'
       }
     },
     yaxis: {
       title: {
-        text: getAthleteDevPlotYAxisTitle(),
+        text: getAthleteDevYAxisTitle(),
         font: {
           family: 'Roboto'
         }
@@ -182,9 +244,15 @@ function plotAthleteDevelopment(athleteDevDict) {
   Plotly.newPlot('athlete-dev-chart', data, layout);
 }
 
-function getAthleteDevPlotYAxisTitle() {
+function getAthleteDevPlotTitle() {
+  var title = 'Average Yearly Athlete Development By Team From ' + getYearRangeAsString();
+  return title;
+}
+
+function getAthleteDevYAxisTitle() {
   var yAxisTitle = '';
   var dataFormat = document.getElementById('athlete-dev-data-format').value.split(',');
+  var metric = document.getElementById('athlete-dev-metric');
   if (dataFormat[1] === 'mean') {
     yAxisTitle += 'Mean ';
   } else {
@@ -195,14 +263,56 @@ function getAthleteDevPlotYAxisTitle() {
   } else {
     yAxisTitle += 'Percent ';
   }
-  yAxisTitle += 'Change';
+  yAxisTitle += 'Change in ';
+  if (metric === 'place') {
+    yAxisTitle += 'Place';
+  } else {
+    yAxisTitle += 'Time';
+  }
   return yAxisTitle;
+}
+
+function getTeamSpreadPlotTitle() {
+  var limitSelection = document.getElementById('team-spread-athlete-limit').value;
+  var title = 'Distribution of ';
+  if (limitSelection === 'top7') {
+    title += 'Top 7 ';
+  } else {
+    title += 'All '
+  }
+  title += 'Times by Team in ';
+  return title;
+}
+
+/*
+* Returns a string expression of the year range (ie "2010-2015")
+* selected by the year slider for use in chart titles.
+*/
+function getYearRangeAsString() {
+  var yearsList = getYearsList();
+  var yearRange = '';
+  if (yearsList.length === 1) {
+    yearRange += yearsList[0].toString();
+  } else {
+    yearRange += yearsList[0] + '-' + yearsList[yearsList.length - 1];
+  }
+  return yearRange;
+}
+
+/*
+* prints a usage statement to the Athlete Development div, to be used
+* in the event of incorrect usage (ie only one year selected)
+*/
+function athleteDevUsage() {
+  var usageStatement = 'To view athlete development charts, please select multiple years on the year slider.';
+  var divElement = document.getElementById('athlete-dev-chart');
+  divElement.innerHTML = usageStatement;
 }
 
 function getTeamCheckboxes() {
   var checkboxDivTeams = document.getElementById('team-checkboxes');
   var checkboxTeamsValues = [];
-  for (var i = 0; i < checkboxDivTeams.children.length; i++ ) {
+  for (var i = 1; i < checkboxDivTeams.children.length; i++ ) {
     if (checkboxDivTeams.children[i].type == 'checkbox'){
       if(checkboxDivTeams.children[i].checked){
         checkboxTeamsValues.push(checkboxDivTeams.children[i].value);
@@ -213,7 +323,7 @@ function getTeamCheckboxes() {
   return checkboxValuesString;
 }
 
-function teamColor(team) {
+function getTeamColor(team) {
   var teamList = ['Augsburg', 'Bethel', 'Carleton', 'Concordia-Moorhead', 'Gustavus Adolphus', 'Hamline', 'Macalester', "Saint John's", "Saint Mary's", 'St. Olaf', 'St. Thomas'];
   var colorList = ['#800000', '#000080', '#f2c649', '#A52A2A', '#000000', '#FF0000', '#FFA500', '#add8e6', '#ffcccb', '#d4af37', '#551a8b'];
   for (var i = 0; i < teamList.length; i ++){
@@ -237,6 +347,9 @@ function getAPIBaseURL() {
 }
 
 function calculateMean(numberList) {
+  if (numberList.length === 0) {
+    return null;
+  }
   var sum = 0.0;
   for (var i = 0; i < numberList.length; i++) {
     sum += numberList[i];
@@ -245,6 +358,9 @@ function calculateMean(numberList) {
 }
 
 function calculateMedian(numberList) {
+  if (numberList.length === 0) {
+    return null;
+  }
   numberList.sort(function(a, b) {
     return a - b;
   });
@@ -256,11 +372,13 @@ function calculateMedian(numberList) {
   }
 }
 
-function compareNumbers(a, b) {
-  return a - b;
+function convertSecondsToMinutes(timeInSeconds) {
+  var timeInMinutes = (timeInSeconds / 60).toFixed(2);
+  return timeInMinutes;
 }
 
 function filterPips(value, type) {
+  //helper function for formatting the noUiSlider year slider
   if (type === 0) {
     return -1;
   } else {
@@ -268,20 +386,9 @@ function filterPips(value, type) {
   }
 }
 
-function initialize() {
-  var searchButton = document.getElementById("input-search");
-  document.getElementById("champ-search")
-  .addEventListener("keyup", function(event) {
-    event.preventDefault();
-    if (event.keyCode === 13) {
-      searchButton.click();
-    }
-  });
-  searchButton.onclick = onSearchButton;
-
-  //initializing team depth double year slider
-  var teamDepthSlider = document.getElementById('team-depth-slider');
-  noUiSlider.create(teamDepthSlider, {
+function initializeYearSlider() {
+  var yearSlider = document.getElementById('year-slider');
+  noUiSlider.create(yearSlider, {
     start: [2009, 2019],
     step: 1,
     connect: [false, true, false],
@@ -293,23 +400,66 @@ function initialize() {
       }
     }},
     range: {'min': [2009], 'max': [2019]},
+    orientation: 'horizontal',
   });
-  //teamDepthSlider.noUiSlider.on('set', teamDepth);
+}
 
-  var dataSelectionButton = document.getElementById('data-selection');
-  var teamPerformanceButton = document.getElementById("team-performance");
-  var teamDepthButton = document.getElementById("team-depth");
-  var athleteDevButton = document.getElementById("athlete-dev");
-  dataSelectionButton.onload = collapsibles;
-  dataSelectionButton.onclick = collapsibles;
+function getYearsList() {
+  var yearSlider = document.getElementById('year-slider');
+  var yearsList = [];
+  var startYear = parseInt(yearSlider.noUiSlider.get()[0]);
+  var endYear = parseInt(yearSlider.noUiSlider.get()[1]);
+  var currYear = startYear;
+  while (currYear <= endYear) {
+    yearsList.push(currYear);
+    currYear += 1;
+  }
+  return yearsList;
+}
+
+function onChangeSelectAllBox(checkbox) {
+  var teamCheckboxes = document.getElementById('team-checkboxes');
+  if (checkbox.checked) {
+    for (var i = 0; i < teamCheckboxes.children.length; i++ ) {
+      teamCheckboxes.children[i].checked = true;
+    }
+  } else {
+    for (var i = 0; i < teamCheckboxes.children.length; i++ ) {
+      teamCheckboxes.children[i].checked = false;
+    }
+  }
+}
+
+function initialize() {
+  var searchButton = document.getElementById("input-search");
+  //enter-key functionality for the search bar
+  document.getElementById("champ-search")
+  .addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode === 13) {
+      searchButton.click();
+    }
+  });
+  searchButton.onclick = onSearchButton;
+
+  initializeYearSlider();
+
+  var selectAllCheckbox = document.getElementById('select-all');
+  selectAllCheckbox.addEventListener('change', (event) => {
+    onChangeSelectAllBox(selectAllCheckbox);
+  })
+
+  var teamPerformanceButton = document.getElementById('team-performance');
+  var teamSpreadButton = document.getElementById('team-spread');
+  var athleteDevButton = document.getElementById('athlete-dev');
   teamPerformanceButton.onclick = collapsibles;
-  teamDepthButton.onclick = collapsibles;
+  teamSpreadButton.onclick = collapsibles;
   athleteDevButton.onclick = collapsibles;
 
-  var teamPerformanceAnalysisButton = document.getElementById("input-team-performances");
+  var teamPerformanceAnalysisButton = document.getElementById('input-team-performances');
   teamPerformanceAnalysisButton.onclick = teamPerformanceAnalysis;
-  var teamDepthAnalysisButton = document.getElementById('input-team-depth');
-  teamDepthAnalysisButton.onclick = teamDepthAnalysis;
+  var teamSpreadAnalysisButton = document.getElementById('input-team-spread');
+  teamSpreadAnalysisButton.onclick = teamSpreadAnalysis;
   var athleteDevButton = document.getElementById('input-athlete-dev');
   athleteDevButton.onclick = athleteDevelopmentAnalysis;
 }
