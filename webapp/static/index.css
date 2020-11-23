@@ -193,19 +193,24 @@ button {
   display: flex;
 }
 
+#teams-content{
+  flex: .5;
+}
+
 #team-checkboxes{
-  flex: 1;
-  float: right;
   padding-left: 10px;
   padding-bottom: 10px;
 }
 
+#slider-content-container{
+    flex: 1.5;
+}
+
 #year-slider {
-  flex: 1.8;
-  float: left;
   margin: 20px;
   margin-bottom: 40px;
   max-width: 600px;
+  min-width: 600px;
 }
 
 #year-slider .noUi-connect {

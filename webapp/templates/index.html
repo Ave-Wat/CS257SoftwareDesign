@@ -47,33 +47,39 @@
         <p>Select all desired teams and years for the graphing analyses below. To view a section of the analysis, click a collapsible below.</p>
       </div>
       <div id="data-selectors">
-        <div id="team-checkboxes">
-          <input type="checkbox" name="all" id="select-all" checked>
-          <label for="all"><span class="bold">Select/Unselect All</span></label><br>
-          <input type="checkbox" name="augsburg" value="0" checked>
-          <label for="augsburg">Augsburg University</label><br>
-          <input type="checkbox" name="bethel" value="1" checked>
-          <label for="bethel">Bethel University</label><br>
-          <input type="checkbox" name="carleton" value="2" checked>
-          <label for="carleton">Carleton College</label><br>
-          <input type="checkbox" name="concordia" value="3" checked>
-          <label for="concordia">Concordia College</label><br>
-          <input type="checkbox" name="gustavus" value="4"  checked>
-          <label for="gustavus">Gustavus Adolphus College</label><br>
-          <input type="checkbox" name="hamline" value="5"  checked>
-          <label for="hamline">Hamline University</label><br>
-          <input type="checkbox" name="macalester" value="6" checked>
-          <label for="macalester">Macalester College</label><br>
-          <input type="checkbox" name="john" value="7" checked>
-          <label for="john">St. John's University</label><br>
-          <input type="checkbox" name="mary" value="8" checked>
-          <label for="mary">St. Mary's University</label><br>
-          <input type="checkbox" name="olaf" value="9"  checked>
-          <label for="olaf">St. Olaf College</label><br>
-          <input type="checkbox" name="thomas" value="10"  checked>
-          <label for="thomas">University of St. Thomas</label><br>
+        <div id='teams-content'>
+          <h3>Select Team(s)</h3>
+          <div id="team-checkboxes">
+            <input type="checkbox" name="all" id="select-all" checked>
+            <label for="all"><span class="bold">Select/Unselect All</span></label><br>
+            <input type="checkbox" name="augsburg" value="0" checked>
+            <label for="augsburg">Augsburg University</label><br>
+            <input type="checkbox" name="bethel" value="1" checked>
+            <label for="bethel">Bethel University</label><br>
+            <input type="checkbox" name="carleton" value="2" checked>
+            <label for="carleton">Carleton College</label><br>
+            <input type="checkbox" name="concordia" value="3" checked>
+            <label for="concordia">Concordia College</label><br>
+            <input type="checkbox" name="gustavus" value="4"  checked>
+            <label for="gustavus">Gustavus Adolphus College</label><br>
+            <input type="checkbox" name="hamline" value="5"  checked>
+            <label for="hamline">Hamline University</label><br>
+            <input type="checkbox" name="macalester" value="6" checked>
+            <label for="macalester">Macalester College</label><br>
+            <input type="checkbox" name="john" value="7" checked>
+            <label for="john">St. John's University</label><br>
+            <input type="checkbox" name="mary" value="8" checked>
+            <label for="mary">St. Mary's University</label><br>
+            <input type="checkbox" name="olaf" value="9"  checked>
+            <label for="olaf">St. Olaf College</label><br>
+            <input type="checkbox" name="thomas" value="10"  checked>
+            <label for="thomas">University of St. Thomas</label><br>
+          </div>
         </div>
-        <div id="year-slider"></div>
+        <div id="slider-content-container">
+          <h3>Select Year(s)</h3>
+          <div id="year-slider"></div>
+        </div>
       </div>
     </div>
 
@@ -95,45 +101,45 @@
       <button type="button" class="collapsible" id="team-spread">Team Spread</button>
       <div class="content">
         <p>Creates a boxplot for each year in the selected year range showing the distribution of times for the selected teams.
-        Use the drop-down menu to choose between the times for the top 7 runners on each team or the times for entire teams.</p>
-        <select id="team-spread-athlete-limit">
-          <option value="top7">Top 7</option>
-          <option value="team">Whole Team</option>
-        </select>
-        <button id="input-team-spread">Submit</button>
-        <div id="team-spread-charts"></div>
-      </div>
-
-      <div class="anchor" id="athlete-dev-anchor"></div>
-      <button type="button" class="collapsible" id="athlete-dev">Athlete Development</button>
-      <div class="content">
-        <p>Creates a bar chart showing the average yearly change in athlete time or place over the selected range of years.
-          The yearly development for each athlete can be calculated as either a raw change or a year-over-year percent change.
-          The average of these yearly changes can be calculated as either a mean or a median.
-          Note that at least two years must be selected to produce a chart, as this analysis involves change over time.</p>
-          <select id="athlete-dev-metric">
-            <option value="time">Time</option>
-            <option value="place">Place</option>
+          Use the drop-down menu to choose between the times for the top 7 runners on each team or the times for entire teams.</p>
+          <select id="team-spread-athlete-limit">
+            <option value="top7">Top 7</option>
+            <option value="team">Whole Team</option>
           </select>
-          <select id="athlete-dev-data-format">
-            <option value="unweighted,mean">Mean Unweighted Change</option>
-            <option value="unweighted,median">Median Unweighted Change</option>
-            <option value="percent,mean">Mean Percent Change</option>
-            <option value="percent,median">Median Percent Change</option>
-          </select>
-          <button id="input-athlete-dev">Submit</button>
-          <div id="athlete-dev-chart"></div>
-      </div>
+          <button id="input-team-spread">Submit</button>
+          <div id="team-spread-charts"></div>
+        </div>
 
-    </main>
+        <div class="anchor" id="athlete-dev-anchor"></div>
+        <button type="button" class="collapsible" id="athlete-dev">Athlete Development</button>
+        <div class="content">
+          <p>Creates a bar chart showing the average yearly change in athlete time or place over the selected range of years.
+            The yearly development for each athlete can be calculated as either a raw change or a year-over-year percent change.
+            The average of these yearly changes can be calculated as either a mean or a median.
+            Note that at least two years must be selected to produce a chart, as this analysis involves change over time.</p>
+            <select id="athlete-dev-metric">
+              <option value="time">Time</option>
+              <option value="place">Place</option>
+            </select>
+            <select id="athlete-dev-data-format">
+              <option value="unweighted,mean">Mean Unweighted Change</option>
+              <option value="unweighted,median">Median Unweighted Change</option>
+              <option value="percent,mean">Mean Percent Change</option>
+              <option value="percent,median">Median Percent Change</option>
+            </select>
+            <button id="input-athlete-dev">Submit</button>
+            <div id="athlete-dev-chart"></div>
+          </div>
 
-    <footer>
-      <p>Data collected from the <a class="hover" target="_blank" href="https://www.miacathletics.com/sports/mxc/archives">MIAC archives</a>.</p>
-      <p>Website maintained by <a class="hover" target="_blank" href="https://github.com/aoki-sherwoodb">Ben Aoki-Sherwood</a> and <a class="hover" target="_blank" href="https://github.com/Ave-Wat">Avery Watts</a></p>
-    </footer>
-    <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}" defer></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='nouislider.min.js') }}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='plotly.js') }}"></script>
-  </body>
-  </html>
+        </main>
+
+        <footer>
+          <p>Data collected from the <a class="hover" target="_blank" href="https://www.miacathletics.com/sports/mxc/archives">MIAC archives</a>.</p>
+          <p>Website maintained by <a class="hover" target="_blank" href="https://github.com/aoki-sherwoodb">Ben Aoki-Sherwood</a> and <a class="hover" target="_blank" href="https://github.com/Ave-Wat">Avery Watts</a></p>
+        </footer>
+        <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}" defer></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='nouislider.min.js') }}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='plotly.js') }}"></script>
+      </body>
+      </html>

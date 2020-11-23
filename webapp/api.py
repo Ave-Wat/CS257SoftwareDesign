@@ -126,6 +126,7 @@ def get_teams_performances():
 def get_single_team_performances(team_name, metric, years):
     query = "SELECT " + metric + " FROM teams, meets, team_performances WHERE team_performances.team_id = teams.id AND teams.name = '" + team_name + "' AND meets.id=meet_id AND year IN " + years + " ORDER BY year"
     #SELECT teams.name, place, year FROM teams, meets, team_performances WHERE team_performances.team_id = teams.id AND teams.name='Carleton' AND meets.id=meet_id ORDER BY year;
+    print(query)
     cursor = get_cursor(query, '')
     team_performances = []
     for row in cursor:
@@ -188,7 +189,6 @@ def get_athlete_performances_by_team(team_name, calculate_by, years):
     '''returns a dict with athlete names as keys and a list of lists, so that: {athlete_name: [[time/place, year], etc for multiple years], etc for multiple athletes}'''
     query = "SELECT athletes.name," + calculate_by + ", year FROM teams, athletes, meets, individual_performances, athlete_team_links WHERE individual_performances.team_id = teams.id AND meet_id = meets.id AND teams.name = '" + team_name + "' AND teams.id = athlete_team_links.team_id AND athlete_team_links.ath_id = athletes.id AND individual_performances.ath_id = athletes.id AND year IN " + years + "ORDER BY year"
     #"SELECT athletes.name, time, teams.name FROM teams, athletes, meets, individual_performances, athlete_team_links WHERE individual_performances.team_id = teams.id AND meet_id = meets.id AND teams.name = 'Carleton' AND teams.id = athlete_team_links.team_id AND athlete_team_links.ath_id = athletes.id AND individual_performances.ath_id = athletes.id;"
-
     cursor = get_cursor(query, '')
     performances_dict = {}
 
