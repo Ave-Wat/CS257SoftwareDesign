@@ -20,6 +20,46 @@ function onSearchButton(){
   window.location.href = "search.html" + queryString;
 }
 
+function onChangeSelectAllBox(checkbox) {
+  var teamCheckboxes = document.getElementById('team-checkboxes');
+  if (checkbox.checked) {
+    for (var i = 0; i < teamCheckboxes.children.length; i++ ) {
+      teamCheckboxes.children[i].checked = true;
+    }
+  } else {
+    for (var i = 0; i < teamCheckboxes.children.length; i++ ) {
+      teamCheckboxes.children[i].checked = false;
+    }
+  }
+}
+
+function initializeYearSlider() {
+  var yearSlider = document.getElementById('year-slider');
+  noUiSlider.create(yearSlider, {
+    start: [2009, 2019],
+    step: 1,
+    connect: [false, true, false],
+    pips: {mode: 'steps', filter: function(value, type) {
+      if (type === 0) {
+        return -1;
+      } else {
+        return 1;
+      }
+    }},
+    range: {'min': [2009], 'max': [2019]},
+    orientation: 'horizontal',
+  });
+}
+
+//helper function for formatting the noUiSlider year slider
+function filterPips(value, type) {
+  if (type === 0) {
+    return -1;
+  } else {
+    return 1;
+  }
+}
+
 function collapsibles(){
   var collapsibles = document.getElementsByClassName("collapsible");
   for (var i = 0; i < collapsibles.length; i++) {
@@ -120,25 +160,20 @@ function plotTeamSpread(yearString, teamSpreadsThisYear) {
     }
     data.push(teamTrace);
   }
-  var layout = {
-    title: {
-      text: getTeamSpreadPlotTitle() + yearString,
-      font: {
-        family: 'Roboto'
-      }
-    },
-    yaxis: {
-      title: {
-        text: 'Time (min)',
-        font: {
-          family: 'Roboto'
-        }
-      },
-      autorange: 'reversed',
-      dtick: 1
-    }
-  }
+  var layout = {title: {text: getTeamSpreadPlotTitle() + yearString,font: {family: 'Roboto'}},yaxis: {title: {text: 'Time (min)',font: {family: 'Roboto'}},autorange: 'reversed',dtick: 1}};
   Plotly.newPlot(yearString, data, layout);
+}
+
+function getTeamSpreadPlotTitle() {
+  var limitSelection = document.getElementById('team-spread-athlete-limit').value;
+  var title = 'Distribution of ';
+  if (limitSelection === 'top7') {
+    title += 'Top 7 ';
+  } else {
+    title += 'All '
+  }
+  title += 'Times by Team in ';
+  return title;
 }
 
 function athleteDevelopmentAnalysis (){
@@ -224,23 +259,7 @@ function plotAthleteDevelopment(athleteDevDict) {
     };
     data.push(teamTrace);
   }
-  var layout = {
-    title: {
-      text: getAthleteDevPlotTitle(),
-      font: {
-        family: 'Roboto'
-      }
-    },
-    yaxis: {
-      title: {
-        text: getAthleteDevYAxisTitle(),
-        font: {
-          family: 'Roboto'
-        }
-      }
-    },
-    showlegend: false
-  }
+  var layout = {title: {text: getAthleteDevPlotTitle(), font: {family: 'Roboto'}},yaxis: {title: {text: getAthleteDevYAxisTitle(),font: {family: 'Roboto'}}},showlegend: false};
   Plotly.newPlot('athlete-dev-chart', data, layout);
 }
 
@@ -272,16 +291,14 @@ function getAthleteDevYAxisTitle() {
   return yAxisTitle;
 }
 
-function getTeamSpreadPlotTitle() {
-  var limitSelection = document.getElementById('team-spread-athlete-limit').value;
-  var title = 'Distribution of ';
-  if (limitSelection === 'top7') {
-    title += 'Top 7 ';
-  } else {
-    title += 'All '
-  }
-  title += 'Times by Team in ';
-  return title;
+/*
+* prints a usage statement to the Athlete Development div, to be used
+* in the event of incorrect usage (ie only one year selected)
+*/
+function athleteDevUsage() {
+  var usageStatement = 'To view athlete development charts, please select multiple years on the year slider.';
+  var divElement = document.getElementById('athlete-dev-chart');
+  divElement.innerHTML = usageStatement;
 }
 
 /*
@@ -297,16 +314,6 @@ function getYearRangeAsString() {
     yearRange += yearsList[0] + '-' + yearsList[yearsList.length - 1];
   }
   return yearRange;
-}
-
-/*
-* prints a usage statement to the Athlete Development div, to be used
-* in the event of incorrect usage (ie only one year selected)
-*/
-function athleteDevUsage() {
-  var usageStatement = 'To view athlete development charts, please select multiple years on the year slider.';
-  var divElement = document.getElementById('athlete-dev-chart');
-  divElement.innerHTML = usageStatement;
 }
 
 function getTeamCheckboxes() {
@@ -334,6 +341,7 @@ function getTeamColor(team) {
   return -1;
 }
 
+//bc of SQL, we needed a way for our output to not have: '' in it.
 function escapeDoubleQuotes(teamNameString) {
   if (teamNameString === "Saint John''s" || teamNameString === "Saint Mary''s") {
     teamNameString = teamNameString.replace("''", "'");
@@ -377,33 +385,6 @@ function convertSecondsToMinutes(timeInSeconds) {
   return timeInMinutes;
 }
 
-function filterPips(value, type) {
-  //helper function for formatting the noUiSlider year slider
-  if (type === 0) {
-    return -1;
-  } else {
-    return 1;
-  }
-}
-
-function initializeYearSlider() {
-  var yearSlider = document.getElementById('year-slider');
-  noUiSlider.create(yearSlider, {
-    start: [2009, 2019],
-    step: 1,
-    connect: [false, true, false],
-    pips: {mode: 'steps', filter: function(value, type) {
-      if (type === 0) {
-        return -1;
-      } else {
-        return 1;
-      }
-    }},
-    range: {'min': [2009], 'max': [2019]},
-    orientation: 'horizontal',
-  });
-}
-
 function getYearsList() {
   var yearSlider = document.getElementById('year-slider');
   var yearsList = [];
@@ -417,18 +398,6 @@ function getYearsList() {
   return yearsList;
 }
 
-function onChangeSelectAllBox(checkbox) {
-  var teamCheckboxes = document.getElementById('team-checkboxes');
-  if (checkbox.checked) {
-    for (var i = 0; i < teamCheckboxes.children.length; i++ ) {
-      teamCheckboxes.children[i].checked = true;
-    }
-  } else {
-    for (var i = 0; i < teamCheckboxes.children.length; i++ ) {
-      teamCheckboxes.children[i].checked = false;
-    }
-  }
-}
 
 function initialize() {
   var searchButton = document.getElementById("input-search");
